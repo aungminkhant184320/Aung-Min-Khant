@@ -396,3 +396,31 @@
       alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
     }
   };
+  window.submitTopup = async () => {
+    const amount = document.getElementById('topupAmount').value;
+    const transId = document.getElementById('kpayTransId').value;
+    if(!amount || !transId) return alert('အချက်အလက်ပြည့်စုံစွာ ထည့်ပါ။');
+    await set(ref(db, 'topups/' + Date.now().toString()), {
+      uid: currentUser.uid, amount: parseInt(amount), transactionId: transId, status: 'pending'
+    });
+    alert('ငွေဖြည့်တောင်းဆိုမှု အောင်မြင်ပါသည်။'); closeModal('topupModal');
+  };
+
+  window.changePassword = async () => {
+    const oldPass = document.getElementById('oldPass').value;
+    const newPass = document.getElementById('newPass').value;
+    if(!oldPass || !newPass) return alert('စကားဝှက်များ ထည့်ပါ။');
+    try {
+      const cred = EmailAuthProvider.credential(currentUser.email, oldPass);
+      await reauthenticateWithCredential(currentUser, cred);
+      await updatePassword(currentUser, newPass);
+      alert('စကားဝှက် ပြောင်းလဲပြီးပါပြီ။');
+    } catch (e) { alert('Error: ' + e.message); }
+  };
+
+  window.logout = () => { auth.signOut(); location.reload(); };
+  window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+  window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+</script>
+</body>
+</html>
