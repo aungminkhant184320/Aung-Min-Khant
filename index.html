@@ -16,7 +16,6 @@
     }
     input, button { user-select: auto; -webkit-user-select: auto; }
     
-    /* Loading Screen */
     #initialLoader {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: var(--bg); z-index: 999999;
@@ -37,8 +36,10 @@
     .wallet-box { display: flex; align-items: center; gap: 10px; background: var(--card-bg); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--gold); cursor: pointer;}
     .wallet-box span { font-weight: bold; color: var(--gold); }
     .nav-icons { display: flex; gap: 15px; align-items: center; }
-    .icon-btn { font-size: 20px; cursor: pointer; background: none; border: none; color: white; }
+    .icon-btn { font-size: 20px; cursor: pointer; background: none; border: none; color: white; position: relative; }
     
+    .badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none; }
+
     .container { max-width: 500px; margin: 20px auto; padding: 0 20px; }
     
     .auth-section { background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid var(--glass-border); text-align: center; }
@@ -53,7 +54,6 @@
     .product-card { background: var(--card-bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; }
     .product-card h3 { color: var(--primary); margin-bottom: 5px; font-size: 16px; }
     .product-card p { color: var(--gold); font-weight: bold; font-size: 14px; }
-    
     .weekly-card { border: 2px solid var(--gold); background: rgba(251, 191, 36, 0.1); }
     .weekly-card h3 { color: var(--gold); }
     
@@ -63,8 +63,30 @@
     
     .floating-tg { position: fixed; bottom: 20px; right: 20px; background: #0088cc; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; z-index: 900; }
     
-    #bannedScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
+    /* Banned Screen New UI */
+    #bannedScreen { 
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(10px);
+      z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; 
+    }
+    .banned-card {
+      background: rgba(30, 41, 59, 0.8); padding: 40px 30px; border-radius: 20px;
+      border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);
+      max-width: 90%; width: 350px; animation: popIn 0.4s ease-out;
+    }
+    .banned-icon { font-size: 60px; margin-bottom: 10px; animation: pulseRed 2s infinite; }
+    @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes pulseRed { 0% { text-shadow: 0 0 0 rgba(239, 68, 68, 0.7); } 70% { text-shadow: 0 0 20px rgba(239, 68, 68, 0); } 100% { text-shadow: 0 0 0 rgba(239, 68, 68, 0); } }
+
     .kick-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
+    
+    .history-item { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
+    .history-item.pending { border-left: 4px solid #fbbf24; }
+    .history-item.approved { border-left: 4px solid #22c55e; }
+    .history-item.rejected { border-left: 4px solid #ef4444; }
+    .status-pending { color: #fbbf24; }
+    .status-approved { color: #22c55e; }
+    .status-rejected { color: #ef4444; }
   </style>
 </head>
 <body>
@@ -74,11 +96,19 @@
   <h3 style="color: var(--primary);">ခဏစောင့်ပါ...</h3>
 </div>
 
+<!-- New Banned Screen Design -->
 <div id="bannedScreen">
-  <div style="background: #1e293b; padding: 30px; border-radius: 15px; border: 2px solid #ef4444; max-width: 90%;">
-    <h1 style="color: #ef4444; margin-top: 0;">⚠️ အကောင့်ပိတ်ခံထားရပါသည်</h1>
-    <h3 style="color: #00e5ff; margin: 20px 0;">လက်ကျန်ငွေ: <span id="bannedWalletBalance">0</span> MMK</h3>
-    <a href="https://t.me/FileZWarrior_amk" target="_blank" style="background: #0088cc; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; display: inline-block;">✈️ Telegram သို့ ဆက်သွယ်ရန်</a>
+  <div class="banned-card">
+    <div class="banned-icon">🚫</div>
+    <h2 style="color: #ef4444; margin: 10px 0; font-weight: bold; letter-spacing: 1px;">ACCOUNT BANNED</h2>
+    <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">သင့်အကောင့်ကို အသုံးပြုခွင့် ပိတ်ပင်ထားပါသည်။</p>
+    
+    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #333;">
+       <p style="color: #888; font-size: 12px; margin-bottom: 5px;">လက်ကျန်ငွေ</p>
+       <h3 style="color: var(--gold); margin: 0;"><span id="bannedWalletBalance">0</span> MMK</h3>
+    </div>
+    
+    <a href="https://t.me/FileZWarrior_amk" target="_blank" style="background: linear-gradient(135deg, #0088cc, #005f99); color: white; text-decoration: none; padding: 12px 0; width: 100%; border-radius: 10px; font-weight: bold; display: inline-block; box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4); transition: 0.3s;">✈️ Admin သို့ ဆက်သွယ်ရန်</a>
   </div>
 </div>
 
@@ -89,6 +119,10 @@
       <span>💰 <span id="walletBalance">0</span> Ks</span>
     </div>
     <div class="nav-icons" id="navIcons" style="display:none;">
+      <button class="icon-btn" onclick="openModal('instructionModal')">ℹ️</button>
+      <button class="icon-btn" onclick="openNotiModal()">
+        🔔<span id="notiBadge" class="badge"></span>
+      </button>
       <button class="icon-btn" onclick="openModal('profileModal')">👤</button>
     </div>
   </div>
@@ -116,8 +150,6 @@
   </div>
 
   <div id="shopSection" style="display:none;">
-    
-    <!-- Admin က Weekly Pass ထည့်လျှင် ဤနေရာတွင် အလိုအလျောက် ပေါ်မည် -->
     <div id="specialPassContainer" style="display: none;">
       <h3 style="color: var(--gold); margin-bottom: 10px;">🎟️ Special Packages</h3>
       <div class="products" id="specialPassList" style="grid-template-columns: 1fr;"></div>
@@ -127,7 +159,50 @@
     <div class="products" id="productsContainer">
       <div class="product-card"><h3>Loading...</h3></div>
     </div>
+  </div>
+</div>
+
+<!-- Instruction Modal -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('instructionModal')">×</span>
+    <h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2>
+    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;">
+      <h4 style="color: var(--gold); margin-bottom: 5px;">🔑 အကောင့်ဖွင့်နည်း</h4>
+      <p style="color: #ccc; margin-bottom: 15px;">- ဖုန်းနံပါတ်၊ အမည်နှင့် စကားဝှက်တို့ကို မှန်ကန်စွာဖြည့်သွင်း၍ "အကောင့်သစ်ဖွင့်ရန်" မှတဆင့် အလွယ်တကူ ဖွင့်နိုင်ပါသည်။</p>
+      <h4 style="color: var(--gold); margin-bottom: 5px;">💎 ဝယ်ယူမှု အခြေအနေ</h4>
+      <p style="color: #ccc; margin-bottom: 15px;">- Diamond မဝင်ပါက Admin မှ သေချာစွာ စစ်ဆေးနေသောကြောင့် ဖြစ်ပါသည်။<br>- <span style="color: var(--primary); font-weight: bold;">၂၄ နာရီအတွင်း</span> Diamond သေချာပေါက် ဝင်ပါမည်။</p>
+      <h4 style="color: var(--gold); margin-bottom: 5px;">📞 ဆက်သွယ်ရန်</h4>
+      <p style="color: #ccc; margin-bottom: 10px;">အကူအညီလိုပါက အောက်ပါ Telegram သို့ တိုက်ရိုက် ဆက်သွယ်နိုင်ပါသည်။</p>
+      <a href="https://t.me/FileZWarrior_amk" target="_blank" style="display: block; text-align: center; background: #0088cc; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold;">✈️ @FileZWarrior_amk</a>
+    </div>
+  </div>
+</div>
+
+<!-- Notification Modal (ဝင်စာ & မှတ်တမ်းများ) -->
+<div id="notiModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('notiModal')">×</span>
+    <h2 style="color: var(--primary); margin-bottom: 15px;">🔔 ဝင်စာ & မှတ်တမ်း</h2>
     
+    <div style="display: flex; gap: 5px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+      <button onclick="switchHistoryTab('msg')" id="tabMsgHis" style="flex:1; padding:8px; background:var(--primary); color:black; border:none; font-weight:bold; border-radius:5px;">ဝင်စာ</button>
+      <button onclick="switchHistoryTab('topup')" id="tabTopupHis" style="flex:1; padding:8px; background:#222; color:white; border:none; font-weight:bold; border-radius:5px;">ငွေဖြည့်</button>
+      <button onclick="switchHistoryTab('order')" id="tabOrderHis" style="flex:1; padding:8px; background:#222; color:white; border:none; font-weight:bold; border-radius:5px;">ဝယ်ယူမှု</button>
+    </div>
+
+    <!-- Admin ဝင်စာ -->
+    <div id="msgHistoryContainer">
+      <div id="msgListUI" style="max-height: 350px; overflow-y: auto;"></div>
+    </div>
+
+    <div id="topupHistoryContainer" style="display: none;">
+      <div id="topupListUI" style="max-height: 350px; overflow-y: auto;"></div>
+    </div>
+
+    <div id="orderHistoryContainer" style="display: none;">
+      <div id="orderListUI" style="max-height: 350px; overflow-y: auto;"></div>
+    </div>
   </div>
 </div>
 
@@ -217,7 +292,6 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  // အကောင့်ကို ဖုန်းထဲတွင် အမြဲတမ်း မှတ်ထားရန် (Auto Logout မဖြစ်စေရန်)
   setPersistence(auth, browserLocalPersistence);
   const db = getDatabase(app);
 
@@ -237,6 +311,10 @@
     localStorage.setItem('mySessionId', mySessionId);
   }
   let isSessionRegistered = false;
+  
+  let myTopups = [];
+  let myOrders = [];
+  let myAnnouncements = [];
 
   window.switchAuth = (mode) => {
     currentAuthMode = mode;
@@ -272,7 +350,6 @@
 
   auth.onAuthStateChanged((user) => {
     document.getElementById('initialLoader').style.display = 'none'; 
-    
     if (user) {
       currentUser = user;
       document.getElementById('authSection').style.display = 'none';
@@ -310,83 +387,137 @@
             } else {
               document.getElementById('bannedScreen').style.display = 'none';
             }
-
             document.getElementById('walletBalance').innerText = userData.wallet || 0;
             document.getElementById('profileName').innerText = userData.name || 'User';
             document.getElementById('profilePhone').innerText = userData.phone;
-            
-            if(userData.sessions) {
-              const sessionList = document.getElementById('sessionList');
-              sessionList.innerHTML = '';
-              for (const [key, value] of Object.entries(userData.sessions)) {
-                const isMe = (key === mySessionId);
-                sessionList.innerHTML += `
-                  <li style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:5px;">
-                    <div>
-                      📱 ${value.device} ${isMe ? '<span style="color:var(--success); font-weight:bold;">(ယခုဖုန်း)</span>' : ''}<br>
-                      <small>🕒 ${value.lastLogin}</small>
-                    </div>
-                    ${!isMe ? `<button class="kick-btn" onclick="removeSession('${key}')">ဖယ်ရှားမည်</button>` : ''}
-                  </li>`;
-              }
-            }
           }
-        } else {
-          if (isSigningUp) return;
-          const phoneStr = user.email.replace('@diamond.com', '');
-          await set(ref(db, 'users/' + user.uid), { 
-            phone: phoneStr, name: 'User', wallet: 0, isBanned: false 
-          });
         }
       });
       loadProducts();
+      listenHistory();
     } else {
       currentUser = null;
-      isSessionRegistered = false;
       document.getElementById('authSection').style.display = 'block';
       document.getElementById('shopSection').style.display = 'none';
       document.getElementById('walletDisplay').style.display = 'none';
       document.getElementById('navIcons').style.display = 'none';
       document.getElementById('bannedScreen').style.display = 'none';
-      closeModal('profileModal'); 
     }
   });
 
-  window.removeSession = async (sessionId) => {
-    if(confirm("ဤစက်ကို ဖယ်ရှားမည်မှာ သေချာပါသလား? ၎င်းစက်မှ အလိုအလျောက် အကောင့်ထွက် (Logout) သွားပါမည်။")) {
-      await set(ref(db, `users/${currentUser.uid}/sessions/${sessionId}`), null);
-    }
+  window.openNotiModal = () => {
+    openModal('notiModal');
+    let totalNotis = myTopups.length + myOrders.length + myAnnouncements.length;
+    localStorage.setItem('fzw_noti_count', totalNotis);
+    document.getElementById('notiBadge').style.display = 'none';
   };
 
-  // Admin မှ Products ထည့်ပါက အလိုအလျောက် ခွဲခြားပြသပေးမည့် လုပ်ဆောင်ချက်
+  window.switchHistoryTab = (tab) => {
+    document.getElementById('msgHistoryContainer').style.display = tab === 'msg' ? 'block' : 'none';
+    document.getElementById('topupHistoryContainer').style.display = tab === 'topup' ? 'block' : 'none';
+    document.getElementById('orderHistoryContainer').style.display = tab === 'order' ? 'block' : 'none';
+    
+    const tabs = ['Msg', 'Topup', 'Order'];
+    tabs.forEach(t => {
+      document.getElementById(`tab${t}His`).style.background = tab === t.toLowerCase() ? 'var(--primary)' : '#222';
+      document.getElementById(`tab${t}His`).style.color = tab === t.toLowerCase() ? 'black' : 'white';
+    });
+  };
+
+  function listenHistory() {
+    onValue(ref(db, 'topups'), (snap) => {
+       myTopups = [];
+       snap.forEach(child => { if(child.val().uid === currentUser.uid) myTopups.push({ id: child.key, ...child.val() }); });
+       renderHistory();
+    });
+    onValue(ref(db, 'orders'), (snap) => {
+       myOrders = [];
+       snap.forEach(child => { if(child.val().uid === currentUser.uid) myOrders.push({ id: child.key, ...child.val() }); });
+       renderHistory();
+    });
+    onValue(ref(db, 'announcements'), (snap) => {
+       myAnnouncements = [];
+       snap.forEach(child => {
+         const msg = child.val();
+         if(msg.target === 'all' || msg.target === currentUser.uid) {
+           myAnnouncements.push({ id: child.key, ...msg });
+         }
+       });
+       renderHistory();
+    });
+  }
+
+  function renderHistory() {
+     const tList = document.getElementById('topupListUI');
+     const oList = document.getElementById('orderListUI');
+     const mList = document.getElementById('msgListUI');
+     
+     tList.innerHTML = ''; oList.innerHTML = ''; mList.innerHTML = '';
+
+     const sortedTopups = [...myTopups].sort((a,b) => parseInt(b.id) - parseInt(a.id));
+     const sortedOrders = [...myOrders].sort((a,b) => parseInt(b.id) - parseInt(a.id));
+     const sortedMsgs = [...myAnnouncements].sort((a,b) => parseInt(b.id) - parseInt(a.id));
+
+     if(sortedTopups.length === 0) tList.innerHTML = '<p style="color: #aaa; text-align: center;">ငွေဖြည့်မှတ်တမ်း မရှိပါ။</p>';
+     if(sortedOrders.length === 0) oList.innerHTML = '<p style="color: #aaa; text-align: center;">ဝယ်ယူမှုမှတ်တမ်း မရှိပါ။</p>';
+     if(sortedMsgs.length === 0) mList.innerHTML = '<p style="color: #aaa; text-align: center;">ဝင်စာ မရှိသေးပါ။</p>';
+
+     sortedMsgs.forEach(m => {
+        mList.innerHTML += `
+          <div class="history-item" style="border-left: 4px solid var(--primary);">
+            <div style="font-weight:bold; color:var(--primary); font-size:15px;">${m.title}</div>
+            <div style="font-size: 13px; color: #ddd; margin-top: 5px;">${m.body}</div>
+            <div style="font-size: 11px; color: #888; margin-top: 8px;">🕒 ${m.date}</div>
+          </div>`;
+     });
+
+     sortedTopups.forEach(item => {
+        let statusText = item.status === 'pending' ? '⏳ စောင့်ဆိုင်းပါ (ငွေဖြည့်သွင်းပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်)' : (item.status === 'approved' ? '✅ ငွေဖြည့် အောင်မြင်ပါသည်' : '❌ အတုအယောင်ဖြစ်သဖြင့် ပယ်ချလိုက်ပါသည်');
+        tList.innerHTML += `
+          <div class="history-item ${item.status}">
+            <div style="font-weight:bold; color:var(--gold);">💰 ငွေဖြည့်ပမာဏ: ${item.amount} Ks</div>
+            <div style="font-size: 12px; color: #aaa;">Transaction ID: ${item.transactionId}</div>
+            <div style="font-size: 11px; color: #888; margin-top: 5px;">🕒 ${item.date || 'ယခင်မှတ်တမ်း'}</div>
+            <div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${item.status}">${statusText}</div>
+          </div>`;
+     });
+
+     sortedOrders.forEach(item => {
+        let statusText = item.status === 'pending' ? '⏳ စောင့်ဆိုင်းပါ (Admin မှ စစ်ဆေးနေပါသည်)' : (item.status === 'approved' ? '✅ ဝယ်ယူမှု အောင်မြင်ပါသည်' : '❌ အချက်အလက်မှားယွင်းနေသဖြင့် ပယ်ချလိုက်ပါသည်');
+        oList.innerHTML += `
+          <div class="history-item ${item.status}">
+            <div style="font-weight:bold; color:var(--primary);">💎 အရာဝတ္ထု: ${item.amount}</div>
+            <div style="font-size: 12px; color: #aaa;">Player ID: ${item.playerId} | ငွေကျသင့်: ${item.price} Ks</div>
+            <div style="font-size: 11px; color: #888; margin-top: 5px;">🕒 ${item.date || 'ယခင်မှတ်တမ်း'}</div>
+            <div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${item.status}">${statusText}</div>
+          </div>`;
+     });
+
+     let totalNotis = myTopups.length + myOrders.length + myAnnouncements.length;
+     let previousCount = parseInt(localStorage.getItem('fzw_noti_count')) || 0;
+     let unread = totalNotis - previousCount;
+     let badge = document.getElementById('notiBadge');
+     if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; } 
+     else { badge.style.display = 'none'; }
+  }
+
   function loadProducts() {
     onValue(ref(db, 'products'), (snapshot) => {
       const regContainer = document.getElementById('productsContainer');
       const specContainer = document.getElementById('specialPassList');
       const specWrapper = document.getElementById('specialPassContainer');
-      
-      regContainer.innerHTML = '';
-      specContainer.innerHTML = '';
+      regContainer.innerHTML = ''; specContainer.innerHTML = '';
       let hasSpecial = false;
 
       if(snapshot.exists()) {
         snapshot.forEach(child => {
           const p = child.val();
           const itemName = String(p.diamonds).toLowerCase();
-          
-          // Weekly, Pass, Starlight စသည့်စာသားများ ပါဝင်ပါက အပေါ်ဆုံးတွင် ရွှေရောင်ဖြင့်ပြမည်
           if(itemName.includes('weekly') || itemName.includes('pass') || itemName.includes('starlight')) {
             hasSpecial = true;
-            specContainer.innerHTML += `
-              <div class="product-card weekly-card" onclick="buyItem('${p.diamonds}', ${p.price})">
-                <h3>⭐ ${p.diamonds}</h3><p>${p.price} MMK</p>
-              </div>`;
+            specContainer.innerHTML += `<div class="product-card weekly-card" onclick="buyItem('${p.diamonds}', ${p.price})"><h3>⭐ ${p.diamonds}</h3><p>${p.price} MMK</p></div>`;
           } else {
-            // ရိုးရိုး Diamond များ
-            regContainer.innerHTML += `
-              <div class="product-card" onclick="buyItem('${p.diamonds}', ${p.price})">
-                <h3>💎 ${p.diamonds}</h3><p>${p.price} MMK</p>
-              </div>`;
+            regContainer.innerHTML += `<div class="product-card" onclick="buyItem('${p.diamonds}', ${p.price})"><h3>💎 ${p.diamonds}</h3><p>${p.price} MMK</p></div>`;
           }
         });
       }
@@ -410,9 +541,8 @@
     
     document.getElementById('checkNameBtn').innerText = 'စစ်ဆေးနေပါသည်... ⏳';
     setTimeout(() => {
-      const mockName = "Gamer_" + pid.substring(0,4) + " 🎮"; 
       document.getElementById('checkNameBtn').style.display = 'none';
-      document.getElementById('displayPlayerName').innerText = mockName;
+      document.getElementById('displayPlayerName').innerText = "Gamer_" + pid.substring(0,4) + " 🎮";
       document.getElementById('displayAmount').innerText = selectedPackage.itemName;
       document.getElementById('displayPrice').innerText = selectedPackage.price;
       document.getElementById('playerNameResult').style.display = 'block';
@@ -428,7 +558,7 @@
     if(confirm('ဝယ်မည်မှာ သေချာပါသလား?')) {
       await update(ref(db, 'users/' + currentUser.uid), { wallet: currentWallet - selectedPackage.price });
       await set(ref(db, 'orders/' + Date.now().toString()), {
-        uid: currentUser.uid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, status: 'pending', timestamp: new Date().toISOString()
+        uid: currentUser.uid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: selectedPackage.price, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
       });
       alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
     }
@@ -439,7 +569,7 @@
     const transId = document.getElementById('kpayTransId').value;
     if(!amount || !transId) return alert('အချက်အလက်ပြည့်စုံစွာ ထည့်ပါ။');
     await set(ref(db, 'topups/' + Date.now().toString()), {
-      uid: currentUser.uid, amount: parseInt(amount), transactionId: transId, status: 'pending'
+      uid: currentUser.uid, amount: parseInt(amount), transactionId: transId, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
     });
     alert('ငွေဖြည့်တောင်းဆိုမှု အောင်မြင်ပါသည်။'); closeModal('topupModal');
   };
@@ -461,4 +591,3 @@
   window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 </script>
 </body>
-</html>
