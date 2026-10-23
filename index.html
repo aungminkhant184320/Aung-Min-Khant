@@ -63,21 +63,7 @@
     
     .floating-tg { position: fixed; bottom: 20px; right: 20px; background: #0088cc; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; z-index: 900; }
     
-    /* Banned Screen New UI */
-    #bannedScreen { 
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(10px);
-      z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; 
-    }
-    .banned-card {
-      background: rgba(30, 41, 59, 0.8); padding: 40px 30px; border-radius: 20px;
-      border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);
-      max-width: 90%; width: 350px; animation: popIn 0.4s ease-out;
-    }
-    .banned-icon { font-size: 60px; margin-bottom: 10px; animation: pulseRed 2s infinite; }
-    @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes pulseRed { 0% { text-shadow: 0 0 0 rgba(239, 68, 68, 0.7); } 70% { text-shadow: 0 0 20px rgba(239, 68, 68, 0); } 100% { text-shadow: 0 0 0 rgba(239, 68, 68, 0); } }
-
+    #bannedScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
     .kick-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
     
     .history-item { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
@@ -87,6 +73,13 @@
     .status-pending { color: #fbbf24; }
     .status-approved { color: #22c55e; }
     .status-rejected { color: #ef4444; }
+
+    #shopClosedBanner {
+      display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444;
+      color: #ef4444; padding: 12px; text-align: center; border-radius: 8px;
+      margin-bottom: 15px; font-weight: bold; font-size: 14px; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
   </style>
 </head>
 <body>
@@ -96,19 +89,11 @@
   <h3 style="color: var(--primary);">ခဏစောင့်ပါ...</h3>
 </div>
 
-<!-- New Banned Screen Design -->
 <div id="bannedScreen">
-  <div class="banned-card">
-    <div class="banned-icon">🚫</div>
-    <h2 style="color: #ef4444; margin: 10px 0; font-weight: bold; letter-spacing: 1px;">ACCOUNT BANNED</h2>
-    <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">သင့်အကောင့်ကို အသုံးပြုခွင့် ပိတ်ပင်ထားပါသည်။</p>
-    
-    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #333;">
-       <p style="color: #888; font-size: 12px; margin-bottom: 5px;">လက်ကျန်ငွေ</p>
-       <h3 style="color: var(--gold); margin: 0;"><span id="bannedWalletBalance">0</span> MMK</h3>
-    </div>
-    
-    <a href="https://t.me/FileZWarrior_amk" target="_blank" style="background: linear-gradient(135deg, #0088cc, #005f99); color: white; text-decoration: none; padding: 12px 0; width: 100%; border-radius: 10px; font-weight: bold; display: inline-block; box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4); transition: 0.3s;">✈️ Admin သို့ ဆက်သွယ်ရန်</a>
+  <div style="background: #1e293b; padding: 30px; border-radius: 15px; border: 2px solid #ef4444; max-width: 90%;">
+    <h1 style="color: #ef4444; margin-top: 0;">⚠️ အကောင့်ပိတ်ခံထားရပါသည်</h1>
+    <h3 style="color: #00e5ff; margin: 20px 0;">လက်ကျန်ငွေ: <span id="bannedWalletBalance">0</span> MMK</h3>
+    <a href="https://t.me/FileZWarrior_amk" target="_blank" style="background: #0088cc; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; display: inline-block;">✈️ Telegram သို့ ဆက်သွယ်ရန်</a>
   </div>
 </div>
 
@@ -150,6 +135,12 @@
   </div>
 
   <div id="shopSection" style="display:none;">
+    
+    <!-- ဆိုင်ပိတ်ထားပါက ပေါ်မည့် Banner -->
+    <div id="shopClosedBanner">
+      ❌ Admin က မအားသေးတဲ့အတွက် ဆိုင်ခေတ္တပိတ်ထားပါတယ်။
+    </div>
+
     <div id="specialPassContainer" style="display: none;">
       <h3 style="color: var(--gold); margin-bottom: 10px;">🎟️ Special Packages</h3>
       <div class="products" id="specialPassList" style="grid-template-columns: 1fr;"></div>
@@ -195,11 +186,9 @@
     <div id="msgHistoryContainer">
       <div id="msgListUI" style="max-height: 350px; overflow-y: auto;"></div>
     </div>
-
     <div id="topupHistoryContainer" style="display: none;">
       <div id="topupListUI" style="max-height: 350px; overflow-y: auto;"></div>
     </div>
-
     <div id="orderHistoryContainer" style="display: none;">
       <div id="orderListUI" style="max-height: 350px; overflow-y: auto;"></div>
     </div>
@@ -301,9 +290,11 @@
   }, 3000);
   
   let currentUser = null;
+  let currentUserCreatedAt = 0; // အကောင့်သစ်များ ဝင်စာစစ်ရန်
   let currentAuthMode = 'login';
   let selectedPackage = null;
   let isSigningUp = false;
+  let isShopOpen = true; 
   
   let mySessionId = localStorage.getItem('mySessionId');
   if(!mySessionId) {
@@ -315,6 +306,17 @@
   let myTopups = [];
   let myOrders = [];
   let myAnnouncements = [];
+
+  // ဆိုင်ဖွင့်/ပိတ် စစ်ဆေးခြင်း
+  onValue(ref(db, 'appSettings/isShopOpen'), (snapshot) => {
+    if(snapshot.exists()) {
+      isShopOpen = snapshot.val();
+    } else {
+      isShopOpen = true;
+    }
+    document.getElementById('shopClosedBanner').style.display = isShopOpen ? 'none' : 'block';
+    renderHistory();
+  });
 
   window.switchAuth = (mode) => {
     currentAuthMode = mode;
@@ -338,7 +340,8 @@
       } else {
         isSigningUp = true;
         const userCred = await createUserWithEmailAndPassword(auth, `${phone}@diamond.com`, pass);
-        await set(ref(db, 'users/' + userCred.user.uid), { phone: phone, name: name, wallet: 0, isBanned: false });
+        // အကောင့်ဖွင့်ချိန် မှတ်သားမည်
+        await set(ref(db, 'users/' + userCred.user.uid), { phone: phone, name: name, wallet: 0, isBanned: false, accountCreatedAt: Date.now() });
         isSigningUp = false;
       }
     } catch (error) {
@@ -361,6 +364,8 @@
         if (snapshot.exists()) {
           const userData = snapshot.val();
           if (userData.phone) {
+            currentUserCreatedAt = userData.accountCreatedAt || 0; // အကောင့်ဟောင်းဆိုပါက 0
+
             const hasMySessionInDB = userData.sessions && userData.sessions[mySessionId];
             if (!hasMySessionInDB) {
               if (!isSessionRegistered) {
@@ -407,7 +412,8 @@
 
   window.openNotiModal = () => {
     openModal('notiModal');
-    let totalNotis = myTopups.length + myOrders.length + myAnnouncements.length;
+    let sysNotiCount = isShopOpen ? 0 : 1;
+    let totalNotis = myTopups.length + myOrders.length + myAnnouncements.length + sysNotiCount;
     localStorage.setItem('fzw_noti_count', totalNotis);
     document.getElementById('notiBadge').style.display = 'none';
   };
@@ -437,9 +443,22 @@
     });
     onValue(ref(db, 'announcements'), (snap) => {
        myAnnouncements = [];
+       const now = Date.now();
+       const fortyEightHours = 48 * 60 * 60 * 1000;
+
        snap.forEach(child => {
          const msg = child.val();
-         if(msg.target === 'all' || msg.target === currentUser.uid) {
+         const msgTime = parseInt(child.key);
+         
+         // ၄၈ နာရီ ကျော်လွန်သွားသော စာများကို Client တွင် ဖျောက်ထားမည်
+         if (now - msgTime > fortyEightHours) return;
+
+         if (msg.target === 'all') {
+           // အကောင့်ဖွင့်ပြီးနောက် ပို့သောစာများကိုသာ ပြမည်
+           if (msgTime >= currentUserCreatedAt) {
+             myAnnouncements.push({ id: child.key, ...msg });
+           }
+         } else if (msg.target === currentUser.uid) {
            myAnnouncements.push({ id: child.key, ...msg });
          }
        });
@@ -458,9 +477,20 @@
      const sortedOrders = [...myOrders].sort((a,b) => parseInt(b.id) - parseInt(a.id));
      const sortedMsgs = [...myAnnouncements].sort((a,b) => parseInt(b.id) - parseInt(a.id));
 
+     let sysNotiCount = 0;
+     if(!isShopOpen) {
+       sysNotiCount = 1;
+       mList.innerHTML += `
+          <div class="history-item" style="border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.1);">
+            <div style="font-weight:bold; color:#ef4444; font-size:15px;">❌ ဆိုင်ခေတ္တပိတ်ထားပါသည်</div>
+            <div style="font-size: 13px; color: #ddd; margin-top: 5px;">Admin က မအားသေးတဲ့အတွက် ဆိုင်ပိတ်ထားပါတယ်။ ခေတ္တစောင့်ဆိုင်းပေးပါ။</div>
+            <div style="font-size: 11px; color: #888; margin-top: 8px;">🕒 System Message</div>
+          </div>`;
+     }
+
      if(sortedTopups.length === 0) tList.innerHTML = '<p style="color: #aaa; text-align: center;">ငွေဖြည့်မှတ်တမ်း မရှိပါ။</p>';
      if(sortedOrders.length === 0) oList.innerHTML = '<p style="color: #aaa; text-align: center;">ဝယ်ယူမှုမှတ်တမ်း မရှိပါ။</p>';
-     if(sortedMsgs.length === 0) mList.innerHTML = '<p style="color: #aaa; text-align: center;">ဝင်စာ မရှိသေးပါ။</p>';
+     if(sortedMsgs.length === 0 && isShopOpen) mList.innerHTML = '<p style="color: #aaa; text-align: center;">ဝင်စာ မရှိသေးပါ။</p>';
 
      sortedMsgs.forEach(m => {
         mList.innerHTML += `
@@ -493,7 +523,7 @@
           </div>`;
      });
 
-     let totalNotis = myTopups.length + myOrders.length + myAnnouncements.length;
+     let totalNotis = myTopups.length + myOrders.length + myAnnouncements.length + sysNotiCount;
      let previousCount = parseInt(localStorage.getItem('fzw_noti_count')) || 0;
      let unread = totalNotis - previousCount;
      let badge = document.getElementById('notiBadge');
@@ -526,6 +556,8 @@
   }
 
   window.buyItem = (itemName, price) => {
+    if(!isShopOpen) return alert("Admin က မအားသေးတဲ့အတွက် ဆိုင်ပိတ်ထားပါတယ်။ ခေတ္တစောင့်ဆိုင်းပေးပါ။");
+    
     selectedPackage = { itemName, price };
     document.getElementById('gamePlayerId').value = ''; document.getElementById('gameServerId').value = '';
     document.getElementById('playerNameResult').style.display = 'none';
@@ -574,20 +606,9 @@
     alert('ငွေဖြည့်တောင်းဆိုမှု အောင်မြင်ပါသည်။'); closeModal('topupModal');
   };
 
-  window.changePassword = async () => {
-    const oldPass = document.getElementById('oldPass').value;
-    const newPass = document.getElementById('newPass').value;
-    if(!oldPass || !newPass) return alert('စကားဝှက်များ ထည့်ပါ။');
-    try {
-      const cred = EmailAuthProvider.credential(currentUser.email, oldPass);
-      await reauthenticateWithCredential(currentUser, cred);
-      await updatePassword(currentUser, newPass);
-      alert('စကားဝှက် ပြောင်းလဲပြီးပါပြီ။');
-    } catch (e) { alert('Error: ' + e.message); }
-  };
-
   window.logout = () => { auth.signOut(); window.location.reload(); };
   window.openModal = (id) => document.getElementById(id).style.display = 'flex';
   window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 </script>
 </body>
+</html>
