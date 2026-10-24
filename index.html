@@ -49,6 +49,7 @@
     .input-group { margin-bottom: 15px; text-align: left; }
     .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; }
     .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; }
+    .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
     
     .products { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; margin-bottom: 20px;}
     .product-card { background: var(--card-bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; }
@@ -64,7 +65,6 @@
     .floating-tg { position: fixed; bottom: 20px; right: 20px; background: #0088cc; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; z-index: 900; }
     
     #bannedScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
-    .kick-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
     
     .history-item { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
     .history-item.pending { border-left: 4px solid #fbbf24; }
@@ -133,16 +133,19 @@
       <input type="password" id="authPass" placeholder="••••••••">
     </div>
     
-    <!-- VPN Warning Text -->
     <div style="margin-top: 10px; margin-bottom: 15px; font-size: 13px; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 5px; text-align: center; border: 1px dashed #ef4444;">
       ⚠️ မှတ်ချက်: မြန်မာနိုင်ငံအတွင်းမှဖြစ်ပါက <b>VPN ဖွင့်ထားမှသာ</b> အကောင့်ဝင်/ဖွင့် လုပ်၍ရပါမည်။
     </div>
 
     <button class="btn" onclick="handleAuth()" id="authBtn">အကောင့်ဝင်မည်</button>
+    
+    <button class="btn btn-outline" style="margin-top: 15px;" onclick="openModal('instructionModal')">📖 အသုံးပြုနည်း ဖတ်ရန်</button>
   </div>
 
   <div id="shopSection" style="display:none;">
     
+    <button class="btn" style="margin-bottom: 15px; background: var(--gold); color: black;" onclick="openModal('topupModal')">💰 ငွေဖြည့်ရန်</button>
+
     <div id="shopClosedBanner">
       ❌ Admin က မအားသေးတဲ့အတွက် ဆိုင်ခေတ္တပိတ်ထားပါတယ်။
     </div>
@@ -165,10 +168,20 @@
     <span class="close-btn" onclick="closeModal('instructionModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2>
     <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;">
+      
       <h4 style="color: var(--gold); margin-bottom: 5px;">🔑 အကောင့်ဖွင့်နည်း</h4>
-      <p style="color: #ccc; margin-bottom: 15px;">- ဖုန်းနံပါတ်၊ အမည်နှင့် စကားဝှက်တို့ကို မှန်ကန်စွာဖြည့်သွင်း၍ "အကောင့်သစ်ဖွင့်ရန်" မှတဆင့် အလွယ်တကူ ဖွင့်နိုင်ပါသည်။<br>- <span style="color: #ef4444;">မှတ်ချက်: VPN ဖွင့်ထားမှသာ အကောင့်ဝင်/ဖွင့် လုပ်နိုင်ပါမည်။</span></p>
+      <p style="color: #ccc; margin-bottom: 10px;">- "အကောင့်သစ်ဖွင့်ရန်" ကို နှိပ်ပြီး အမည်၊ ဖုန်းနံပါတ်၊ စကားဝှက်တို့ကို မှန်ကန်စွာဖြည့်သွင်း၍ လွယ်ကူစွာ အကောင့်ဖွင့်နိုင်ပါသည်။</p>
+      
+      <div style="text-align: center; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+        <img src="https://i.ibb.co/L5w2HkG/placeholder.jpg" alt="Account Setup Guide" style="width: 100%; border-radius: 5px; border: 1px solid var(--glass-border);">
+        <p style="color: #888; font-size: 11px; margin-top: 5px;">(အကောင့်သစ်ဖွင့်ပုံ နမူနာ)</p>
+      </div>
+
+      <p style="color: #ccc; margin-bottom: 15px;">- <span style="color: #ef4444;">မှတ်ချက်: VPN ဖွင့်ထားမှသာ အကောင့်ဝင်/ဖွင့် လုပ်နိုင်ပါမည်။</span></p>
+      
       <h4 style="color: var(--gold); margin-bottom: 5px;">💎 ဝယ်ယူမှု အခြေအနေ</h4>
       <p style="color: #ccc; margin-bottom: 15px;">- Diamond မဝင်ပါက Admin မှ သေချာစွာ စစ်ဆေးနေသောကြောင့် ဖြစ်ပါသည်။<br>- <span style="color: var(--primary); font-weight: bold;">၂၄ နာရီအတွင်း</span> Diamond သေချာပေါက် ဝင်ပါမည်။</p>
+      
       <h4 style="color: var(--gold); margin-bottom: 5px;">📞 ဆက်သွယ်ရန်</h4>
       <p style="color: #ccc; margin-bottom: 10px;">အကူအညီလိုပါက အောက်ပါ Telegram သို့ တိုက်ရိုက် ဆက်သွယ်နိုင်ပါသည်။</p>
       <a href="https://t.me/FileZWarrior_amk" target="_blank" style="display: block; text-align: center; background: #0088cc; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold;">✈️ @FileZWarrior_amk</a>
@@ -231,11 +244,12 @@
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">ငွေဖြည့်ရန်</h2>
-    <p style="font-size: 14px; margin-bottom: 15px; color: #aaa;">အောက်ပါ KBZPay အကောင့်သို့ ငွေလွှဲပြီး လုပ်ငန်းစဉ်အမှတ် (Txn ID) ဖြည့်ပါ။</p>
-    <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px dashed var(--gold);">
-      <h3 style="color: var(--gold);">09784011654</h3>
-      <p>KBZPay Name</p>
+    <p style="font-size: 14px; margin-bottom: 15px; color: #aaa;">အောက်ပါ အကောင့်များသို့ ငွေလွှဲပြီး လုပ်ငန်းစဉ်အမှတ် (Txn ID) ဖြည့်ပါ။</p>
+    
+    <div id="paymentMethodsList" style="margin-bottom: 15px; max-height: 180px; overflow-y: auto;">
+      <!-- Loading... -->
     </div>
+
     <div class="input-group">
       <label>ငွေပမာဏ (MMK)</label>
       <input type="number" id="topupAmount" placeholder="1000">
@@ -311,6 +325,15 @@
   let myOrders = [];
   let myAnnouncements = [];
 
+  // Copy Function
+  window.copyPhone = (phone) => {
+    navigator.clipboard.writeText(phone).then(() => {
+      alert(phone + " ဖုန်းနံပါတ်ကို Copy ကူးယူပြီးပါပြီ။");
+    }).catch(err => {
+      alert("Copy ကူးရာတွင် အခက်အခဲရှိပါသည်။");
+    });
+  };
+
   db.ref('appSettings/isShopOpen').on('value', (snapshot) => {
     if(snapshot.exists()) {
       isShopOpen = snapshot.val();
@@ -319,6 +342,28 @@
     }
     document.getElementById('shopClosedBanner').style.display = isShopOpen ? 'none' : 'block';
     renderHistory();
+  });
+
+  db.ref('payments').on('value', (snapshot) => {
+    const container = document.getElementById('paymentMethodsList');
+    container.innerHTML = '';
+    if(snapshot.exists()) {
+      snapshot.forEach(child => {
+        const p = child.val();
+        container.innerHTML += `
+          <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 10px; border: 1px dashed var(--gold); position: relative;">
+            <h4 style="color: #fff; margin: 0 0 5px 0;">${p.type}</h4>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 5px;">
+              <h3 style="color: var(--gold); margin: 0; letter-spacing: 1px;">${p.phone}</h3>
+              <button onclick="copyPhone('${p.phone}')" style="background: var(--primary); border: none; padding: 4px 8px; border-radius: 4px; font-weight: bold; color: black; cursor: pointer; font-size: 12px;">Copy</button>
+            </div>
+            <p style="margin: 0; font-size: 13px; color: #aaa;">${p.name}</p>
+          </div>
+        `;
+      });
+    } else {
+       container.innerHTML = `<p style="color:#ef4444; text-align:center;">ငွေပေးချေရန် အကောင့် မရှိသေးပါ။</p>`;
+    }
   });
 
   window.switchAuth = (mode) => {
@@ -350,7 +395,6 @@
       isSigningUp = false;
       document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်';
       
-      // VPN မဖွင့်ထားသဖြင့် Network Error တက်ပါက သတိပေးရန်
       if (error.code === 'auth/network-request-failed') {
         alert("⚠️ အင်တာနက် ချိတ်ဆက်၍မရပါ။ \n\nVPN ဖွင့်မထားသည့်အတွက် စနစ်မှ အလိုအလျောက် ပိတ်ချလိုက်ပါသည်။ ကျေးဇူးပြု၍ VPN ဖွင့်ပြီးမှ ပြန်စမ်းပါ။");
       } else {
