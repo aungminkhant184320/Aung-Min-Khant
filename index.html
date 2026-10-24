@@ -114,6 +114,7 @@
 </header>
 
 <div class="container">
+  <!-- Auth Section -->
   <div id="authSection" class="auth-section" style="display: none;">
     <div class="auth-tabs">
       <div class="auth-tab active" id="tabLogin" onclick="switchAuth('login')">အကောင့်ဝင်ရန်</div>
@@ -131,6 +132,12 @@
       <label>စကားဝှက်</label>
       <input type="password" id="authPass" placeholder="••••••••">
     </div>
+    
+    <!-- VPN Warning Text -->
+    <div style="margin-top: 10px; margin-bottom: 15px; font-size: 13px; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 5px; text-align: center; border: 1px dashed #ef4444;">
+      ⚠️ မှတ်ချက်: မြန်မာနိုင်ငံအတွင်းမှဖြစ်ပါက <b>VPN ဖွင့်ထားမှသာ</b> အကောင့်ဝင်/ဖွင့် လုပ်၍ရပါမည်။
+    </div>
+
     <button class="btn" onclick="handleAuth()" id="authBtn">အကောင့်ဝင်မည်</button>
   </div>
 
@@ -159,7 +166,7 @@
     <h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2>
     <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;">
       <h4 style="color: var(--gold); margin-bottom: 5px;">🔑 အကောင့်ဖွင့်နည်း</h4>
-      <p style="color: #ccc; margin-bottom: 15px;">- ဖုန်းနံပါတ်၊ အမည်နှင့် စကားဝှက်တို့ကို မှန်ကန်စွာဖြည့်သွင်း၍ "အကောင့်သစ်ဖွင့်ရန်" မှတဆင့် အလွယ်တကူ ဖွင့်နိုင်ပါသည်။</p>
+      <p style="color: #ccc; margin-bottom: 15px;">- ဖုန်းနံပါတ်၊ အမည်နှင့် စကားဝှက်တို့ကို မှန်ကန်စွာဖြည့်သွင်း၍ "အကောင့်သစ်ဖွင့်ရန်" မှတဆင့် အလွယ်တကူ ဖွင့်နိုင်ပါသည်။<br>- <span style="color: #ef4444;">မှတ်ချက်: VPN ဖွင့်ထားမှသာ အကောင့်ဝင်/ဖွင့် လုပ်နိုင်ပါမည်။</span></p>
       <h4 style="color: var(--gold); margin-bottom: 5px;">💎 ဝယ်ယူမှု အခြေအနေ</h4>
       <p style="color: #ccc; margin-bottom: 15px;">- Diamond မဝင်ပါက Admin မှ သေချာစွာ စစ်ဆေးနေသောကြောင့် ဖြစ်ပါသည်။<br>- <span style="color: var(--primary); font-weight: bold;">၂၄ နာရီအတွင်း</span> Diamond သေချာပေါက် ဝင်ပါမည်။</p>
       <h4 style="color: var(--gold); margin-bottom: 5px;">📞 ဆက်သွယ်ရန်</h4>
@@ -219,12 +226,12 @@
   </div>
 </div>
 
-<!-- Topup Modal (ပြေစာပုံတင်စနစ်) -->
+<!-- Topup Modal -->
 <div id="topupModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">ငွေဖြည့်ရန်</h2>
-    <p style="font-size: 14px; margin-bottom: 15px; color: #aaa;">အောက်ပါ KBZPay သို့ ငွေလွှဲပြီး ပြေစာပုံ (Screenshot) တင်ပေးပါ။</p>
+    <p style="font-size: 14px; margin-bottom: 15px; color: #aaa;">အောက်ပါ KBZPay အကောင့်သို့ ငွေလွှဲပြီး လုပ်ငန်းစဉ်အမှတ် (Txn ID) ဖြည့်ပါ။</p>
     <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px dashed var(--gold);">
       <h3 style="color: var(--gold);">09784011654</h3>
       <p>KBZPay Name</p>
@@ -234,8 +241,8 @@
       <input type="number" id="topupAmount" placeholder="1000">
     </div>
     <div class="input-group">
-      <label>ငွေလွှဲပြေစာ (Screenshot)</label>
-      <input type="file" id="kpayReceipt" accept="image/*" style="padding: 8px;">
+      <label>လုပ်ငန်းစဉ်အမှတ် (Transaction ID)</label>
+      <input type="text" id="kpayTransId" placeholder="နောက်ဆုံးဂဏန်း ၆ လုံး သို့မဟုတ် အပြည့်">
     </div>
     <button class="btn" id="submitTopupBtn" onclick="submitTopup()">ငွေဖြည့်ကြောင်း အကြောင်းကြားမည်</button>
   </div>
@@ -262,11 +269,9 @@
 
 <a href="https://t.me/FileZWarrior_amk" class="floating-tg" target="_blank">✈️</a>
 
-<!-- Firebase SDK Compat Version -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
 <script>
   const firebaseConfig = {
@@ -282,7 +287,6 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.database();
-  const storage = firebase.storage();
 
   setTimeout(() => {
     const loader = document.getElementById('initialLoader');
@@ -344,8 +348,14 @@
       }
     } catch (error) {
       isSigningUp = false;
-      alert("Error: " + error.message);
       document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်';
+      
+      // VPN မဖွင့်ထားသဖြင့် Network Error တက်ပါက သတိပေးရန်
+      if (error.code === 'auth/network-request-failed') {
+        alert("⚠️ အင်တာနက် ချိတ်ဆက်၍မရပါ။ \n\nVPN ဖွင့်မထားသည့်အတွက် စနစ်မှ အလိုအလျောက် ပိတ်ချလိုက်ပါသည်။ ကျေးဇူးပြု၍ VPN ဖွင့်ပြီးမှ ပြန်စမ်းပါ။");
+      } else {
+        alert("Error: " + error.message);
+      }
     }
   };
 
@@ -500,7 +510,7 @@
         tList.innerHTML += `
           <div class="history-item ${item.status}">
             <div style="font-weight:bold; color:var(--gold);">💰 ငွေဖြည့်ပမာဏ: ${item.amount} Ks</div>
-            <div style="font-size: 12px; color: #aaa;">ပြေစာပုံပါဝင်သည် 🖼️</div>
+            <div style="font-size: 12px; color: #aaa;">Transaction ID: ${item.transactionId}</div>
             <div style="font-size: 11px; color: #888; margin-top: 5px;">🕒 ${item.date || 'ယခင်မှတ်တမ်း'}</div>
             <div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${item.status}">${statusText}</div>
           </div>`;
@@ -594,35 +604,30 @@
     if(!isShopOpen) return alert("Admin က မအားသေးတဲ့အတွက် ဆိုင်ပိတ်ထားပါတယ်။ ခေတ္တစောင့်ဆိုင်းပေးပါ။");
 
     const amount = document.getElementById('topupAmount').value;
-    const receiptFile = document.getElementById('kpayReceipt').files[0];
+    const transId = document.getElementById('kpayTransId').value;
 
-    if(!amount || !receiptFile) return alert('ငွေပမာဏနှင့် ပြေစာပုံ ထည့်သွင်းပေးပါ။');
+    if(!amount || !transId) return alert('အချက်အလက်ပြည့်စုံစွာ ထည့်ပါ။');
 
     const btn = document.getElementById('submitTopupBtn');
     const originalText = btn.innerText;
-    btn.innerText = 'ပြေစာပုံ တင်နေပါသည်... ⏳';
+    btn.innerText = 'စောင့်ပါ... ⏳';
     btn.disabled = true;
 
     try {
-      const fileName = `receipts/${Date.now()}_${currentUser.uid}`;
-      const storageRef = storage.ref(fileName);
-      await storageRef.put(receiptFile);
-      const downloadURL = await storageRef.getDownloadURL();
-
       await db.ref('topups/' + Date.now().toString()).set({
         uid: currentUser.uid, 
         amount: parseInt(amount), 
-        receiptUrl: downloadURL, 
+        transactionId: transId, 
         status: 'pending', 
         date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
       });
 
       alert('ငွေဖြည့်တောင်းဆိုမှု အောင်မြင်ပါသည်။');
       document.getElementById('topupAmount').value = '';
-      document.getElementById('kpayReceipt').value = '';
+      document.getElementById('kpayTransId').value = '';
       closeModal('topupModal');
     } catch (error) {
-      alert('Error: ပုံတင်ရာတွင် အခက်အခဲရှိပါသည်။ Storage Rules ကို စစ်ဆေးပါ။');
+      alert('Error: ' + error.message);
     } finally {
       btn.innerText = originalText;
       btn.disabled = false;
