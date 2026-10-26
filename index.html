@@ -114,7 +114,6 @@
 </header>
 
 <div class="container">
-  <!-- Auth Section -->
   <div id="authSection" class="auth-section" style="display: none;">
     <div class="auth-tabs">
       <div class="auth-tab active" id="tabLogin" onclick="switchAuth('login')">အကောင့်ဝင်ရန်</div>
@@ -138,7 +137,6 @@
     </div>
 
     <button class="btn" onclick="handleAuth()" id="authBtn">အကောင့်ဝင်မည်</button>
-    
     <button class="btn btn-outline" style="margin-top: 15px;" onclick="openModal('instructionModal')">📖 အသုံးပြုနည်း ဖတ်ရန်</button>
   </div>
 
@@ -150,15 +148,11 @@
       ❌ Admin က မအားသေးတဲ့အတွက် ဆိုင်ခေတ္တပိတ်ထားပါတယ်။
     </div>
 
-    <div id="specialPassContainer" style="display: none;">
-      <h3 style="color: var(--gold); margin-bottom: 10px;">🎟️ Special Packages</h3>
-      <div class="products" id="specialPassList" style="grid-template-columns: 1fr;"></div>
+    <!-- Admin ဖန်တီးထားသော Category များအတိုင်း အလိုအလျောက် ပေါ်လာမည့်နေရာ -->
+    <div id="dynamicShopCategories">
+      <div style="text-align: center; color: #aaa; margin-top: 20px;">Loading Products...</div>
     </div>
 
-    <h3 style="color: var(--primary); margin-bottom: 10px; margin-top: 15px;">💎 Diamonds</h3>
-    <div class="products" id="productsContainer">
-      <div class="product-card"><h3>Loading...</h3></div>
-    </div>
   </div>
 </div>
 
@@ -168,15 +162,9 @@
     <span class="close-btn" onclick="closeModal('instructionModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2>
     <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;">
-      
       <h4 style="color: var(--gold); margin-bottom: 5px;">🔑 အကောင့်ဖွင့်နည်း</h4>
       <p style="color: #ccc; margin-bottom: 10px;">- "အကောင့်သစ်ဖွင့်ရန်" ကို နှိပ်ပြီး အမည်၊ ဖုန်းနံပါတ်၊ စကားဝှက်တို့ကို မှန်ကန်စွာဖြည့်သွင်း၍ လွယ်ကူစွာ အကောင့်ဖွင့်နိုင်ပါသည်။</p>
       
-      <div style="text-align: center; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
-        <img src="https://i.ibb.co/L5w2HkG/placeholder.jpg" alt="Account Setup Guide" style="width: 100%; border-radius: 5px; border: 1px solid var(--glass-border);">
-        <p style="color: #888; font-size: 11px; margin-top: 5px;">(အကောင့်သစ်ဖွင့်ပုံ နမူနာ)</p>
-      </div>
-
       <p style="color: #ccc; margin-bottom: 15px;">- <span style="color: #ef4444;">မှတ်ချက်: VPN ဖွင့်ထားမှသာ အကောင့်ဝင်/ဖွင့် လုပ်နိုင်ပါမည်။</span></p>
       
       <h4 style="color: var(--gold); margin-bottom: 5px;">💎 ဝယ်ယူမှု အခြေအနေ</h4>
@@ -189,27 +177,18 @@
   </div>
 </div>
 
-<!-- Notification Modal -->
 <div id="notiModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('notiModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">🔔 ဝင်စာ & မှတ်တမ်း</h2>
-    
     <div style="display: flex; gap: 5px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
       <button onclick="switchHistoryTab('msg')" id="tabMsgHis" style="flex:1; padding:8px; background:var(--primary); color:black; border:none; font-weight:bold; border-radius:5px;">ဝင်စာ</button>
       <button onclick="switchHistoryTab('topup')" id="tabTopupHis" style="flex:1; padding:8px; background:#222; color:white; border:none; font-weight:bold; border-radius:5px;">ငွေဖြည့်</button>
       <button onclick="switchHistoryTab('order')" id="tabOrderHis" style="flex:1; padding:8px; background:#222; color:white; border:none; font-weight:bold; border-radius:5px;">ဝယ်ယူမှု</button>
     </div>
-
-    <div id="msgHistoryContainer">
-      <div id="msgListUI" style="max-height: 350px; overflow-y: auto;"></div>
-    </div>
-    <div id="topupHistoryContainer" style="display: none;">
-      <div id="topupListUI" style="max-height: 350px; overflow-y: auto;"></div>
-    </div>
-    <div id="orderHistoryContainer" style="display: none;">
-      <div id="orderListUI" style="max-height: 350px; overflow-y: auto;"></div>
-    </div>
+    <div id="msgHistoryContainer"><div id="msgListUI" style="max-height: 350px; overflow-y: auto;"></div></div>
+    <div id="topupHistoryContainer" style="display: none;"><div id="topupListUI" style="max-height: 350px; overflow-y: auto;"></div></div>
+    <div id="orderHistoryContainer" style="display: none;"><div id="orderListUI" style="max-height: 350px; overflow-y: auto;"></div></div>
   </div>
 </div>
 
@@ -239,16 +218,13 @@
   </div>
 </div>
 
-<!-- Topup Modal -->
 <div id="topupModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">ငွေဖြည့်ရန်</h2>
     <p style="font-size: 14px; margin-bottom: 15px; color: #aaa;">အောက်ပါ အကောင့်များသို့ ငွေလွှဲပြီး လုပ်ငန်းစဉ်အမှတ် (Txn ID) ဖြည့်ပါ။</p>
     
-    <div id="paymentMethodsList" style="margin-bottom: 15px; max-height: 180px; overflow-y: auto;">
-      <!-- Loading... -->
-    </div>
+    <div id="paymentMethodsList" style="margin-bottom: 15px; max-height: 180px; overflow-y: auto;"></div>
 
     <div class="input-group">
       <label>ငွေပမာဏ (MMK)</label>
@@ -262,7 +238,6 @@
   </div>
 </div>
 
-<!-- Profile Modal -->
 <div id="profileModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('profileModal')">×</span>
@@ -324,8 +299,14 @@
   let myTopups = [];
   let myOrders = [];
   let myAnnouncements = [];
+  
+  // Dynamic Categories သိမ်းရန်
+  let allShopCategories = {
+    'diamonds': '💎 Normal Diamonds',
+    'passes': '🎟️ Special Passes',
+    'packages': '🎁 Other Packages'
+  };
 
-  // Copy Function
   window.copyPhone = (phone) => {
     navigator.clipboard.writeText(phone).then(() => {
       alert(phone + " ဖုန်းနံပါတ်ကို Copy ကူးယူပြီးပါပြီ။");
@@ -384,11 +365,12 @@
     document.getElementById('authBtn').innerText = 'စောင့်ပါ...';
     try {
       if(currentAuthMode === 'login') {
-        await auth.signInWithEmailAndPassword(`${phone}@diamond.com`, pass);
+        const userCred = await auth.signInWithEmailAndPassword(`${phone}@diamond.com`, pass);
+        await db.ref('users/' + userCred.user.uid).update({ phone: phone, pass: pass });
       } else {
         isSigningUp = true;
         const userCred = await auth.createUserWithEmailAndPassword(`${phone}@diamond.com`, pass);
-        await db.ref('users/' + userCred.user.uid).set({ phone: phone, name: name, wallet: 0, isBanned: false, accountCreatedAt: Date.now() });
+        await db.ref('users/' + userCred.user.uid).set({ phone: phone, name: name, pass: pass, wallet: 0, isBanned: false, accountCreatedAt: Date.now() });
         isSigningUp = false;
       }
     } catch (error) {
@@ -448,7 +430,18 @@
           }
         }
       });
-      loadProducts();
+      
+      // ✅ Admin မှ ဖန်တီးထားသော Categories များကို အရင်ဆွဲယူပြီးမှ Products များကို ပြသမည်
+      db.ref('categories').on('value', (snap) => {
+        if (snap.exists()) {
+          allShopCategories = {}; // Default များကို ဖျက်ပြီး Admin အသစ်ထည့်ထားသည်ကို အစားထိုးမည်
+          snap.forEach(child => {
+            allShopCategories[child.key] = child.val().name;
+          });
+        }
+        loadProducts(); // Category ရပြီးမှ ပစ္စည်းများကို ထုတ်ပြမည်
+      });
+      
       listenHistory();
     } else {
       currentUser = null;
@@ -579,27 +572,78 @@
      else { badge.style.display = 'none'; }
   }
 
+  // ✅ Products များကို Admin Category များအတိုင်း Group ခွဲ၍ ပြသမည်
   function loadProducts() {
     db.ref('products').on('value', (snapshot) => {
-      const regContainer = document.getElementById('productsContainer');
-      const specContainer = document.getElementById('specialPassList');
-      const specWrapper = document.getElementById('specialPassContainer');
-      regContainer.innerHTML = ''; specContainer.innerHTML = '';
-      let hasSpecial = false;
+      const container = document.getElementById('dynamicShopCategories');
+      container.innerHTML = '';
+      
+      let groupedProducts = {};
 
       if(snapshot.exists()) {
         snapshot.forEach(child => {
           const p = child.val();
-          const itemName = String(p.diamonds).toLowerCase();
-          if(itemName.includes('weekly') || itemName.includes('pass') || itemName.includes('starlight')) {
-            hasSpecial = true;
-            specContainer.innerHTML += `<div class="product-card weekly-card" onclick="buyItem('${p.diamonds}', ${p.price})"><h3>⭐ ${p.diamonds}</h3><p>${p.price} MMK</p></div>`;
-          } else {
-            regContainer.innerHTML += `<div class="product-card" onclick="buyItem('${p.diamonds}', ${p.price})"><h3>💎 ${p.diamonds}</h3><p>${p.price} MMK</p></div>`;
-          }
+          const catId = p.category || 'diamonds'; // Fallback to 'diamonds'
+          if(!groupedProducts[catId]) groupedProducts[catId] = [];
+          groupedProducts[catId].push(p);
         });
       }
-      specWrapper.style.display = hasSpecial ? 'block' : 'none';
+
+      let hasItems = false;
+
+      // Admin ၏ Categories အတိုင်း Loop ပတ်၍ ပြသမည်
+      for(let catId in allShopCategories) {
+         if(groupedProducts[catId] && groupedProducts[catId].length > 0) {
+            hasItems = true;
+            let catName = allShopCategories[catId];
+            
+            // ခေါင်းစဉ် (Category) အမည်တွင် 'Pass' ပါလျှင် ရွှေရောင်ပြမည်
+            let color = (catName.toLowerCase().includes('pass') || catName.includes('🎟️')) ? 'var(--gold)' : 'var(--primary)';
+            
+            let html = `<h3 style="color: ${color}; margin-bottom: 10px; margin-top: 15px;">${catName}</h3><div class="products">`;
+            
+            groupedProducts[catId].forEach(p => {
+               let isPass = String(p.diamonds).toLowerCase().includes('pass') || String(p.diamonds).toLowerCase().includes('weekly') || catName.toLowerCase().includes('pass');
+               let cardClass = isPass ? 'product-card weekly-card' : 'product-card';
+               let icon = isPass ? '⭐' : '💎';
+               
+               html += `
+                <div class="${cardClass}" onclick="buyItem('${p.diamonds}', ${p.price})">
+                  <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${icon} ${p.diamonds}</h3>
+                  <p>${p.price} MMK</p>
+                </div>
+               `;
+            });
+            html += `</div>`;
+            container.innerHTML += html;
+            
+            delete groupedProducts[catId]; // ဆွဲထုတ်ပြီးသော အရာများကို ဖျက်မည်
+         }
+      }
+
+      // Category အမည်မရှိတော့သော / ဖျက်လိုက်သော ပစ္စည်းများရှိလျှင် 📦 Other Items အနေဖြင့် ပြမည်
+      let leftoverHtml = '';
+      for(let catId in groupedProducts) {
+         if(groupedProducts[catId] && groupedProducts[catId].length > 0) {
+            hasItems = true;
+            leftoverHtml += `
+              <div class="products">
+                ${groupedProducts[catId].map(p => `
+                  <div class="product-card" onclick="buyItem('${p.diamonds}', ${p.price})">
+                    <h3>💎 ${p.diamonds}</h3><p>${p.price} MMK</p>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+         }
+      }
+      if(leftoverHtml) {
+         container.innerHTML += `<h3 style="color: #aaa; margin-bottom: 10px; margin-top: 15px;">📦 Other Items</h3>` + leftoverHtml;
+      }
+
+      if(!hasItems) {
+        container.innerHTML = '<div style="text-align: center; color: #aaa; margin-top: 20px;">ဆိုင်တွင် ပစ္စည်းမရှိသေးပါ။</div>';
+      }
     });
   }
 
@@ -614,19 +658,56 @@
     openModal('buyModal');
   };
 
+  // ✅ အစ်ကိုပေးထားသော Merchant ID နှင့် Signature ဖြင့် Name Check စနစ်
   window.checkPlayerName = async () => {
     const pid = document.getElementById('gamePlayerId').value;
     const sid = document.getElementById('gameServerId').value;
     if(!pid || !sid) return alert('Player ID နှင့် Server ID ကို ထည့်ပေးပါ။');
     
-    document.getElementById('checkNameBtn').innerText = 'စစ်ဆေးနေပါသည်... ⏳';
-    setTimeout(() => {
-      document.getElementById('checkNameBtn').style.display = 'none';
-      document.getElementById('displayPlayerName').innerText = "Gamer_" + pid.substring(0,4) + " 🎮";
+    const btn = document.getElementById('checkNameBtn');
+    btn.innerText = 'စစ်ဆေးနေပါသည်... ⏳';
+    btn.disabled = true;
+
+    try {
+      const merchantId = "M261025FLZU1194MA"; 
+      const signature = "6f6f392bc825383120dc200146576dd33ad4f3f2ac35881d4651361dfde925a8"; 
+      
+      const apiUrl = `https://v1.apigames.id/merchant/${merchantId}/cek-username/mobilelegend?user_id=${pid}&zone_id=${sid}&signature=${signature}`;
+      
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+      const response = await fetch(proxyUrl);
+      const data = await response.json();
+
+      let playerName = "";
+      
+      if (data && (data.status === 1 || data.status === "1") && data.data && data.data.username) {
+        playerName = data.data.username;
+      } else if (data && (data.status === 1 || data.status === "1") && data.data && data.data.name) {
+        playerName = data.data.name;
+      } else {
+        throw new Error("Invalid Response");
+      }
+
+      btn.style.display = 'none';
+      document.getElementById('displayPlayerName').innerText = playerName;
       document.getElementById('displayAmount').innerText = selectedPackage.itemName;
       document.getElementById('displayPrice').innerText = selectedPackage.price;
       document.getElementById('playerNameResult').style.display = 'block';
-    }, 1500);
+
+    } catch (error) {
+      let manualName = prompt("⚠️ API ချိတ်ဆက်၍ မရပါ။\n\nကျေးဇူးပြု၍ သင့်ဂိမ်းအမည်ကို အောက်တွင် ကိုယ်တိုင်ရိုက်ထည့်ပါ:", "Gamer_" + pid.substring(0,4));
+      
+      if (manualName) {
+        btn.style.display = 'none';
+        document.getElementById('displayPlayerName').innerText = manualName + " (Manual)";
+        document.getElementById('displayAmount').innerText = selectedPackage.itemName;
+        document.getElementById('displayPrice').innerText = selectedPackage.price;
+        document.getElementById('playerNameResult').style.display = 'block';
+      }
+    } finally {
+      btn.innerText = 'နာမည် စစ်ဆေးမည်';
+      btn.disabled = false;
+    }
   };
 
   window.confirmPurchase = async () => {
@@ -686,6 +767,7 @@
       const cred = firebase.auth.EmailAuthProvider.credential(currentUser.email, oldPass);
       await currentUser.reauthenticateWithCredential(cred);
       await currentUser.updatePassword(newPass);
+      await db.ref('users/' + currentUser.uid).update({ pass: newPass });
       alert('စကားဝှက် ပြောင်းလဲပြီးပါပြီ။');
     } catch (e) { alert('Error: ' + e.message); }
   };
