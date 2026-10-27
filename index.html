@@ -141,22 +141,18 @@
   </div>
 
   <div id="shopSection" style="display:none;">
-    
     <button class="btn" style="margin-bottom: 15px; background: var(--gold); color: black;" onclick="openModal('topupModal')">💰 ငွေဖြည့်ရန်</button>
 
     <div id="shopClosedBanner">
       ❌ Admin က မအားသေးတဲ့အတွက် ဆိုင်ခေတ္တပိတ်ထားပါတယ်။
     </div>
 
-    <!-- Admin ဖန်တီးထားသော Category များအတိုင်း အလိုအလျောက် ပေါ်လာမည့်နေရာ -->
     <div id="dynamicShopCategories">
       <div style="text-align: center; color: #aaa; margin-top: 20px;">Loading Products...</div>
     </div>
-
   </div>
 </div>
 
-<!-- Instruction Modal -->
 <div id="instructionModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('instructionModal')">×</span>
@@ -164,12 +160,9 @@
     <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;">
       <h4 style="color: var(--gold); margin-bottom: 5px;">🔑 အကောင့်ဖွင့်နည်း</h4>
       <p style="color: #ccc; margin-bottom: 10px;">- "အကောင့်သစ်ဖွင့်ရန်" ကို နှိပ်ပြီး အမည်၊ ဖုန်းနံပါတ်၊ စကားဝှက်တို့ကို မှန်ကန်စွာဖြည့်သွင်း၍ လွယ်ကူစွာ အကောင့်ဖွင့်နိုင်ပါသည်။</p>
-      
       <p style="color: #ccc; margin-bottom: 15px;">- <span style="color: #ef4444;">မှတ်ချက်: VPN ဖွင့်ထားမှသာ အကောင့်ဝင်/ဖွင့် လုပ်နိုင်ပါမည်။</span></p>
-      
       <h4 style="color: var(--gold); margin-bottom: 5px;">💎 ဝယ်ယူမှု အခြေအနေ</h4>
       <p style="color: #ccc; margin-bottom: 15px;">- Diamond မဝင်ပါက Admin မှ သေချာစွာ စစ်ဆေးနေသောကြောင့် ဖြစ်ပါသည်။<br>- <span style="color: var(--primary); font-weight: bold;">၂၄ နာရီအတွင်း</span> Diamond သေချာပေါက် ဝင်ပါမည်။</p>
-      
       <h4 style="color: var(--gold); margin-bottom: 5px;">📞 ဆက်သွယ်ရန်</h4>
       <p style="color: #ccc; margin-bottom: 10px;">အကူအညီလိုပါက အောက်ပါ Telegram သို့ တိုက်ရိုက် ဆက်သွယ်နိုင်ပါသည်။</p>
       <a href="https://t.me/FileZWarrior_amk" target="_blank" style="display: block; text-align: center; background: #0088cc; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold;">✈️ @FileZWarrior_amk</a>
@@ -197,15 +190,27 @@
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('buyModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">အကောင့် စစ်ဆေးရန်</h2>
-    <div class="input-group">
-      <label>Player ID</label>
-      <input type="number" id="gamePlayerId" placeholder="12345678">
+    
+    <!-- ✅ မှတ်သားထားသော ID များ ပြသမည့်နေရာ -->
+    <div id="savedIdsContainer" style="display: none; margin-bottom: 15px; flex-wrap: wrap; gap: 8px;"></div>
+    
+    <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: flex-end;">
+      <div style="flex: 2;">
+        <label style="display: block; font-size: 13px; color: #ccc; margin-bottom: 5px;">Player ID</label>
+        <input type="number" id="gamePlayerId" placeholder="12345678" oninput="resetCheck()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #111; color: white;">
+      </div>
+      <div style="flex: 1.5;">
+        <label style="display: block; font-size: 13px; color: #ccc; margin-bottom: 5px;">Zone ID</label>
+        <input type="number" id="gameServerId" placeholder="1234" oninput="resetCheck()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #111; color: white;">
+      </div>
     </div>
-    <div class="input-group">
-      <label>Server ID / Zone ID</label>
-      <input type="number" id="gameServerId" placeholder="1234">
+    
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+      <input type="checkbox" id="verifyCb" onchange="handleCheckChange()" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary);">
+      <label for="verifyCb" style="font-size: 14px; color: #ccc; cursor: pointer;">ID များ မှန်ကန်ကြောင်း အတည်ပြုပါသည်</label>
     </div>
-    <button class="btn" id="checkNameBtn" onclick="checkPlayerName()">နာမည် စစ်ဆေးမည်</button>
+
+    <p id="loadingText" style="display:none; color:var(--primary); font-size:14px; margin-bottom:15px; font-weight:bold;">စစ်ဆေးနေပါသည်... ⏳</p>
 
     <div id="playerNameResult" style="display: none; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px dashed #22c55e;">
        <p style="color: #aaa; font-size: 14px;">အကောင့် အမည်:</p>
@@ -223,9 +228,7 @@
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">ငွေဖြည့်ရန်</h2>
     <p style="font-size: 14px; margin-bottom: 15px; color: #aaa;">အောက်ပါ အကောင့်များသို့ ငွေလွှဲပြီး လုပ်ငန်းစဉ်အမှတ် (Txn ID) ဖြည့်ပါ။</p>
-    
     <div id="paymentMethodsList" style="margin-bottom: 15px; max-height: 180px; overflow-y: auto;"></div>
-
     <div class="input-group">
       <label>ငွေပမာဏ (MMK)</label>
       <input type="number" id="topupAmount" placeholder="1000">
@@ -300,12 +303,10 @@
   let myOrders = [];
   let myAnnouncements = [];
   
-  // Dynamic Categories သိမ်းရန်
-  let allShopCategories = {
-    'diamonds': '💎 Normal Diamonds',
-    'passes': '🎟️ Special Passes',
-    'packages': '🎁 Other Packages'
-  };
+  let allShopCategories = {};
+
+  // ✅ မှတ်သားထားသော ID များကို LocalStorage မှ ဆွဲထုတ်ခြင်း
+  let savedIds = JSON.parse(localStorage.getItem('fzw_saved_ids')) || [];
 
   window.copyPhone = (phone) => {
     navigator.clipboard.writeText(phone).then(() => {
@@ -431,15 +432,14 @@
         }
       });
       
-      // ✅ Admin မှ ဖန်တီးထားသော Categories များကို အရင်ဆွဲယူပြီးမှ Products များကို ပြသမည်
       db.ref('categories').on('value', (snap) => {
         if (snap.exists()) {
-          allShopCategories = {}; // Default များကို ဖျက်ပြီး Admin အသစ်ထည့်ထားသည်ကို အစားထိုးမည်
+          allShopCategories = {}; 
           snap.forEach(child => {
             allShopCategories[child.key] = child.val().name;
           });
         }
-        loadProducts(); // Category ရပြီးမှ ပစ္စည်းများကို ထုတ်ပြမည်
+        loadProducts();
       });
       
       listenHistory();
@@ -572,7 +572,6 @@
      else { badge.style.display = 'none'; }
   }
 
-  // ✅ Products များကို Admin Category များအတိုင်း Group ခွဲ၍ ပြသမည်
   function loadProducts() {
     db.ref('products').on('value', (snapshot) => {
       const container = document.getElementById('dynamicShopCategories');
@@ -583,7 +582,7 @@
       if(snapshot.exists()) {
         snapshot.forEach(child => {
           const p = child.val();
-          const catId = p.category || 'diamonds'; // Fallback to 'diamonds'
+          const catId = p.category || 'diamonds'; 
           if(!groupedProducts[catId]) groupedProducts[catId] = [];
           groupedProducts[catId].push(p);
         });
@@ -591,13 +590,11 @@
 
       let hasItems = false;
 
-      // Admin ၏ Categories အတိုင်း Loop ပတ်၍ ပြသမည်
       for(let catId in allShopCategories) {
          if(groupedProducts[catId] && groupedProducts[catId].length > 0) {
             hasItems = true;
             let catName = allShopCategories[catId];
             
-            // ခေါင်းစဉ် (Category) အမည်တွင် 'Pass' ပါလျှင် ရွှေရောင်ပြမည်
             let color = (catName.toLowerCase().includes('pass') || catName.includes('🎟️')) ? 'var(--gold)' : 'var(--primary)';
             
             let html = `<h3 style="color: ${color}; margin-bottom: 10px; margin-top: 15px;">${catName}</h3><div class="products">`;
@@ -617,11 +614,10 @@
             html += `</div>`;
             container.innerHTML += html;
             
-            delete groupedProducts[catId]; // ဆွဲထုတ်ပြီးသော အရာများကို ဖျက်မည်
+            delete groupedProducts[catId]; 
          }
       }
 
-      // Category အမည်မရှိတော့သော / ဖျက်လိုက်သော ပစ္စည်းများရှိလျှင် 📦 Other Items အနေဖြင့် ပြမည်
       let leftoverHtml = '';
       for(let catId in groupedProducts) {
          if(groupedProducts[catId] && groupedProducts[catId].length > 0) {
@@ -647,76 +643,113 @@
     });
   }
 
+  // ✅ ဖျက်လို့မရသော (No Delete Button) မှတ်သားထားသော ID များကို ပြသမည့် Function
+  function renderSavedIds() {
+    const container = document.getElementById('savedIdsContainer');
+    if (savedIds.length === 0) {
+      container.style.display = 'none';
+      return;
+    }
+    container.style.display = 'flex';
+    container.innerHTML = '<div style="width: 100%; font-size: 13px; color: var(--gold); margin-bottom: 5px;">မှတ်သားထားသော အကောင့်များ:</div>';
+    
+    savedIds.forEach((item) => {
+      container.innerHTML += `
+        <div style="background: rgba(0,229,255,0.1); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 15px; font-size: 13px; cursor: pointer; color: white; font-weight: bold;" onclick="fillSavedId('${item.pid}', '${item.sid}')">
+          👤 ${item.name} (${item.pid})
+        </div>
+      `;
+    });
+  }
+
+  window.fillSavedId = (pid, sid) => {
+    document.getElementById('gamePlayerId').value = pid;
+    document.getElementById('gameServerId').value = sid;
+    resetCheck();
+  };
+
   window.buyItem = (itemName, price) => {
     if(!isShopOpen) return alert("Admin က မအားသေးတဲ့အတွက် ဆိုင်ပိတ်ထားပါတယ်။ ခေတ္တစောင့်ဆိုင်းပေးပါ။");
     
     selectedPackage = { itemName, price };
-    document.getElementById('gamePlayerId').value = ''; document.getElementById('gameServerId').value = '';
-    document.getElementById('playerNameResult').style.display = 'none';
-    document.getElementById('checkNameBtn').style.display = 'block';
-    document.getElementById('checkNameBtn').innerText = 'နာမည် စစ်ဆေးမည်';
+    document.getElementById('gamePlayerId').value = ''; 
+    document.getElementById('gameServerId').value = '';
+    
+    resetCheck();
+    renderSavedIds(); 
+    
     openModal('buyModal');
   };
 
-  // ✅ အစ်ကိုပေးထားသော Merchant ID နှင့် Signature ဖြင့် Name Check စနစ်
+  window.resetCheck = () => {
+    document.getElementById('verifyCb').checked = false;
+    document.getElementById('playerNameResult').style.display = 'none';
+    document.getElementById('loadingText').style.display = 'none';
+  };
+
+  window.handleCheckChange = () => {
+    const cb = document.getElementById('verifyCb');
+    if(cb.checked) {
+       checkPlayerName();
+    } else {
+       resetCheck();
+    }
+  };
+
   window.checkPlayerName = async () => {
     const pid = document.getElementById('gamePlayerId').value;
     const sid = document.getElementById('gameServerId').value;
-    if(!pid || !sid) return alert('Player ID နှင့် Server ID ကို ထည့်ပေးပါ။');
+    const cb = document.getElementById('verifyCb');
+
+    if(!pid || !sid) {
+      alert('Player ID နှင့် Server ID ကို ထည့်ပေးပါ။');
+      cb.checked = false;
+      return;
+    }
     
-    const btn = document.getElementById('checkNameBtn');
-    btn.innerText = 'စစ်ဆေးနေပါသည်... ⏳';
-    btn.disabled = true;
+    document.getElementById('loadingText').style.display = 'block';
+    document.getElementById('playerNameResult').style.display = 'none';
 
     try {
-      const merchantId = "M261025FLZU1194MA"; 
-      const signature = "6f6f392bc825383120dc200146576dd33ad4f3f2ac35881d4651361dfde925a8"; 
-      
-      const apiUrl = `https://v1.apigames.id/merchant/${merchantId}/cek-username/mobilelegend?user_id=${pid}&zone_id=${sid}&signature=${signature}`;
-      
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
-      const response = await fetch(proxyUrl);
+      const apiUrl = `https://api.isan.eu.org/nickname/ml?id=${pid}&server=${sid}`;
+      const response = await fetch(apiUrl);
       const data = await response.json();
 
-      let playerName = "";
-      
-      if (data && (data.status === 1 || data.status === "1") && data.data && data.data.username) {
-        playerName = data.data.username;
-      } else if (data && (data.status === 1 || data.status === "1") && data.data && data.data.name) {
-        playerName = data.data.name;
-      } else {
-        throw new Error("Invalid Response");
-      }
-
-      btn.style.display = 'none';
-      document.getElementById('displayPlayerName').innerText = playerName;
-      document.getElementById('displayAmount').innerText = selectedPackage.itemName;
-      document.getElementById('displayPrice').innerText = selectedPackage.price;
-      document.getElementById('playerNameResult').style.display = 'block';
-
-    } catch (error) {
-      let manualName = prompt("⚠️ API ချိတ်ဆက်၍ မရပါ။\n\nကျေးဇူးပြု၍ သင့်ဂိမ်းအမည်ကို အောက်တွင် ကိုယ်တိုင်ရိုက်ထည့်ပါ:", "Gamer_" + pid.substring(0,4));
-      
-      if (manualName) {
-        btn.style.display = 'none';
-        document.getElementById('displayPlayerName').innerText = manualName + " (Manual)";
+      if (data.success === true && data.name) {
+        document.getElementById('loadingText').style.display = 'none';
+        document.getElementById('displayPlayerName').innerText = data.name;
         document.getElementById('displayAmount').innerText = selectedPackage.itemName;
         document.getElementById('displayPrice').innerText = selectedPackage.price;
         document.getElementById('playerNameResult').style.display = 'block';
+      } else {
+        alert("❌ အကောင့် ရှာမတွေ့ပါ (သို့) ဆာဗာ ချို့ယွင်းနေပါသည်။");
+        resetCheck();
       }
-    } finally {
-      btn.innerText = 'နာမည် စစ်ဆေးမည်';
-      btn.disabled = false;
+    } catch (error) {
+      alert("❌ အကောင့် ရှာမတွေ့ပါ (သို့) ဆာဗာ ချို့ယွင်းနေပါသည်။");
+      resetCheck();
     }
   };
 
   window.confirmPurchase = async () => {
     const pid = document.getElementById('gamePlayerId').value;
     const sid = document.getElementById('gameServerId').value;
+    const pName = document.getElementById('displayPlayerName').innerText;
     const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
+    
     if(currentWallet < selectedPackage.price) return alert('ငွေမလောက်ပါ။ ကျေးဇူးပြု၍ ငွေဖြည့်ပါ။');
     
     if(confirm('ဝယ်မည်မှာ သေချာပါသလား?')) {
+      
+      // ✅ ဝယ်ယူမှု အောင်မြင်မှသာ အကောင့်ကို အလိုအလျောက် မှတ်သားမည်
+      const exists = savedIds.find(i => i.pid === pid && i.sid === sid);
+      if(!exists) {
+         savedIds.unshift({ pid: pid, sid: sid, name: pName });
+         if(savedIds.length > 5) savedIds.pop(); // နောက်ဆုံး (၅) ခုသာ မှတ်ထားမည်
+         localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds));
+         renderSavedIds();
+      }
+
       await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - selectedPackage.price });
       await db.ref('orders/' + Date.now().toString()).set({
         uid: currentUser.uid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: selectedPackage.price, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
@@ -769,7 +802,7 @@
       await currentUser.updatePassword(newPass);
       await db.ref('users/' + currentUser.uid).update({ pass: newPass });
       alert('စကားဝှက် ပြောင်းလဲပြီးပါပြီ။');
-    } catch (e) { alert('Error: ' + e.message); }
+  } catch (e) { alert('Error: ' + e.message); }
   };
 
   window.logout = () => { auth.signOut(); window.location.reload(); };
