@@ -5,95 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Diamond Top-up Shop</title>
   <style>
-    :root {
-      --primary: #00e5ff; --gold: #fbbf24; --bg: #020617; 
-      --card-bg: rgba(30, 41, 59, 0.6); --glass-border: rgba(255, 255, 255, 0.1); --text: #f8fafc;
-    }
+    :root { --primary: #00e5ff; --gold: #fbbf24; --bg: #020617; --card-bg: rgba(30, 41, 59, 0.6); --glass-border: rgba(255, 255, 255, 0.1); --text: #f8fafc; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-    body { 
-      background-color: var(--bg); color: var(--text); padding-bottom: 80px; 
-      overscroll-behavior-y: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
-    }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; overscroll-behavior-y: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
     input, button { user-select: auto; -webkit-user-select: auto; }
-    
-    #initialLoader {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--bg); z-index: 999999;
-      display: flex; justify-content: center; align-items: center; flex-direction: column;
-    }
-    .spinner {
-      border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--primary);
-      border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px;
-    }
+    #initialLoader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+    .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    header {
-      background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
-      padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
-    }
-    .logo { font-size: 24px; font-weight: bold; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
+    header { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 24px; font-weight: bold; color: var(--primary); letter-spacing: 2px; }
     .wallet-box { display: flex; align-items: center; gap: 10px; background: var(--card-bg); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--gold); cursor: pointer;}
     .wallet-box span { font-weight: bold; color: var(--gold); }
     .nav-icons { display: flex; gap: 15px; align-items: center; }
     .icon-btn { font-size: 20px; cursor: pointer; background: none; border: none; color: white; position: relative; }
-    
     .badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none; }
-
     .container { max-width: 500px; margin: 20px auto; padding: 0 20px; }
-    
     .auth-section { background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid var(--glass-border); text-align: center; }
     .auth-tabs { display: flex; margin-bottom: 15px; border-bottom: 1px solid #333; }
     .auth-tab { flex: 1; padding: 10px; cursor: pointer; color: #888; font-weight: bold; }
     .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
     .input-group { margin-bottom: 15px; text-align: left; }
     .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; }
-    .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; }
+    .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; display: block; }
     .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-    
     .products { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; margin-bottom: 20px;}
-    .product-card { background: var(--card-bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; }
+    .product-card { background: var(--card-bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; position: relative; }
     .product-card h3 { color: var(--primary); margin-bottom: 5px; font-size: 16px; }
     .product-card p { color: var(--gold); font-weight: bold; font-size: 14px; }
     .weekly-card { border: 2px solid var(--gold); background: rgba(251, 191, 36, 0.1); }
     .weekly-card h3 { color: var(--gold); }
-    
+    .edit-price-btn { background: #334155; color: white; border: 1px solid #475569; padding: 6px; border-radius: 6px; font-size: 12px; margin-top: 10px; cursor: pointer; width: 100%; transition: 0.3s; }
     .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
-    .modal-content { background: #1e293b; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
+    .modal-content { background: #1e293b; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
     .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
-    
     .floating-tg { position: fixed; bottom: 20px; right: 20px; background: #0088cc; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; z-index: 900; }
-    
     #bannedScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
-    
     .history-item { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
-    .history-item.pending { border-left: 4px solid #fbbf24; }
-    .history-item.approved { border-left: 4px solid #22c55e; }
-    .history-item.rejected { border-left: 4px solid #ef4444; }
-    .status-pending { color: #fbbf24; }
-    .status-approved { color: #22c55e; }
-    .status-rejected { color: #ef4444; }
-
-    #shopClosedBanner {
-      display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444;
-      color: #ef4444; padding: 12px; text-align: center; border-radius: 8px;
-      margin-bottom: 15px; font-weight: bold; font-size: 14px; animation: pulse 2s infinite;
-    }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+    .status-pending { color: #fbbf24; } .status-approved { color: #22c55e; } .status-rejected { color: #ef4444; }
   </style>
 </head>
 <body>
 
-<div id="initialLoader">
-  <div class="spinner"></div>
-  <h3 style="color: var(--primary);">ခဏစောင့်ပါ...</h3>
-</div>
+<div id="initialLoader"><div class="spinner"></div><h3 style="color: var(--primary);">ခဏစောင့်ပါ...</h3></div>
 
 <div id="bannedScreen">
   <div style="background: #1e293b; padding: 30px; border-radius: 15px; border: 2px solid #ef4444; max-width: 90%;">
     <h1 style="color: #ef4444; margin-top: 0;">⚠️ အကောင့်ပိတ်ခံထားရပါသည်</h1>
     <h3 style="color: #00e5ff; margin: 20px 0;">လက်ကျန်ငွေ: <span id="bannedWalletBalance">0</span> MMK</h3>
-    <a href="https://t.me/FileZWarrior_amk" target="_blank" style="background: #0088cc; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; display: inline-block;">✈️ Telegram သို့ ဆက်သွယ်ရန်</a>
   </div>
 </div>
 
@@ -104,10 +62,9 @@
       <span>💰 <span id="walletBalance">0</span> Ks</span>
     </div>
     <div class="nav-icons" id="navIcons" style="display:none;">
+      <button class="icon-btn" id="agentPanelBtn" style="display:none; color:var(--gold);" onclick="openModal('agentModal')">💼</button>
       <button class="icon-btn" onclick="openModal('instructionModal')">ℹ️</button>
-      <button class="icon-btn" onclick="openNotiModal()">
-        🔔<span id="notiBadge" class="badge"></span>
-      </button>
+      <button class="icon-btn" onclick="openNotiModal()">🔔<span id="notiBadge" class="badge"></span></button>
       <button class="icon-btn" onclick="openModal('profileModal')">👤</button>
     </div>
   </div>
@@ -119,61 +76,63 @@
       <div class="auth-tab active" id="tabLogin" onclick="switchAuth('login')">အကောင့်ဝင်ရန်</div>
       <div class="auth-tab" id="tabSignup" onclick="switchAuth('signup')">အကောင့်သစ်ဖွင့်ရန်</div>
     </div>
-    <div id="nameGroup" class="input-group" style="display: none;">
-      <label>အမည်</label>
-      <input type="text" id="authName" placeholder="Your Name">
-    </div>
-    <div class="input-group">
-      <label>ဖုန်းနံပါတ်</label>
-      <input type="number" id="authPhone" placeholder="09xxxxxxxxx">
-    </div>
-    <div class="input-group">
-      <label>စကားဝှက်</label>
-      <input type="password" id="authPass" placeholder="••••••••">
-    </div>
+    <div id="nameGroup" class="input-group" style="display: none;"><label>အမည်</label><input type="text" id="authName" placeholder="Your Name"></div>
+    <div class="input-group"><label>ဖုန်းနံပါတ်</label><input type="number" id="authPhone" placeholder="09xxxxxxxxx"></div>
+    <div class="input-group"><label>စကားဝှက်</label><input type="password" id="authPass" placeholder="••••••••"></div>
     
-    <div style="margin-top: 10px; margin-bottom: 15px; font-size: 13px; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 5px; text-align: center; border: 1px dashed #ef4444;">
-      ⚠️ မှတ်ချက်: မြန်မာနိုင်ငံအတွင်းမှဖြစ်ပါက <b>VPN ဖွင့်ထားမှသာ</b> အကောင့်ဝင်/ဖွင့် လုပ်၍ရပါမည်။
+    <div id="agentCodeGroup" class="input-group" style="display: none; background: rgba(0, 229, 255, 0.1); padding: 10px; border-radius: 8px; border: 1px dashed var(--primary);">
+      <label style="color: var(--primary);">Agent Code (ရှိပါက ထည့်ပါ)</label>
+      <input type="text" id="authAgentCode" placeholder="ဥပမာ - AGT-1234" style="border-color: var(--primary);">
     </div>
 
     <button class="btn" onclick="handleAuth()" id="authBtn">အကောင့်ဝင်မည်</button>
-    <button class="btn btn-outline" style="margin-top: 15px;" onclick="openModal('instructionModal')">📖 အသုံးပြုနည်း ဖတ်ရန်</button>
   </div>
 
   <div id="shopSection" style="display:none;">
-    <button class="btn" style="margin-bottom: 15px; background: var(--gold); color: black;" onclick="openModal('topupModal')">💰 ငွေဖြည့်ရန်</button>
-
-    <div id="shopClosedBanner">
-      ❌ Admin က မအားသေးတဲ့အတွက် ဆိုင်ခေတ္တပိတ်ထားပါတယ်။
+    <button class="btn" id="btnMainTopup" style="margin-bottom: 15px; background: var(--gold); color: black;" onclick="openModal('topupModal')">💰 ငွေဖြည့်ရန်</button>
+    <div id="btnAgentTopupInfo" style="display:none; background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
+      <span style="color: #22c55e; font-weight: bold;">💰 ငွေဖြည့်ရန်အတွက် သင့်အားဖိတ်ခေါ်သော ကိုယ်စားလှယ် (Agent) သို့ ဆက်သွယ်ပါ။</span>
     </div>
+    <div id="shopClosedBanner" style="display:none; color:red; text-align:center;">❌ ဆိုင်ခေတ္တပိတ်ထားပါတယ်။</div>
+    <div id="dynamicShopCategories"><div style="text-align: center; color: #aaa;">Loading Products...</div></div>
+  </div>
+</div>
 
-    <div id="dynamicShopCategories">
-      <div style="text-align: center; color: #aaa; margin-top: 20px;">Loading Products...</div>
+<!-- Agent Panel -->
+<div id="agentModal" class="modal">
+  <div class="modal-content" style="max-width: 600px;">
+    <span class="close-btn" onclick="closeModal('agentModal')">×</span>
+    <h2 style="color: var(--primary); margin-bottom: 15px;">💼 ကိုယ်စားလှယ် Dashboard</h2>
+    <div style="background: rgba(0,229,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed var(--primary); text-align: center;">
+       <p style="color: #aaa; font-size: 14px;">သင့်အား Admin မှ Reseller အဖြစ် ဖွင့်ပေးထားပါသည်။</p>
+       <h3 style="color: var(--gold); margin-top: 10px; font-size: 20px;">Invite Code: <span id="myAgentCode">...</span></h3>
+    </div>
+    
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabAgentUsers" onclick="switchAgentTab('users')">👥 Customer များ</div>
+      <div class="auth-tab" id="tabAgentPrices" onclick="switchAgentTab('prices')">✏️ ဈေးနှုန်း ပြင်ရန်</div>
+    </div>
+    
+    <div id="agentUsersSection">
+       <table style="width:100%; border-collapse: collapse; font-size:13px; text-align:left;">
+         <thead><tr><th style="padding:8px; border-bottom:1px solid #333; color:var(--primary);">Name/Phone</th><th style="padding:8px; border-bottom:1px solid #333; color:var(--primary);">Wallet</th></tr></thead>
+         <tbody id="agentUsersList"></tbody>
+       </table>
+    </div>
+    
+    <div id="agentPricesSection" style="display:none;">
+       <div id="agentPricesList" style="max-height: 250px; overflow-y: auto;"></div>
     </div>
   </div>
 </div>
 
-<div id="instructionModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal('instructionModal')">×</span>
-    <h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2>
-    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;">
-      <h4 style="color: var(--gold); margin-bottom: 5px;">🔑 အကောင့်ဖွင့်နည်း</h4>
-      <p style="color: #ccc; margin-bottom: 10px;">- "အကောင့်သစ်ဖွင့်ရန်" ကို နှိပ်ပြီး အမည်၊ ဖုန်းနံပါတ်၊ စကားဝှက်တို့ကို မှန်ကန်စွာဖြည့်သွင်း၍ လွယ်ကူစွာ အကောင့်ဖွင့်နိုင်ပါသည်။</p>
-      <p style="color: #ccc; margin-bottom: 15px;">- <span style="color: #ef4444;">မှတ်ချက်: VPN ဖွင့်ထားမှသာ အကောင့်ဝင်/ဖွင့် လုပ်နိုင်ပါမည်။</span></p>
-      <h4 style="color: var(--gold); margin-bottom: 5px;">💎 ဝယ်ယူမှု အခြေအနေ</h4>
-      <p style="color: #ccc; margin-bottom: 15px;">- Diamond မဝင်ပါက Admin မှ သေချာစွာ စစ်ဆေးနေသောကြောင့် ဖြစ်ပါသည်။<br>- <span style="color: var(--primary); font-weight: bold;">၂၄ နာရီအတွင်း</span> Diamond သေချာပေါက် ဝင်ပါမည်။</p>
-      <h4 style="color: var(--gold); margin-bottom: 5px;">📞 ဆက်သွယ်ရန်</h4>
-      <p style="color: #ccc; margin-bottom: 10px;">အကူအညီလိုပါက အောက်ပါ Telegram သို့ တိုက်ရိုက် ဆက်သွယ်နိုင်ပါသည်။</p>
-      <a href="https://t.me/FileZWarrior_amk" target="_blank" style="display: block; text-align: center; background: #0088cc; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold;">✈️ @FileZWarrior_amk</a>
-    </div>
-  </div>
-</div>
+<!-- Modals -->
+<div id="instructionModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('instructionModal')">×</span><h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2><div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;"><p style="color: #ccc;">- ၂၄ နာရီအတွင်း Diamond ဝင်ပါမည်။</p></div></div></div>
 
 <div id="notiModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('notiModal')">×</span>
-    <h2 style="color: var(--primary); margin-bottom: 15px;">🔔 ဝင်စာ & မှတ်တမ်း</h2>
+    <h2 style="color: var(--primary); margin-bottom: 15px;">🔔 မှတ်တမ်း</h2>
     <div style="display: flex; gap: 5px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
       <button onclick="switchHistoryTab('msg')" id="tabMsgHis" style="flex:1; padding:8px; background:var(--primary); color:black; border:none; font-weight:bold; border-radius:5px;">ဝင်စာ</button>
       <button onclick="switchHistoryTab('topup')" id="tabTopupHis" style="flex:1; padding:8px; background:#222; color:white; border:none; font-weight:bold; border-radius:5px;">ငွေဖြည့်</button>
@@ -185,34 +144,29 @@
   </div>
 </div>
 
-<!-- Buy Modal -->
 <div id="buyModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('buyModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">အကောင့် စစ်ဆေးရန်</h2>
-    
-    <!-- ✅ မှတ်သားထားသော ID များ ပြသမည့်နေရာ -->
     <div id="savedIdsContainer" style="display: none; margin-bottom: 15px; flex-wrap: wrap; gap: 8px;"></div>
     
-    <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: flex-end;">
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
       <div style="flex: 2;">
-        <label style="display: block; font-size: 13px; color: #ccc; margin-bottom: 5px;">Player ID</label>
-        <input type="number" id="gamePlayerId" placeholder="12345678" oninput="resetCheck()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #111; color: white;">
+        <label style="font-size: 13px; color: #ccc;">Player ID</label>
+        <input type="number" id="gamePlayerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()">
       </div>
       <div style="flex: 1.5;">
-        <label style="display: block; font-size: 13px; color: #ccc; margin-bottom: 5px;">Zone ID</label>
-        <input type="number" id="gameServerId" placeholder="1234" oninput="resetCheck()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #111; color: white;">
+        <label style="font-size: 13px; color: #ccc;">Zone ID</label>
+        <input type="number" id="gameServerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()">
       </div>
     </div>
     
     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-      <input type="checkbox" id="verifyCb" onchange="handleCheckChange()" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary);">
-      <label for="verifyCb" style="font-size: 14px; color: #ccc; cursor: pointer;">ID များ မှန်ကန်ကြောင်း အတည်ပြုပါသည်</label>
+      <input type="checkbox" id="verifyCb" onchange="handleCheckChange()" style="width: 20px; height: 20px; accent-color: var(--primary);">
+      <label for="verifyCb" style="font-size: 14px; color: #ccc;">ID များ မှန်ကန်ကြောင်း အတည်ပြုပါသည်</label>
     </div>
-
-    <p id="loadingText" style="display:none; color:var(--primary); font-size:14px; margin-bottom:15px; font-weight:bold;">စစ်ဆေးနေပါသည်... ⏳</p>
-
-    <div id="playerNameResult" style="display: none; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px dashed #22c55e;">
+    <p id="loadingText" style="display:none; color:var(--primary); font-size:14px; font-weight:bold;">စစ်ဆေးနေပါသည်... ⏳</p>
+    <div id="playerNameResult" style="display: none; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border: 1px dashed #22c55e;">
        <p style="color: #aaa; font-size: 14px;">အကောင့် အမည်:</p>
        <h3 id="displayPlayerName" style="color: #22c55e; margin: 5px 0;">-</h3>
        <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
@@ -227,17 +181,10 @@
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">ငွေဖြည့်ရန်</h2>
-    <p style="font-size: 14px; margin-bottom: 15px; color: #aaa;">အောက်ပါ အကောင့်များသို့ ငွေလွှဲပြီး လုပ်ငန်းစဉ်အမှတ် (Txn ID) ဖြည့်ပါ။</p>
     <div id="paymentMethodsList" style="margin-bottom: 15px; max-height: 180px; overflow-y: auto;"></div>
-    <div class="input-group">
-      <label>ငွေပမာဏ (MMK)</label>
-      <input type="number" id="topupAmount" placeholder="1000">
-    </div>
-    <div class="input-group">
-      <label>လုပ်ငန်းစဉ်အမှတ် (Transaction ID)</label>
-      <input type="text" id="kpayTransId" placeholder="နောက်ဆုံးဂဏန်း ၆ လုံး သို့မဟုတ် အပြည့်">
-    </div>
-    <button class="btn" id="submitTopupBtn" onclick="submitTopup()">ငွေဖြည့်ကြောင်း အကြောင်းကြားမည်</button>
+    <div class="input-group"><label>ငွေပမာဏ (MMK)</label><input type="number" id="topupAmount"></div>
+    <div class="input-group"><label>လုပ်ငန်းစဉ်အမှတ် (Transaction ID)</label><input type="text" id="kpayTransId"></div>
+    <button class="btn" id="submitTopupBtn" onclick="submitTopup()">ငွေဖြည့်မည်</button>
   </div>
 </div>
 
@@ -247,14 +194,24 @@
     <h2 style="color: var(--primary); margin-bottom: 15px;">မိမိအကောင့်</h2>
     <p>အမည်: <span id="profileName" style="color: var(--gold);">...</span></p>
     <p>ဖုန်း: <span id="profilePhone" style="color: var(--gold);">...</span></p>
+    
+    <div id="resellerSetupBox" style="display: none;">
+      <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
+      <h4 style="color: #22c55e;">💼 ကိုယ်စားလှယ် (Reseller) စနစ်</h4>
+      <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px; color: #ccc;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: white;">
+          <input type="checkbox" id="resellerToggle" onchange="toggleResellerMode()" style="width: 18px; height: 18px; accent-color: var(--primary);">
+          ကိုယ်စားလှယ်စနစ် ဖွင့်မည် (On/Off)
+        </label>
+      </div>
+    </div>
+
     <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
     <h4>🔐 စကားဝှက်ပြောင်းရန်</h4>
-    <input type="password" id="oldPass" placeholder="စကားဝှက်ဟောင်း" style="width: 100%; padding: 8px; margin: 5px 0; background: #111; color: white; border: 1px solid #333; border-radius: 5px;">
-    <input type="password" id="newPass" placeholder="စကားဝှက်အသစ်" style="width: 100%; padding: 8px; margin: 5px 0 15px 0; background: #111; color: white; border: 1px solid #333; border-radius: 5px;">
+    <input type="password" id="oldPass" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" placeholder="စကားဝှက်ဟောင်း">
+    <input type="password" id="newPass" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box; margin-bottom: 15px;" placeholder="စကားဝှက်အသစ်">
     <button class="btn" style="padding: 8px;" onclick="changePassword()">ပြောင်းမည်</button>
     <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
-    <h4>📱 အကောင့်ဝင်ထားသော စက်များ</h4>
-    <ul id="sessionList" style="font-size: 12px; color: #aaa; margin-top: 10px; padding-left: 0; list-style: none;"></ul>
     <button class="btn" style="background: #ef4444; margin-top: 20px; padding: 10px;" onclick="logout()">အကောင့်ထွက်ရန် (Logout)</button>
   </div>
 </div>
@@ -266,547 +223,375 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBv26fC0ogxNXoz8tYJgAJkaJSA38uCJP8",
-    authDomain: "gggf-ce3ed.firebaseapp.com",
-    databaseURL: "https://gggf-ce3ed-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "gggf-ce3ed",
-    storageBucket: "gggf-ce3ed.firebasestorage.app",
-    messagingSenderId: "313639910881",
-    appId: "1:313639910881:web:708b5237ae4f5a078aa6a0"
-  };
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false; };
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.database();
-
-  setTimeout(() => {
-    const loader = document.getElementById('initialLoader');
-    if (loader) loader.style.display = 'none';
-  }, 3000);
+  const firebaseConfig = { apiKey: "AIzaSyBv26fC0ogxNXoz8tYJgAJkaJSA38uCJP8", authDomain: "gggf-ce3ed.firebaseapp.com", databaseURL: "https://gggf-ce3ed-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "gggf-ce3ed", storageBucket: "gggf-ce3ed.firebasestorage.app", messagingSenderId: "313639910881", appId: "1:313639910881:web:708b5237ae4f5a078aa6a0" };
+  firebase.initializeApp(firebaseConfig); const auth = firebase.auth(); const db = firebase.database();
   
-  let currentUser = null;
-  let currentUserCreatedAt = 0; 
-  let currentAuthMode = 'login';
-  let selectedPackage = null;
-  let isSigningUp = false;
-  let isShopOpen = true; 
+  setTimeout(() => { const l = document.getElementById('initialLoader'); if (l) l.style.display = 'none'; }, 2000);
   
-  let mySessionId = localStorage.getItem('mySessionId');
-  if(!mySessionId) {
-    mySessionId = Date.now().toString();
-    localStorage.setItem('mySessionId', mySessionId);
-  }
-  let isSessionRegistered = false;
+  let currentUser = null, currentUserData = null;
+  let currentAuthMode = 'login', selectedPackage = null, isShopOpen = true; 
+  let myTopups = [], myOrders = [], myAnnouncements = [];
+  let allShopCategories = { 'diamonds': '💎 Normal Diamonds', 'passes': '🎟️ Special Passes' };
   
-  let myTopups = [];
-  let myOrders = [];
-  let myAnnouncements = [];
+  let agentCustomPrices = {}; 
+  let globalProfitPct = 0; 
   
-  let allShopCategories = {};
-
-  // ✅ မှတ်သားထားသော ID များကို LocalStorage မှ ဆွဲထုတ်ခြင်း
+  let isResellerMode = localStorage.getItem('fzw_reseller_mode') === 'true';
   let savedIds = JSON.parse(localStorage.getItem('fzw_saved_ids')) || [];
 
-  window.copyPhone = (phone) => {
-    navigator.clipboard.writeText(phone).then(() => {
-      alert(phone + " ဖုန်းနံပါတ်ကို Copy ကူးယူပြီးပါပြီ။");
-    }).catch(err => {
-      alert("Copy ကူးရာတွင် အခက်အခဲရှိပါသည်။");
-    });
-  };
+  window.copyPhone = (phone) => { navigator.clipboard.writeText(phone).then(() => alert(phone + " ဖုန်းနံပါတ်ကို Copy ကူးယူပြီးပါပြီ။")); };
 
-  db.ref('appSettings/isShopOpen').on('value', (snapshot) => {
-    if(snapshot.exists()) {
-      isShopOpen = snapshot.val();
-    } else {
-      isShopOpen = true;
-    }
-    document.getElementById('shopClosedBanner').style.display = isShopOpen ? 'none' : 'block';
-    renderHistory();
+  db.ref('appSettings/isShopOpen').on('value', (snap) => { isShopOpen = snap.exists() ? snap.val() : true; document.getElementById('shopClosedBanner').style.display = isShopOpen ? 'none' : 'block'; });
+  
+  db.ref('appSettings/globalProfitPct').on('value', (snap) => {
+    globalProfitPct = snap.exists() ? parseFloat(snap.val()) : 0;
+    loadProducts(); 
   });
 
-  db.ref('payments').on('value', (snapshot) => {
-    const container = document.getElementById('paymentMethodsList');
-    container.innerHTML = '';
-    if(snapshot.exists()) {
-      snapshot.forEach(child => {
-        const p = child.val();
-        container.innerHTML += `
-          <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 10px; border: 1px dashed var(--gold); position: relative;">
-            <h4 style="color: #fff; margin: 0 0 5px 0;">${p.type}</h4>
-            <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 5px;">
-              <h3 style="color: var(--gold); margin: 0; letter-spacing: 1px;">${p.phone}</h3>
-              <button onclick="copyPhone('${p.phone}')" style="background: var(--primary); border: none; padding: 4px 8px; border-radius: 4px; font-weight: bold; color: black; cursor: pointer; font-size: 12px;">Copy</button>
-            </div>
-            <p style="margin: 0; font-size: 13px; color: #aaa;">${p.name}</p>
-          </div>
-        `;
-      });
-    } else {
-       container.innerHTML = `<p style="color:#ef4444; text-align:center;">ငွေပေးချေရန် အကောင့် မရှိသေးပါ။</p>`;
-    }
+  db.ref('payments').on('value', (snap) => {
+    const c = document.getElementById('paymentMethodsList'); c.innerHTML = '';
+    if(snap.exists()) { snap.forEach(child => { const p = child.val(); c.innerHTML += `<div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:8px; text-align:center; margin-bottom:10px; border:1px dashed var(--gold);"><h4 style="color:#fff; margin:0 0 5px 0;">${p.type}</h4><div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:5px;"><h3 style="color:var(--gold); margin:0;">${p.phone}</h3><button onclick="copyPhone('${p.phone}')" style="background:var(--primary); border:none; padding:4px 8px; border-radius:4px; font-weight:bold; color:black; cursor:pointer;">Copy</button></div><p style="margin:0; font-size:13px; color:#aaa;">${p.name}</p></div>`; }); } 
   });
 
-  window.switchAuth = (mode) => {
-    currentAuthMode = mode;
-    document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
-    document.getElementById('tabSignup').classList.toggle('active', mode === 'signup');
-    document.getElementById('nameGroup').style.display = mode === 'signup' ? 'block' : 'none';
-    document.getElementById('authBtn').innerText = mode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်';
+  window.switchAuth = (mode) => { 
+    currentAuthMode = mode; 
+    document.getElementById('tabLogin').classList.toggle('active', mode === 'login'); 
+    document.getElementById('tabSignup').classList.toggle('active', mode === 'signup'); 
+    document.getElementById('nameGroup').style.display = mode === 'signup' ? 'block' : 'none'; 
+    document.getElementById('agentCodeGroup').style.display = mode === 'signup' ? 'block' : 'none';
+    document.getElementById('authBtn').innerText = mode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; 
   };
 
   window.handleAuth = async () => {
-    const phone = document.getElementById('authPhone').value;
-    const pass = document.getElementById('authPass').value;
-    const name = document.getElementById('authName').value;
-    if(!phone || !pass) return alert("ဖုန်းနှင့် စကားဝှက် ထည့်ပါ။");
-    if(currentAuthMode === 'signup' && !name) return alert("အမည် ထည့်ပါ။");
+    const phone = document.getElementById('authPhone').value, pass = document.getElementById('authPass').value, name = document.getElementById('authName').value;
+    const aCode = document.getElementById('authAgentCode').value.trim().toUpperCase();
+    
+    if(!phone || !pass) return alert("ဖုန်းနှင့် စကားဝှက် ထည့်ပါ။"); 
+    if(currentAuthMode === 'signup' && !name) return alert("အမည် ထည့်ပါ။"); 
     
     document.getElementById('authBtn').innerText = 'စောင့်ပါ...';
     try {
       if(currentAuthMode === 'login') {
-        const userCred = await auth.signInWithEmailAndPassword(`${phone}@diamond.com`, pass);
-        await db.ref('users/' + userCred.user.uid).update({ phone: phone, pass: pass });
+        await auth.signInWithEmailAndPassword(`${phone}@diamond.com`, pass);
       } else {
-        isSigningUp = true;
+        let rUid = null;
+        if(aCode) {
+           const codeSnap = await db.ref('agentCodes/'+aCode).get();
+           if(!codeSnap.exists()) {
+              document.getElementById('authBtn').innerText = 'အကောင့်ဖွင့်မည်';
+              return alert("❌ Agent Code မှားယွင်းနေပါသည်။ (မရှိပါက အလွတ်ထားပါ)");
+           }
+           rUid = codeSnap.val();
+        }
+
         const userCred = await auth.createUserWithEmailAndPassword(`${phone}@diamond.com`, pass);
-        await db.ref('users/' + userCred.user.uid).set({ phone: phone, name: name, pass: pass, wallet: 0, isBanned: false, accountCreatedAt: Date.now() });
-        isSigningUp = false;
+        let uData = { phone: phone, name: name, pass: pass, wallet: 0, isBanned: false, isReseller: false, accountCreatedAt: Date.now() };
+        if(rUid) { uData.referredBy = aCode; uData.resellerUid = rUid; }
+        await db.ref('users/' + userCred.user.uid).set(uData);
       }
-    } catch (error) {
-      isSigningUp = false;
-      document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်';
-      
-      if (error.code === 'auth/network-request-failed') {
-        alert("⚠️ အင်တာနက် ချိတ်ဆက်၍မရပါ။ \n\nVPN ဖွင့်မထားသည့်အတွက် စနစ်မှ အလိုအလျောက် ပိတ်ချလိုက်ပါသည်။ ကျေးဇူးပြု၍ VPN ဖွင့်ပြီးမှ ပြန်စမ်းပါ။");
-      } else {
-        alert("Error: " + error.message);
-      }
+    } catch (e) { 
+      alert("Error: " + e.message); 
+      document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; 
     }
   };
 
   auth.onAuthStateChanged((user) => {
-    document.getElementById('initialLoader').style.display = 'none'; 
     if (user) {
-      currentUser = user;
-      document.getElementById('authSection').style.display = 'none';
-      document.getElementById('shopSection').style.display = 'block';
-      document.getElementById('walletDisplay').style.display = 'flex';
-      document.getElementById('navIcons').style.display = 'flex';
+      currentUser = user; document.getElementById('authSection').style.display = 'none'; document.getElementById('shopSection').style.display = 'block'; document.getElementById('walletDisplay').style.display = 'flex'; document.getElementById('navIcons').style.display = 'flex';
       
-      db.ref('users/' + user.uid).on('value', async (snapshot) => {
-        if (snapshot.exists()) {
-          const userData = snapshot.val();
-          if (userData.phone) {
-            currentUserCreatedAt = userData.accountCreatedAt || 0; 
-            const hasMySessionInDB = userData.sessions && userData.sessions[mySessionId];
-            if (!hasMySessionInDB) {
-              if (!isSessionRegistered) {
-                await db.ref(`users/${user.uid}/sessions/${mySessionId}`).update({
-                  device: navigator.userAgent.substring(0, 30) + '...',
-                  lastLogin: new Date().toLocaleString()
-                });
-                isSessionRegistered = true;
-              } else {
-                alert("အခြားစက်မှ သင့်အကောင့်ကို ဖယ်ရှား (Logout) လိုက်ပါသည်။");
-                auth.signOut();
-                window.location.reload();
-                return;
-              }
-            } else {
-              isSessionRegistered = true;
-            }
-
-            if (userData.isBanned === true) {
-              document.getElementById('bannedScreen').style.display = 'flex';
-              document.getElementById('bannedWalletBalance').innerText = userData.wallet || 0;
-              return;
-            } else {
-              document.getElementById('bannedScreen').style.display = 'none';
-            }
-            document.getElementById('walletBalance').innerText = userData.wallet || 0;
-            document.getElementById('profileName').innerText = userData.name || 'User';
-            document.getElementById('profilePhone').innerText = userData.phone;
+      db.ref('users/' + user.uid).on('value', async (snap) => {
+        if (snap.exists()) {
+          currentUserData = snap.val();
+          if (currentUserData.isBanned === true) { document.getElementById('bannedScreen').style.display = 'flex'; document.getElementById('bannedWalletBalance').innerText = currentUserData.wallet || 0; return; } else document.getElementById('bannedScreen').style.display = 'none';
+          document.getElementById('walletBalance').innerText = currentUserData.wallet || 0; 
+          document.getElementById('profileName').innerText = currentUserData.name || 'User'; 
+          document.getElementById('profilePhone').innerText = currentUserData.phone;
+          
+          if(currentUserData.isReseller) {
+              document.getElementById('agentPanelBtn').style.display = 'block';
+              document.getElementById('myAgentCode').innerText = currentUserData.agentCode || 'N/A';
+              document.getElementById('resellerSetupBox').style.display = 'block';
+              document.getElementById('resellerToggle').checked = isResellerMode;
+              if(currentUserData.customPrices) agentCustomPrices = currentUserData.customPrices;
+              loadAgentPrices();
+              listenAgentUsers();
+          } else { 
+              document.getElementById('agentPanelBtn').style.display = 'none'; 
+              document.getElementById('resellerSetupBox').style.display = 'none';
+              isResellerMode = false;
+              localStorage.setItem('fzw_reseller_mode', false);
+          }
+          
+          if(currentUserData.resellerUid) {
+              document.getElementById('btnMainTopup').style.display = 'none';
+              document.getElementById('btnAgentTopupInfo').style.display = 'block';
+              db.ref('users/' + currentUserData.resellerUid + '/customPrices').on('value', pSnap => {
+                  if(pSnap.exists()) agentCustomPrices = pSnap.val();
+                  loadProducts();
+              });
+          } else {
+              document.getElementById('btnMainTopup').style.display = 'block';
+              document.getElementById('btnAgentTopupInfo').style.display = 'none';
+              loadProducts();
           }
         }
       });
       
-      db.ref('categories').on('value', (snap) => {
-        if (snap.exists()) {
-          allShopCategories = {}; 
-          snap.forEach(child => {
-            allShopCategories[child.key] = child.val().name;
-          });
-        }
-        loadProducts();
-      });
-      
+      db.ref('categories').on('value', (s) => { if(s.exists()){ allShopCategories = {}; s.forEach(c => { allShopCategories[c.key] = c.val().name; }); } loadProducts(); });
       listenHistory();
     } else {
-      currentUser = null;
-      document.getElementById('authSection').style.display = 'block';
-      document.getElementById('shopSection').style.display = 'none';
-      document.getElementById('walletDisplay').style.display = 'none';
-      document.getElementById('navIcons').style.display = 'none';
-      document.getElementById('bannedScreen').style.display = 'none';
+      currentUser = null; currentUserData = null; document.getElementById('authSection').style.display = 'block'; document.getElementById('shopSection').style.display = 'none'; document.getElementById('walletDisplay').style.display = 'none'; document.getElementById('navIcons').style.display = 'none'; document.getElementById('bannedScreen').style.display = 'none';
     }
   });
 
-  window.openNotiModal = () => {
-    openModal('notiModal');
-    let sysNotiCount = isShopOpen ? 0 : 1;
-    let totalNotis = myTopups.length + myOrders.length + myAnnouncements.length + sysNotiCount;
-    localStorage.setItem('fzw_noti_count', totalNotis);
-    document.getElementById('notiBadge').style.display = 'none';
+  window.switchAgentTab = (tab) => {
+    document.getElementById('tabAgentUsers').classList.toggle('active', tab === 'users');
+    document.getElementById('tabAgentPrices').classList.toggle('active', tab === 'prices');
+    document.getElementById('agentUsersSection').style.display = tab === 'users' ? 'block' : 'none';
+    document.getElementById('agentPricesSection').style.display = tab === 'prices' ? 'block' : 'none';
   };
 
+  function listenAgentUsers() {
+    db.ref('users').orderByChild('resellerUid').equalTo(currentUser.uid).on('value', snap => {
+       const list = document.getElementById('agentUsersList'); list.innerHTML = '';
+       if(!snap.exists()) return list.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:10px; color:#aaa;">Customer မရှိသေးပါ</td></tr>';
+       snap.forEach(c => {
+         const u = c.val();
+         list.innerHTML += `<tr>
+           <td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td>
+           <td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;">
+             <input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;">
+             <button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button>
+           </td>
+         </tr>`;
+       });
+    });
+  }
+
+  window.updateSubUserWallet = async (subUid) => {
+     const val = document.getElementById('sub_w_' + subUid).value;
+     await db.ref('users/' + subUid).update({ wallet: parseInt(val) });
+     alert('Customer ငွေစာရင်း ပြင်ဆင်ပြီးပါပြီ။');
+  };
+
+  window.toggleResellerMode = () => { isResellerMode = document.getElementById('resellerToggle').checked; localStorage.setItem('fzw_reseller_mode', isResellerMode); loadProducts(); };
+
+  function loadAgentPrices() {
+     const list = document.getElementById('agentPricesList'); list.innerHTML = '';
+     db.ref('products').once('value', snap => {
+        snap.forEach(c => {
+           const p = c.val();
+           let base = p.price || 0;
+           // ✅ [၁၀၀ ပြည့်ဂဏန်း]
+           let systemSellPrice = Math.ceil((base + (base * globalProfitPct / 100)) / 100) * 100;
+           let myPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
+           
+           list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.4); padding:10px; border-radius:5px; margin-bottom:8px; border:1px solid #333;">
+             <div style="color:var(--gold); font-weight:bold;">${p.diamonds} <span style="font-size:11px; color:#888; font-weight:normal;">(အရင်း: ${base})</span></div>
+             <div style="display:flex; gap:5px;">
+               <input type="number" id="cp_${c.key}" value="${myPrice}" style="width:80px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;">
+               <button onclick="saveCustomPrice('${p.diamonds}', 'cp_${c.key}')" style="background:var(--success); color:white; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button>
+             </div>
+           </div>`;
+        });
+     });
+  }
+
+  window.saveCustomPrice = async (itemName, inputId) => {
+      const val = document.getElementById(inputId).value;
+      agentCustomPrices[itemName] = parseInt(val);
+      await db.ref('users/' + currentUser.uid + '/customPrices').set(agentCustomPrices);
+      alert(itemName + ' အတွက် ရောင်းဈေး ပြင်ဆင်ပြီးပါပြီ။');
+      loadProducts();
+  };
+
+  window.openNotiModal = () => { openModal('notiModal'); localStorage.setItem('fzw_noti_count', myTopups.length + myOrders.length + myAnnouncements.length + (isShopOpen?0:1)); document.getElementById('notiBadge').style.display = 'none'; };
   window.switchHistoryTab = (tab) => {
-    document.getElementById('msgHistoryContainer').style.display = tab === 'msg' ? 'block' : 'none';
-    document.getElementById('topupHistoryContainer').style.display = tab === 'topup' ? 'block' : 'none';
-    document.getElementById('orderHistoryContainer').style.display = tab === 'order' ? 'block' : 'none';
-    
-    const tabs = ['Msg', 'Topup', 'Order'];
-    tabs.forEach(t => {
-      document.getElementById(`tab${t}His`).style.background = tab === t.toLowerCase() ? 'var(--primary)' : '#222';
-      document.getElementById(`tab${t}His`).style.color = tab === t.toLowerCase() ? 'black' : 'white';
+    ['Msg', 'Topup', 'Order'].forEach(t => { 
+       document.getElementById(`tab${t}His`).style.background = tab === t.toLowerCase() ? 'var(--primary)' : '#222'; 
+       document.getElementById(`tab${t}His`).style.color = tab === t.toLowerCase() ? 'black' : 'white'; 
+       document.getElementById(`${t.toLowerCase()}HistoryContainer`).style.display = tab === t.toLowerCase() ? 'block' : 'none';
     });
   };
 
   function listenHistory() {
-    db.ref('topups').on('value', (snap) => {
-       myTopups = [];
-       snap.forEach(child => { if(child.val().uid === currentUser.uid) myTopups.push({ id: child.key, ...child.val() }); });
-       renderHistory();
-    });
-    db.ref('orders').on('value', (snap) => {
-       myOrders = [];
-       snap.forEach(child => { if(child.val().uid === currentUser.uid) myOrders.push({ id: child.key, ...child.val() }); });
-       renderHistory();
-    });
-    db.ref('announcements').on('value', (snap) => {
-       myAnnouncements = [];
-       const now = Date.now();
-       const fortyEightHours = 48 * 60 * 60 * 1000;
-
-       snap.forEach(child => {
-         const msg = child.val();
-         const msgTime = parseInt(child.key);
-         
-         if (now - msgTime > fortyEightHours) return;
-
-         if (msg.target === 'all') {
-           if (msgTime >= currentUserCreatedAt) {
-             myAnnouncements.push({ id: child.key, ...msg });
-           }
-         } else if (msg.target === currentUser.uid) {
-           myAnnouncements.push({ id: child.key, ...msg });
-         }
-       });
-       renderHistory();
-    });
+    db.ref('topups').on('value', s => { myTopups = []; s.forEach(c => { if(c.val().uid === currentUser.uid) myTopups.push({ id: c.key, ...c.val() }); }); renderHistory(); });
+    db.ref('orders').on('value', s => { myOrders = []; s.forEach(c => { if(c.val().uid === currentUser.uid) myOrders.push({ id: c.key, ...c.val() }); }); renderHistory(); });
+    db.ref('announcements').on('value', s => { myAnnouncements = []; const now = Date.now(); s.forEach(c => { if (now - parseInt(c.key) <= 172800000 && (c.val().target === 'all' || c.val().target === currentUser.uid)) myAnnouncements.push({ id: c.key, ...c.val() }); }); renderHistory(); });
   }
 
   function renderHistory() {
-     const tList = document.getElementById('topupListUI');
-     const oList = document.getElementById('orderListUI');
-     const mList = document.getElementById('msgListUI');
+     const tList = document.getElementById('topupListUI'), oList = document.getElementById('orderListUI'), mList = document.getElementById('msgListUI'); tList.innerHTML = ''; oList.innerHTML = ''; mList.innerHTML = '';
+     [...myMsgs = myAnnouncements].sort((a,b)=>b.id-a.id).forEach(m => mList.innerHTML += `<div class="history-item" style="border-left: 4px solid var(--primary);"><div style="font-weight:bold; color:var(--primary);">${m.title}</div><div style="font-size: 13px; color: #ddd; margin-top: 5px;">${m.body}</div></div>`);
+     [...myTops = myTopups].sort((a,b)=>b.id-a.id).forEach(i => tList.innerHTML += `<div class="history-item ${i.status}"><div style="font-weight:bold; color:var(--gold);">💰 ${i.amount} Ks</div><div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${i.status}">${i.status==='pending'?'⏳ စောင့်ဆိုင်းပါ':(i.status==='approved'?'✅ အောင်မြင်':'❌ ပယ်ချ')}</div></div>`);
      
-     tList.innerHTML = ''; oList.innerHTML = ''; mList.innerHTML = '';
-
-     const sortedTopups = [...myTopups].sort((a,b) => parseInt(b.id) - parseInt(a.id));
-     const sortedOrders = [...myOrders].sort((a,b) => parseInt(b.id) - parseInt(a.id));
-     const sortedMsgs = [...myAnnouncements].sort((a,b) => parseInt(b.id) - parseInt(a.id));
-
-     let sysNotiCount = 0;
-     if(!isShopOpen) {
-       sysNotiCount = 1;
-       mList.innerHTML += `
-          <div class="history-item" style="border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.1);">
-            <div style="font-weight:bold; color:#ef4444; font-size:15px;">❌ ဆိုင်ခေတ္တပိတ်ထားပါသည်</div>
-            <div style="font-size: 13px; color: #ddd; margin-top: 5px;">Admin က မအားသေးတဲ့အတွက် ဆိုင်ပိတ်ထားပါတယ်။ ခေတ္တစောင့်ဆိုင်းပေးပါ။</div>
-            <div style="font-size: 11px; color: #888; margin-top: 8px;">🕒 System Message</div>
-          </div>`;
-     }
-
-     if(sortedTopups.length === 0) tList.innerHTML = '<p style="color: #aaa; text-align: center;">ငွေဖြည့်မှတ်တမ်း မရှိပါ။</p>';
-     if(sortedOrders.length === 0) oList.innerHTML = '<p style="color: #aaa; text-align: center;">ဝယ်ယူမှုမှတ်တမ်း မရှိပါ။</p>';
-     if(sortedMsgs.length === 0 && isShopOpen) mList.innerHTML = '<p style="color: #aaa; text-align: center;">ဝင်စာ မရှိသေးပါ။</p>';
-
-     sortedMsgs.forEach(m => {
-        mList.innerHTML += `
-          <div class="history-item" style="border-left: 4px solid var(--primary);">
-            <div style="font-weight:bold; color:var(--primary); font-size:15px;">${m.title}</div>
-            <div style="font-size: 13px; color: #ddd; margin-top: 5px;">${m.body}</div>
-            <div style="font-size: 11px; color: #888; margin-top: 8px;">🕒 ${m.date}</div>
-          </div>`;
-     });
-
-     sortedTopups.forEach(item => {
-        let statusText = item.status === 'pending' ? '⏳ စောင့်ဆိုင်းပါ (ငွေဖြည့်သွင်းပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်)' : (item.status === 'approved' ? '✅ ငွေဖြည့် အောင်မြင်ပါသည်' : '❌ အတုအယောင်ဖြစ်သဖြင့် ပယ်ချလိုက်ပါသည်');
-        tList.innerHTML += `
-          <div class="history-item ${item.status}">
-            <div style="font-weight:bold; color:var(--gold);">💰 ငွေဖြည့်ပမာဏ: ${item.amount} Ks</div>
-            <div style="font-size: 12px; color: #aaa;">Transaction ID: ${item.transactionId}</div>
-            <div style="font-size: 11px; color: #888; margin-top: 5px;">🕒 ${item.date || 'ယခင်မှတ်တမ်း'}</div>
-            <div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${item.status}">${statusText}</div>
-          </div>`;
-     });
-
-     sortedOrders.forEach(item => {
-        let statusText = item.status === 'pending' ? '⏳ စောင့်ဆိုင်းပါ (Admin မှ စစ်ဆေးနေပါသည်)' : (item.status === 'approved' ? '✅ ဝယ်ယူမှု အောင်မြင်ပါသည်' : '❌ အချက်အလက်မှားယွင်းနေသဖြင့် ပယ်ချလိုက်ပါသည်');
-        oList.innerHTML += `
-          <div class="history-item ${item.status}">
-            <div style="font-weight:bold; color:var(--primary);">💎 အရာဝတ္ထု: ${item.amount}</div>
-            <div style="font-size: 12px; color: #aaa;">Player ID: ${item.playerId} | ငွေကျသင့်: ${item.price} Ks</div>
-            <div style="font-size: 11px; color: #888; margin-top: 5px;">🕒 ${item.date || 'ယခင်မှတ်တမ်း'}</div>
-            <div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${item.status}">${statusText}</div>
-          </div>`;
-     });
-
-     let totalNotis = myTopups.length + myOrders.length + myAnnouncements.length + sysNotiCount;
-     let previousCount = parseInt(localStorage.getItem('fzw_noti_count')) || 0;
-     let unread = totalNotis - previousCount;
-     let badge = document.getElementById('notiBadge');
-     if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; } 
-     else { badge.style.display = 'none'; }
+     [...myOrds = myOrders].sort((a,b)=>b.id-a.id).forEach(i => oList.innerHTML += `<div class="history-item ${i.status}"><div style="font-weight:bold; color:var(--primary);">💎 ${i.amount} <span style="color:#aaa; font-size:11px;">(${i.retailPrice || i.price} Ks)</span></div><div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${i.status}">${i.status==='pending'?'⏳ စောင့်ဆိုင်းပါ':(i.status==='approved'?'✅ အောင်မြင်':'❌ ပယ်ချ')}</div></div>`);
+     
+     let badge = document.getElementById('notiBadge'), unread = (myTopups.length + myOrders.length + myAnnouncements.length + (isShopOpen?0:1)) - (parseInt(localStorage.getItem('fzw_noti_count')) || 0);
+     if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; } else badge.style.display = 'none';
   }
 
+  // ✅ ဈေးနှုန်းတွက်ချက်၍ ပြသမည့် Function
   function loadProducts() {
-    db.ref('products').on('value', (snapshot) => {
-      const container = document.getElementById('dynamicShopCategories');
-      container.innerHTML = '';
-      
-      let groupedProducts = {};
-
-      if(snapshot.exists()) {
-        snapshot.forEach(child => {
-          const p = child.val();
-          const catId = p.category || 'diamonds'; 
-          if(!groupedProducts[catId]) groupedProducts[catId] = [];
-          groupedProducts[catId].push(p);
-        });
-      }
-
+    db.ref('products').on('value', (snap) => {
+      const c = document.getElementById('dynamicShopCategories'); c.innerHTML = '';
+      if(!snap.exists()) { c.innerHTML = '<div style="text-align: center; color: #aaa; margin-top: 20px;">ဆိုင်တွင် ပစ္စည်းမရှိသေးပါ။</div>'; return; }
+      let grouped = {}; snap.forEach(ch => { const p = ch.val(), cId = p.category || 'other'; if(!grouped[cId]) grouped[cId] = []; grouped[cId].push(p); });
       let hasItems = false;
-
+      
       for(let catId in allShopCategories) {
-         if(groupedProducts[catId] && groupedProducts[catId].length > 0) {
-            hasItems = true;
-            let catName = allShopCategories[catId];
-            
-            let color = (catName.toLowerCase().includes('pass') || catName.includes('🎟️')) ? 'var(--gold)' : 'var(--primary)';
-            
-            let html = `<h3 style="color: ${color}; margin-bottom: 10px; margin-top: 15px;">${catName}</h3><div class="products">`;
-            
-            groupedProducts[catId].forEach(p => {
-               let isPass = String(p.diamonds).toLowerCase().includes('pass') || String(p.diamonds).toLowerCase().includes('weekly') || catName.toLowerCase().includes('pass');
-               let cardClass = isPass ? 'product-card weekly-card' : 'product-card';
-               let icon = isPass ? '⭐' : '💎';
+         if(grouped[catId]) {
+            hasItems = true; let cName = allShopCategories[catId], color = cName.includes('🎟️') ? 'var(--gold)' : 'var(--primary)';
+            let html = `<h3 style="color: ${color}; margin-bottom: 10px; margin-top: 15px;">${cName}</h3><div class="products">`;
+            grouped[catId].forEach(p => {
+               let isPass = p.diamonds.toLowerCase().includes('pass') || p.diamonds.toLowerCase().includes('weekly'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
                
-               html += `
-                <div class="${cardClass}" onclick="buyItem('${p.diamonds}', ${p.price})">
-                  <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${icon} ${p.diamonds}</h3>
-                  <p>${p.price} MMK</p>
-                </div>
-               `;
-            });
-            html += `</div>`;
-            container.innerHTML += html;
+               let basePrice = p.price || 0;
+               // ✅ [၁၀၀ ပြည့်ဂဏန်း]
+               let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
+               let displayPrice = systemSellPrice; 
+
+               if (currentUserData && currentUserData.resellerUid) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
+               else if (isResellerMode) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
+
+               let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${basePrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
+
+               html += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${basePrice}, ${displayPrice})">
+                          <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${isPass?'⭐':'💎'} ${p.diamonds}</h3>
+                          <p style="color: ${isResellerMode ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
+                          ${editBtn}
+                        </div>`;
+            }); c.innerHTML += html + `</div>`; delete grouped[catId];
+         }
+      }
+      
+      let leftHtml = '';
+      for(let catId in grouped) {
+         hasItems = true; leftHtml += `<div class="products">`;
+         grouped[catId].forEach(p => {
+            let isPass = p.diamonds.toLowerCase().includes('pass'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
             
-            delete groupedProducts[catId]; 
-         }
-      }
+            let basePrice = p.price || 0;
+            // ✅ [၁၀၀ ပြည့်ဂဏန်း] 
+            let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
+            let displayPrice = systemSellPrice; 
+            
+            if (currentUserData && currentUserData.resellerUid) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
+            else if (isResellerMode) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
+               
+            let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${basePrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
 
-      let leftoverHtml = '';
-      for(let catId in groupedProducts) {
-         if(groupedProducts[catId] && groupedProducts[catId].length > 0) {
-            hasItems = true;
-            leftoverHtml += `
-              <div class="products">
-                ${groupedProducts[catId].map(p => `
-                  <div class="product-card" onclick="buyItem('${p.diamonds}', ${p.price})">
-                    <h3>💎 ${p.diamonds}</h3><p>${p.price} MMK</p>
-                  </div>
-                `).join('')}
-              </div>
-            `;
-         }
+            leftHtml += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${basePrice}, ${displayPrice})">
+                           <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${isPass?'⭐':'💎'} ${p.diamonds}</h3>
+                           <p style="color: ${isResellerMode ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
+                           ${editBtn}
+                         </div>`;
+         }); leftHtml += `</div>`;
       }
-      if(leftoverHtml) {
-         container.innerHTML += `<h3 style="color: #aaa; margin-bottom: 10px; margin-top: 15px;">📦 Other Items</h3>` + leftoverHtml;
-      }
-
-      if(!hasItems) {
-        container.innerHTML = '<div style="text-align: center; color: #aaa; margin-top: 20px;">ဆိုင်တွင် ပစ္စည်းမရှိသေးပါ။</div>';
-      }
+      if(leftHtml) c.innerHTML += `<h3 style="color: #aaa; margin-bottom: 10px; margin-top: 15px;">📦 အခြားပစ္စည်းများ</h3>` + leftHtml;
+      if(!hasItems) c.innerHTML = '<div style="text-align: center; color: #aaa; margin-top: 20px;">ဆိုင်တွင် ပစ္စည်းမရှိသေးပါ။</div>';
     });
   }
 
-  // ✅ ဖျက်လို့မရသော (No Delete Button) မှတ်သားထားသော ID များကို ပြသမည့် Function
   function renderSavedIds() {
-    const container = document.getElementById('savedIdsContainer');
-    if (savedIds.length === 0) {
-      container.style.display = 'none';
-      return;
-    }
-    container.style.display = 'flex';
-    container.innerHTML = '<div style="width: 100%; font-size: 13px; color: var(--gold); margin-bottom: 5px;">မှတ်သားထားသော အကောင့်များ:</div>';
-    
-    savedIds.forEach((item) => {
-      container.innerHTML += `
-        <div style="background: rgba(0,229,255,0.1); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 15px; font-size: 13px; cursor: pointer; color: white; font-weight: bold;" onclick="fillSavedId('${item.pid}', '${item.sid}')">
-          👤 ${item.name} (${item.pid})
-        </div>
-      `;
-    });
+    const c = document.getElementById('savedIdsContainer'); if (savedIds.length === 0) { c.style.display = 'none'; return; }
+    c.style.display = 'flex'; c.innerHTML = '<div style="width: 100%; font-size: 13px; color: var(--gold); margin-bottom: 5px;">မှတ်သားထားသော အကောင့်များ:</div>';
+    savedIds.forEach((i) => { c.innerHTML += `<div style="background: rgba(0,229,255,0.1); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 15px; font-size: 13px; cursor: pointer; color: white; font-weight: bold;" onclick="fillSavedId('${i.pid}', '${i.sid}')">👤 ${i.name} (${i.pid})</div>`; });
   }
 
-  window.fillSavedId = (pid, sid) => {
-    document.getElementById('gamePlayerId').value = pid;
-    document.getElementById('gameServerId').value = sid;
-    resetCheck();
-  };
-
-  window.buyItem = (itemName, price) => {
-    if(!isShopOpen) return alert("Admin က မအားသေးတဲ့အတွက် ဆိုင်ပိတ်ထားပါတယ်။ ခေတ္တစောင့်ဆိုင်းပေးပါ။");
-    
-    selectedPackage = { itemName, price };
-    document.getElementById('gamePlayerId').value = ''; 
-    document.getElementById('gameServerId').value = '';
-    
-    resetCheck();
-    renderSavedIds(); 
-    
-    openModal('buyModal');
-  };
-
-  window.resetCheck = () => {
-    document.getElementById('verifyCb').checked = false;
-    document.getElementById('playerNameResult').style.display = 'none';
-    document.getElementById('loadingText').style.display = 'none';
-  };
-
-  window.handleCheckChange = () => {
-    const cb = document.getElementById('verifyCb');
-    if(cb.checked) {
-       checkPlayerName();
-    } else {
-       resetCheck();
-    }
-  };
+  window.fillSavedId = (pid, sid) => { document.getElementById('gamePlayerId').value = pid; document.getElementById('gameServerId').value = sid; resetCheck(); };
+  window.buyItem = (itemName, origPrice, displayPrice) => { if(!isShopOpen) return alert("ဆိုင်ပိတ်ထားပါသည်။"); selectedPackage = { itemName, origPrice, displayPrice }; document.getElementById('gamePlayerId').value = ''; document.getElementById('gameServerId').value = ''; resetCheck(); renderSavedIds(); openModal('buyModal'); };
+  window.resetCheck = () => { document.getElementById('verifyCb').checked = false; document.getElementById('playerNameResult').style.display = 'none'; document.getElementById('loadingText').style.display = 'none'; };
+  window.handleCheckChange = () => { if(document.getElementById('verifyCb').checked) checkPlayerName(); else resetCheck(); };
 
   window.checkPlayerName = async () => {
-    const pid = document.getElementById('gamePlayerId').value;
-    const sid = document.getElementById('gameServerId').value;
-    const cb = document.getElementById('verifyCb');
-
-    if(!pid || !sid) {
-      alert('Player ID နှင့် Server ID ကို ထည့်ပေးပါ။');
-      cb.checked = false;
-      return;
-    }
-    
-    document.getElementById('loadingText').style.display = 'block';
-    document.getElementById('playerNameResult').style.display = 'none';
-
+    const pid = document.getElementById('gamePlayerId').value, sid = document.getElementById('gameServerId').value, cb = document.getElementById('verifyCb');
+    if(!pid || !sid) { alert('ID ဖြည့်ပါ။'); cb.checked = false; return; }
+    document.getElementById('loadingText').style.display = 'block'; document.getElementById('playerNameResult').style.display = 'none';
     try {
-      const apiUrl = `https://api.isan.eu.org/nickname/ml?id=${pid}&server=${sid}`;
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-
-      if (data.success === true && data.name) {
-        document.getElementById('loadingText').style.display = 'none';
-        document.getElementById('displayPlayerName').innerText = data.name;
-        document.getElementById('displayAmount').innerText = selectedPackage.itemName;
-        document.getElementById('displayPrice').innerText = selectedPackage.price;
+      const res = await fetch(`https://api.isan.eu.org/nickname/ml?id=${pid}&server=${sid}`), data = await res.json();
+      if (data.success && data.name) {
+        document.getElementById('loadingText').style.display = 'none'; 
+        document.getElementById('displayPlayerName').innerText = data.name; 
+        document.getElementById('displayAmount').innerText = selectedPackage.itemName; 
+        document.getElementById('displayPrice').innerText = selectedPackage.displayPrice; 
         document.getElementById('playerNameResult').style.display = 'block';
-      } else {
-        alert("❌ အကောင့် ရှာမတွေ့ပါ (သို့) ဆာဗာ ချို့ယွင်းနေပါသည်။");
-        resetCheck();
-      }
-    } catch (error) {
-      alert("❌ အကောင့် ရှာမတွေ့ပါ (သို့) ဆာဗာ ချို့ယွင်းနေပါသည်။");
-      resetCheck();
-    }
+      } else { alert("❌ အကောင့် ရှာမတွေ့ပါ။"); resetCheck(); }
+    } catch (e) { alert("❌ အကောင့် ရှာမတွေ့ပါ။"); resetCheck(); }
   };
 
   window.confirmPurchase = async () => {
-    const pid = document.getElementById('gamePlayerId').value;
-    const sid = document.getElementById('gameServerId').value;
-    const pName = document.getElementById('displayPlayerName').innerText;
+    const pid = document.getElementById('gamePlayerId').value, sid = document.getElementById('gameServerId').value, pName = document.getElementById('displayPlayerName').innerText;
     const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
     
-    if(currentWallet < selectedPackage.price) return alert('ငွေမလောက်ပါ။ ကျေးဇူးပြု၍ ငွေဖြည့်ပါ။');
+    const secureBasePrice = parseInt(selectedPackage.origPrice); 
+    const secureDisplayPrice = parseInt(selectedPackage.displayPrice); 
     
-    if(confirm('ဝယ်မည်မှာ သေချာပါသလား?')) {
-      
-      // ✅ ဝယ်ယူမှု အောင်မြင်မှသာ အကောင့်ကို အလိုအလျောက် မှတ်သားမည်
-      const exists = savedIds.find(i => i.pid === pid && i.sid === sid);
-      if(!exists) {
-         savedIds.unshift({ pid: pid, sid: sid, name: pName });
-         if(savedIds.length > 5) savedIds.pop(); // နောက်ဆုံး (၅) ခုသာ မှတ်ထားမည်
-         localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds));
-         renderSavedIds();
-      }
+    // (A) Customer
+    if(currentUserData && currentUserData.resellerUid) {
+        if(currentWallet < secureDisplayPrice) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။ ကိုယ်စားလှယ်ထံ ငွေဖြည့်ပါ။");
+        const resSnap = await db.ref('users/' + currentUserData.resellerUid + '/wallet').once('value');
+        const resWallet = resSnap.val() || 0;
+        if(resWallet < secureBasePrice) return alert("❌ ဝယ်ယူ၍ မရပါ။ (သင့်ကိုယ်စားလှယ်၏ အကောင့်တွင် ငွေမလုံလောက်ပါ)");
 
-      await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - selectedPackage.price });
-      await db.ref('orders/' + Date.now().toString()).set({
-        uid: currentUser.uid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: selectedPackage.price, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
-      });
-      alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
+        if(confirm(`[ ${selectedPackage.itemName} ] ကို ဝယ်ယူမည်မှာ သေချာပါသလား?\n\nကျသင့်ငွေ: ${secureDisplayPrice} Ks`)) {
+            if(!savedIds.find(i => i.pid === pid && i.sid === sid)) { savedIds.unshift({ pid: pid, sid: sid, name: pName }); if(savedIds.length > 5) savedIds.pop(); localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds)); renderSavedIds(); }
+            
+            await db.ref('users/' + currentUserData.resellerUid).update({ wallet: resWallet - secureBasePrice });
+            await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - secureDisplayPrice });
+            
+            await db.ref('orders/' + Date.now().toString()).set({
+              uid: currentUser.uid, agentUid: currentUserData.resellerUid,
+              playerId: `${pid}(${sid})`, amount: selectedPackage.itemName,
+              price: secureBasePrice, retailPrice: secureDisplayPrice,
+              status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
+            });
+            alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
+        }
+    } 
+    // (B) User / Agent
+    else {
+        let actualDeduction = (currentUserData && currentUserData.isReseller) ? secureBasePrice : secureDisplayPrice;
+        if(currentWallet < actualDeduction) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။");
+        
+        if(confirm(`[ ${selectedPackage.itemName} ] ဝယ်မည်မှာ သေချာပါသလား?\n\nကျသင့်ငွေ: ${actualDeduction} Ks`)) {
+            if(!savedIds.find(i => i.pid === pid && i.sid === sid)) { savedIds.unshift({ pid: pid, sid: sid, name: pName }); if(savedIds.length > 5) savedIds.pop(); localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds)); renderSavedIds(); }
+            
+            await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - actualDeduction });
+            await db.ref('orders/' + Date.now().toString()).set({
+              uid: currentUser.uid, playerId: `${pid}(${sid})`,
+              amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: actualDeduction,
+              status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
+            });
+            alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
+        }
     }
   };
 
   window.submitTopup = async () => {
-    if(!isShopOpen) return alert("Admin က မအားသေးတဲ့အတွက် ဆိုင်ပိတ်ထားပါတယ်။ ခေတ္တစောင့်ဆိုင်းပေးပါ။");
-
-    const amount = document.getElementById('topupAmount').value;
-    const transId = document.getElementById('kpayTransId').value;
-
-    if(!amount || !transId) return alert('အချက်အလက်ပြည့်စုံစွာ ထည့်ပါ။');
-
-    const btn = document.getElementById('submitTopupBtn');
-    const originalText = btn.innerText;
-    btn.innerText = 'စောင့်ပါ... ⏳';
-    btn.disabled = true;
-
-    try {
-      await db.ref('topups/' + Date.now().toString()).set({
-        uid: currentUser.uid, 
-        amount: parseInt(amount), 
-        transactionId: transId, 
-        status: 'pending', 
-        date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
-      });
-
-      alert('ငွေဖြည့်တောင်းဆိုမှု အောင်မြင်ပါသည်။');
-      document.getElementById('topupAmount').value = '';
-      document.getElementById('kpayTransId').value = '';
+    const amt = document.getElementById('topupAmount').value, txn = document.getElementById('kpayTransId').value;
+    if(!amt || !txn) return alert('အချက်အလက်ပြည့်စုံစွာ ထည့်ပါ။'); 
+    
+    document.getElementById('submitTopupBtn').innerText = 'စောင့်ပါ... ⏳';
+    try { 
+      await db.ref('topups/' + Date.now()).set({ uid: currentUser.uid, amount: parseInt(amt), transactionId: txn, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) }); 
+      alert('အောင်မြင်ပါသည်။'); 
+      document.getElementById('topupAmount').value = ''; 
+      document.getElementById('kpayTransId').value = ''; 
       closeModal('topupModal');
-    } catch (error) {
-      alert('Error: ' + error.message);
-    } finally {
-      btn.innerText = originalText;
-      btn.disabled = false;
+    } catch (e) { 
+      alert('Error: ' + e.message); 
+    } finally { 
+      document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; 
     }
   };
 
-  window.changePassword = async () => {
-    const oldPass = document.getElementById('oldPass').value;
-    const newPass = document.getElementById('newPass').value;
-    if(!oldPass || !newPass) return alert('စကားဝှက်များ ထည့်ပါ။');
-    try {
-      const cred = firebase.auth.EmailAuthProvider.credential(currentUser.email, oldPass);
-      await currentUser.reauthenticateWithCredential(cred);
-      await currentUser.updatePassword(newPass);
-      await db.ref('users/' + currentUser.uid).update({ pass: newPass });
-      alert('စကားဝှက် ပြောင်းလဲပြီးပါပြီ။');
-  } catch (e) { alert('Error: ' + e.message); }
-  };
-
-  window.logout = () => { auth.signOut(); window.location.reload(); };
-  window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+  window.changePassword = async () => { const o = document.getElementById('oldPass').value, n = document.getElementById('newPass').value; if(o && n){ try { await currentUser.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(currentUser.email, o)); await currentUser.updatePassword(n); await db.ref('users/' + currentUser.uid).update({ pass: n }); alert('ပြောင်းလဲပြီးပါပြီ။'); } catch (e) { alert('Error: ' + e.message); } } };
+  window.logout = () => { auth.signOut(); window.location.reload(); }; 
+  window.openModal = (id) => document.getElementById(id).style.display = 'flex'; 
   window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 </script>
 </body>
