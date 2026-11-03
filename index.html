@@ -194,10 +194,8 @@
       <label>ငွေပမာဏ (MMK)</label>
       <input type="number" id="topupAmount" placeholder="ဥပမာ - 1000">
     </div>
-    <div class="input-group">
-      <label>လုပ်ငန်းစဉ်အမှတ် (Transaction ID)</label>
-      <input type="text" id="kpayTransId" placeholder="နောက်ဆုံးဂဏန်း ၆ လုံး">
-    </div>
+    
+    <!-- လုပ်ငန်းစဉ်အမှတ် (Transaction ID) အကွက်ကို ဖျက်လိုက်ပါပြီ -->
     
     <div class="input-group">
       <label style="color: var(--primary);">ပြေစာ (Screenshot) ရွေးပါ</label>
@@ -406,7 +404,6 @@
 
   window.toggleResellerMode = () => { isResellerMode = document.getElementById('resellerToggle').checked; localStorage.setItem('fzw_reseller_mode', isResellerMode); loadProducts(); };
 
-  // ✅ Agent က ကိုယ်တိုင်ရောင်းဈေး ပြင်ရန်
   function loadAgentPrices() {
      const list = document.getElementById('agentPricesList'); list.innerHTML = '';
      db.ref('products').once('value', snap => {
@@ -414,7 +411,6 @@
            const p = c.val();
            let base = p.price || 0;
            let systemSellPrice = Math.ceil((base + (base * globalProfitPct / 100)) / 100) * 100;
-           // ✅ Reseller အတွက် ရောင်းဈေးထဲမှ (100) အလိုအလျောက် လျှော့ပေးမည်
            let resellerCost = systemSellPrice - 100;
            if (resellerCost < base) resellerCost = base;
            
@@ -465,7 +461,6 @@
      if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; } else badge.style.display = 'none';
   }
 
-  // ✅ ဈေးနှုန်းတွက်ချက်၍ ပြသမည့် Main Function
   function loadProducts() {
     db.ref('products').on('value', (snap) => {
       const c = document.getElementById('dynamicShopCategories'); c.innerHTML = '';
@@ -482,7 +477,6 @@
                
                let basePrice = p.price || 0;
                let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
-               // ✅ Reseller အတွက် 100 အမြဲလျော့ပေးမည်
                let resellerCost = systemSellPrice - 100;
                if (resellerCost < basePrice) resellerCost = basePrice;
                
@@ -510,7 +504,6 @@
             
             let basePrice = p.price || 0;
             let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
-            // ✅ Reseller အတွက် 100 အမြဲလျော့ပေးမည်
             let resellerCost = systemSellPrice - 100;
             if (resellerCost < basePrice) resellerCost = basePrice;
 
@@ -523,7 +516,7 @@
 
             leftHtml += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${resellerCost}, ${displayPrice})">
                            <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${isPass?'⭐':'💎'} ${p.diamonds}</h3>
-                             <p style="color: ${isResellerMode ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
+                           <p style="color: ${isResellerMode ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
                            ${editBtn}
                          </div>`;
          }); leftHtml += `</div>`;
@@ -560,15 +553,13 @@
     } catch (e) { alert("❌ အကောင့် ရှာမတွေ့ပါ။"); resetCheck(); }
   };
 
-  // ✅ Order Confirm Logic 
   window.confirmPurchase = async () => {
     const pid = document.getElementById('gamePlayerId').value, sid = document.getElementById('gameServerId').value, pName = document.getElementById('displayPlayerName').innerText;
     const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
     
-    const secureBasePrice = parseInt(selectedPackage.origPrice); // ✅ ဤနေရာတွင် Reseller ၏ ၁၀၀ လျှော့ထားသော ရင်းနှီးငွေဖြစ်သည် (Reseller Cost)
-    const secureDisplayPrice = parseInt(selectedPackage.displayPrice); // ရောင်းဈေး
+    const secureBasePrice = parseInt(selectedPackage.origPrice); 
+    const secureDisplayPrice = parseInt(selectedPackage.displayPrice); 
     
-    // (A) Customer
     if(currentUserData && currentUserData.resellerUid) {
         if(currentWallet < secureDisplayPrice) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။ ကိုယ်စားလှယ်ထံ ငွေဖြည့်ပါ။");
         const resSnap = await db.ref('users/' + currentUserData.resellerUid + '/wallet').once('value');
@@ -590,9 +581,7 @@
             alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
         }
     } 
-    // (B) User (သို့) Agent ကိုယ်တိုင် ဝယ်ယူပါက
     else {
-        // Agent ကိုယ်တိုင်ဝယ်ပါက ၁၀၀ လျှော့ပြီးသား (secureBasePrice) ဖြင့် ဖြတ်မည်၊ ရိုးရိုး User ဝယ်ပါက ရောင်းဈေးအပြည့် ဖြတ်မည်။
         let actualDeduction = (currentUserData && currentUserData.isReseller) ? secureBasePrice : secureDisplayPrice;
         if(currentWallet < actualDeduction) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။");
         
@@ -610,38 +599,36 @@
     }
   };
 
-  // ✅ [ERROR FREE] Database သို့ အရင်တင်ပြီးမှ Telegram သို့ပို့မည်
+  // ✅ [ERROR FREE] Database သို့ အရင်တင်ပြီးမှ Telegram သို့ပို့မည် (လုပ်ငန်းစဉ်အမှတ် ဖျက်ထားပါသည်)
   window.submitTopup = async () => {
     if (!navigator.onLine) { return alert("အင်တာနက် လိုင်းမရှိပါ။"); }
     const amt = document.getElementById('topupAmount').value;
-    const txn = document.getElementById('kpayTransId').value;
     const receiptFile = document.getElementById('topupReceipt').files[0];
 
-    if(!amt || !txn || !receiptFile) return alert('ငွေပမာဏ၊ လုပ်ငန်းစဉ်အမှတ် နှင့် ပြေစာပုံ (Screenshot) အားလုံး ထည့်ပါ။'); 
+    if(!amt || !receiptFile) return alert('ငွေပမာဏ နှင့် ပြေစာပုံ (Screenshot) အားလုံး ထည့်ပါ။'); 
     
     document.getElementById('submitTopupBtn').innerText = 'စောင့်ပါ... ⏳';
     
     try { 
-      const topupId = Date.now().toString(); // String ID
+      const topupId = Date.now().toString(); 
       
-      const baseCaption = `💰 ငွေဖြည့် တောင်းဆိုမှုအသစ်\n\n👤 အမည်: ${currentUserData.name || 'User'}\n📱 ဖုန်း: ${currentUserData.phone}\n💲 ပမာဏ: ${amt} Ks\n🧾 လုပ်ငန်းစဉ်အမှတ်: ${txn}`;
+      const baseCaption = `💰 ငွေဖြည့် တောင်းဆိုမှုအသစ်\n\n👤 အမည်: ${currentUserData.name || 'User'}\n📱 ဖုန်း: ${currentUserData.phone || ''}\n💲 ပမာဏ: ${amt} Ks`;
       const fullCaption = baseCaption + `\n\nအခြေအနေ: ⏳ စောင့်ရန်`;
 
       // 1. Firebase သို့ အရင်ဆုံး ပို့မည် 
       await db.ref('topups/' + topupId).set({ 
-        uid: currentUser.uid, 
-        amount: parseInt(amt), 
-        transactionId: txn, 
+        uid: currentUser.uid || '', 
+        amount: parseInt(amt) || 0, 
+        transactionId: "ပုံဖြင့်ပေးပို့ထားပါသည်", // Admin တွင် ပြသရန်
         status: 'pending', 
         date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }),
-        tgMessageId: null,
+        tgMessageId: "", 
         tgCaption: baseCaption 
       }); 
 
       alert('အောင်မြင်ပါသည်။ (Admin မှ စစ်ဆေးပြီးပါက ငွေဝင်လာပါမည်)'); 
       
       document.getElementById('topupAmount').value = ''; 
-      document.getElementById('kpayTransId').value = ''; 
       document.getElementById('topupReceipt').value = '';
       closeModal('topupModal');
       document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; 
@@ -667,7 +654,7 @@
            await db.ref('topups/' + topupId).update({ tgMessageId: tgResult.result.message_id });
         }
       } catch (tgError) {
-         console.log("Telegram ပို့ရာတွင် Error တက်သွားပါသည်။ သို့သော် Admin ထံသို့ ရောက်ရှိပြီးဖြစ်ပါသည်။", tgError);
+         console.log("Telegram ပို့ရာတွင် Error တက်သွားပါသည်။", tgError);
       }
 
     } catch (e) { 
