@@ -12,6 +12,10 @@
     #initialLoader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
     .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    /* 📶 Offline Screen Style */
+    #offlineScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.95); z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; backdrop-filter: blur(5px); }
+    
     header { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100; }
     .logo { font-size: 24px; font-weight: bold; color: var(--primary); letter-spacing: 2px; }
     .wallet-box { display: flex; align-items: center; gap: 10px; background: var(--card-bg); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--gold); cursor: pointer;}
@@ -19,15 +23,17 @@
     .nav-icons { display: flex; gap: 15px; align-items: center; }
     .icon-btn { font-size: 20px; cursor: pointer; background: none; border: none; color: white; position: relative; }
     .badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none; }
+    
     .container { max-width: 500px; margin: 20px auto; padding: 0 20px; }
     .auth-section { background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid var(--glass-border); text-align: center; }
     .auth-tabs { display: flex; margin-bottom: 15px; border-bottom: 1px solid #333; }
     .auth-tab { flex: 1; padding: 10px; cursor: pointer; color: #888; font-weight: bold; }
     .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
     .input-group { margin-bottom: 15px; text-align: left; }
-    .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; }
+    .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box; }
     .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; display: block; }
     .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+    
     .products { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; margin-bottom: 20px;}
     .product-card { background: var(--card-bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; position: relative; }
     .product-card h3 { color: var(--primary); margin-bottom: 5px; font-size: 16px; }
@@ -35,16 +41,25 @@
     .weekly-card { border: 2px solid var(--gold); background: rgba(251, 191, 36, 0.1); }
     .weekly-card h3 { color: var(--gold); }
     .edit-price-btn { background: #334155; color: white; border: 1px solid #475569; padding: 6px; border-radius: 6px; font-size: 12px; margin-top: 10px; cursor: pointer; width: 100%; transition: 0.3s; }
+    
     .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
     .modal-content { background: #1e293b; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
     .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
     .floating-tg { position: fixed; bottom: 20px; right: 20px; background: #0088cc; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; z-index: 900; }
+    
     #bannedScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
     .history-item { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
     .status-pending { color: #fbbf24; } .status-approved { color: #22c55e; } .status-rejected { color: #ef4444; }
   </style>
 </head>
 <body>
+
+<!-- 📶 No Internet Screen -->
+<div id="offlineScreen">
+  <h1 style="font-size: 60px; margin: 0 0 15px 0;">📡</h1>
+  <h2 style="color: #ef4444; margin: 0 0 10px 0;">အင်တာနက် ချိတ်ဆက်မှု မရှိပါ</h2>
+  <p style="color: #ccc; font-size: 14px; max-width: 80%; line-height: 1.6;">ကျေးဇူးပြု၍ သင့်ဖုန်း၏ Mobile Data (သို့) WiFi ကို ပြန်လည်ဖွင့်ပြီး စစ်ဆေးပေးပါ။ <br><br> <i>လိုင်းပြန်ရမှသာ ဆက်လက်အသုံးပြုနိုင်ပါမည်။</i></p>
+</div>
 
 <div id="initialLoader"><div class="spinner"></div><h3 style="color: var(--primary);">ခဏစောင့်ပါ...</h3></div>
 
@@ -79,12 +94,10 @@
     <div id="nameGroup" class="input-group" style="display: none;"><label>အမည်</label><input type="text" id="authName" placeholder="Your Name"></div>
     <div class="input-group"><label>ဖုန်းနံပါတ်</label><input type="number" id="authPhone" placeholder="09xxxxxxxxx"></div>
     <div class="input-group"><label>စကားဝှက်</label><input type="password" id="authPass" placeholder="••••••••"></div>
-    
     <div id="agentCodeGroup" class="input-group" style="display: none; background: rgba(0, 229, 255, 0.1); padding: 10px; border-radius: 8px; border: 1px dashed var(--primary);">
       <label style="color: var(--primary);">Agent Code (ရှိပါက ထည့်ပါ)</label>
       <input type="text" id="authAgentCode" placeholder="ဥပမာ - AGT-1234" style="border-color: var(--primary);">
     </div>
-
     <button class="btn" onclick="handleAuth()" id="authBtn">အကောင့်ဝင်မည်</button>
   </div>
 
@@ -107,28 +120,26 @@
        <p style="color: #aaa; font-size: 14px;">သင့်အား Admin မှ Reseller အဖြစ် ဖွင့်ပေးထားပါသည်။</p>
        <h3 style="color: var(--gold); margin-top: 10px; font-size: 20px;">Invite Code: <span id="myAgentCode">...</span></h3>
     </div>
-    
     <div class="auth-tabs">
       <div class="auth-tab active" id="tabAgentUsers" onclick="switchAgentTab('users')">👥 Customer များ</div>
       <div class="auth-tab" id="tabAgentPrices" onclick="switchAgentTab('prices')">✏️ ဈေးနှုန်း ပြင်ရန်</div>
     </div>
-    
     <div id="agentUsersSection">
        <table style="width:100%; border-collapse: collapse; font-size:13px; text-align:left;">
          <thead><tr><th style="padding:8px; border-bottom:1px solid #333; color:var(--primary);">Name/Phone</th><th style="padding:8px; border-bottom:1px solid #333; color:var(--primary);">Wallet</th></tr></thead>
          <tbody id="agentUsersList"></tbody>
        </table>
     </div>
-    
     <div id="agentPricesSection" style="display:none;">
        <div id="agentPricesList" style="max-height: 250px; overflow-y: auto;"></div>
     </div>
   </div>
 </div>
 
-<!-- Modals -->
+<!-- Instruction Modal -->
 <div id="instructionModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('instructionModal')">×</span><h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2><div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;"><p style="color: #ccc;">- ၂၄ နာရီအတွင်း Diamond ဝင်ပါမည်။</p></div></div></div>
 
+<!-- History Modal -->
 <div id="notiModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('notiModal')">×</span>
@@ -144,6 +155,7 @@
   </div>
 </div>
 
+<!-- Buy Modal -->
 <div id="buyModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('buyModal')">×</span>
@@ -151,16 +163,9 @@
     <div id="savedIdsContainer" style="display: none; margin-bottom: 15px; flex-wrap: wrap; gap: 8px;"></div>
     
     <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-      <div style="flex: 2;">
-        <label style="font-size: 13px; color: #ccc;">Player ID</label>
-        <input type="number" id="gamePlayerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()">
-      </div>
-      <div style="flex: 1.5;">
-        <label style="font-size: 13px; color: #ccc;">Zone ID</label>
-        <input type="number" id="gameServerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()">
-      </div>
+      <div style="flex: 2;"><label style="font-size: 13px; color: #ccc;">Player ID</label><input type="number" id="gamePlayerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()"></div>
+      <div style="flex: 1.5;"><label style="font-size: 13px; color: #ccc;">Zone ID</label><input type="number" id="gameServerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()"></div>
     </div>
-    
     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
       <input type="checkbox" id="verifyCb" onchange="handleCheckChange()" style="width: 20px; height: 20px; accent-color: var(--primary);">
       <label for="verifyCb" style="font-size: 14px; color: #ccc;">ID များ မှန်ကန်ကြောင်း အတည်ပြုပါသည်</label>
@@ -177,17 +182,31 @@
   </div>
 </div>
 
+<!-- ✅ Top-up Modal (လုပ်ငန်းစဉ်အမှတ် Optional ဖြစ်သွားပါပြီ) -->
 <div id="topupModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">ငွေဖြည့်ရန်</h2>
     <div id="paymentMethodsList" style="margin-bottom: 15px; max-height: 180px; overflow-y: auto;"></div>
-    <div class="input-group"><label>ငွေပမာဏ (MMK)</label><input type="number" id="topupAmount"></div>
-    <div class="input-group"><label>လုပ်ငန်းစဉ်အမှတ် (Transaction ID)</label><input type="text" id="kpayTransId"></div>
+    
+    <div class="input-group">
+      <label>ငွေပမာဏ (MMK)</label>
+      <input type="number" id="topupAmount" placeholder="ဥပမာ - 1000">
+    </div>
+    <div class="input-group">
+      <label>လုပ်ငန်းစဉ်အမှတ် <span style="color:#aaa; font-size: 11px;">(မထည့်လည်းရပါသည်)</span></label>
+      <input type="text" id="kpayTransId" placeholder="နောက်ဆုံးဂဏန်း ၆ လုံး (Optional)">
+    </div>
+    <div class="input-group">
+      <label style="color: var(--primary);">ပြေစာ (Screenshot) ရွေးပါ</label>
+      <input type="file" id="topupReceipt" accept="image/*" style="padding: 10px; border: 1px dashed var(--primary); background: rgba(0, 229, 255, 0.1);">
+    </div>
+
     <button class="btn" id="submitTopupBtn" onclick="submitTopup()">ငွေဖြည့်မည်</button>
   </div>
 </div>
 
+<!-- Profile Modal -->
 <div id="profileModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('profileModal')">×</span>
@@ -223,6 +242,20 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <script>
+  // 📶 Offline/Online Detection System
+  function checkInternetConnection() {
+    const offlineScreen = document.getElementById('offlineScreen');
+    if (navigator.onLine) {
+      offlineScreen.style.display = 'none';
+    } else {
+      offlineScreen.style.display = 'flex';
+    }
+  }
+  window.addEventListener('online', checkInternetConnection);
+  window.addEventListener('offline', checkInternetConnection);
+  checkInternetConnection();
+
+  // 🛡️ ANTI-HACK
   document.addEventListener('contextmenu', e => e.preventDefault());
   document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false; };
 
@@ -385,7 +418,6 @@
         snap.forEach(c => {
            const p = c.val();
            let base = p.price || 0;
-           // ✅ [၁၀၀ ပြည့်ဂဏန်း]
            let systemSellPrice = Math.ceil((base + (base * globalProfitPct / 100)) / 100) * 100;
            let myPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
            
@@ -427,14 +459,12 @@
      const tList = document.getElementById('topupListUI'), oList = document.getElementById('orderListUI'), mList = document.getElementById('msgListUI'); tList.innerHTML = ''; oList.innerHTML = ''; mList.innerHTML = '';
      [...myMsgs = myAnnouncements].sort((a,b)=>b.id-a.id).forEach(m => mList.innerHTML += `<div class="history-item" style="border-left: 4px solid var(--primary);"><div style="font-weight:bold; color:var(--primary);">${m.title}</div><div style="font-size: 13px; color: #ddd; margin-top: 5px;">${m.body}</div></div>`);
      [...myTops = myTopups].sort((a,b)=>b.id-a.id).forEach(i => tList.innerHTML += `<div class="history-item ${i.status}"><div style="font-weight:bold; color:var(--gold);">💰 ${i.amount} Ks</div><div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${i.status}">${i.status==='pending'?'⏳ စောင့်ဆိုင်းပါ':(i.status==='approved'?'✅ အောင်မြင်':'❌ ပယ်ချ')}</div></div>`);
-     
      [...myOrds = myOrders].sort((a,b)=>b.id-a.id).forEach(i => oList.innerHTML += `<div class="history-item ${i.status}"><div style="font-weight:bold; color:var(--primary);">💎 ${i.amount} <span style="color:#aaa; font-size:11px;">(${i.retailPrice || i.price} Ks)</span></div><div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${i.status}">${i.status==='pending'?'⏳ စောင့်ဆိုင်းပါ':(i.status==='approved'?'✅ အောင်မြင်':'❌ ပယ်ချ')}</div></div>`);
      
      let badge = document.getElementById('notiBadge'), unread = (myTopups.length + myOrders.length + myAnnouncements.length + (isShopOpen?0:1)) - (parseInt(localStorage.getItem('fzw_noti_count')) || 0);
      if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; } else badge.style.display = 'none';
   }
 
-  // ✅ ဈေးနှုန်းတွက်ချက်၍ ပြသမည့် Function
   function loadProducts() {
     db.ref('products').on('value', (snap) => {
       const c = document.getElementById('dynamicShopCategories'); c.innerHTML = '';
@@ -448,9 +478,7 @@
             let html = `<h3 style="color: ${color}; margin-bottom: 10px; margin-top: 15px;">${cName}</h3><div class="products">`;
             grouped[catId].forEach(p => {
                let isPass = p.diamonds.toLowerCase().includes('pass') || p.diamonds.toLowerCase().includes('weekly'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
-               
                let basePrice = p.price || 0;
-               // ✅ [၁၀၀ ပြည့်ဂဏန်း]
                let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
                let displayPrice = systemSellPrice; 
 
@@ -473,9 +501,7 @@
          hasItems = true; leftHtml += `<div class="products">`;
          grouped[catId].forEach(p => {
             let isPass = p.diamonds.toLowerCase().includes('pass'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
-            
             let basePrice = p.price || 0;
-            // ✅ [၁၀၀ ပြည့်ဂဏန်း] 
             let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
             let displayPrice = systemSellPrice; 
             
@@ -526,11 +552,9 @@
   window.confirmPurchase = async () => {
     const pid = document.getElementById('gamePlayerId').value, sid = document.getElementById('gameServerId').value, pName = document.getElementById('displayPlayerName').innerText;
     const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
-    
     const secureBasePrice = parseInt(selectedPackage.origPrice); 
     const secureDisplayPrice = parseInt(selectedPackage.displayPrice); 
     
-    // (A) Customer
     if(currentUserData && currentUserData.resellerUid) {
         if(currentWallet < secureDisplayPrice) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။ ကိုယ်စားလှယ်ထံ ငွေဖြည့်ပါ။");
         const resSnap = await db.ref('users/' + currentUserData.resellerUid + '/wallet').once('value');
@@ -539,49 +563,70 @@
 
         if(confirm(`[ ${selectedPackage.itemName} ] ကို ဝယ်ယူမည်မှာ သေချာပါသလား?\n\nကျသင့်ငွေ: ${secureDisplayPrice} Ks`)) {
             if(!savedIds.find(i => i.pid === pid && i.sid === sid)) { savedIds.unshift({ pid: pid, sid: sid, name: pName }); if(savedIds.length > 5) savedIds.pop(); localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds)); renderSavedIds(); }
-            
             await db.ref('users/' + currentUserData.resellerUid).update({ wallet: resWallet - secureBasePrice });
             await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - secureDisplayPrice });
-            
-            await db.ref('orders/' + Date.now().toString()).set({
-              uid: currentUser.uid, agentUid: currentUserData.resellerUid,
-              playerId: `${pid}(${sid})`, amount: selectedPackage.itemName,
-              price: secureBasePrice, retailPrice: secureDisplayPrice,
-              status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
-            });
+            await db.ref('orders/' + Date.now().toString()).set({ uid: currentUser.uid, agentUid: currentUserData.resellerUid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: secureDisplayPrice, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) });
             alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
         }
-    } 
-    // (B) User / Agent
-    else {
+    } else {
         let actualDeduction = (currentUserData && currentUserData.isReseller) ? secureBasePrice : secureDisplayPrice;
         if(currentWallet < actualDeduction) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။");
-        
         if(confirm(`[ ${selectedPackage.itemName} ] ဝယ်မည်မှာ သေချာပါသလား?\n\nကျသင့်ငွေ: ${actualDeduction} Ks`)) {
             if(!savedIds.find(i => i.pid === pid && i.sid === sid)) { savedIds.unshift({ pid: pid, sid: sid, name: pName }); if(savedIds.length > 5) savedIds.pop(); localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds)); renderSavedIds(); }
-            
             await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - actualDeduction });
-            await db.ref('orders/' + Date.now().toString()).set({
-              uid: currentUser.uid, playerId: `${pid}(${sid})`,
-              amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: actualDeduction,
-              status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
-            });
+            await db.ref('orders/' + Date.now().toString()).set({ uid: currentUser.uid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: actualDeduction, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) });
             alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
         }
     }
   };
 
+  // ✅ [UPDATE] ငွေဖြည့်စနစ် (လုပ်ငန်းစဉ်အမှတ် မထည့်လည်းရပါသည်)
   window.submitTopup = async () => {
-    const amt = document.getElementById('topupAmount').value, txn = document.getElementById('kpayTransId').value;
-    if(!amt || !txn) return alert('အချက်အလက်ပြည့်စုံစွာ ထည့်ပါ။'); 
+    if (!navigator.onLine) { return alert("အင်တာနက် လိုင်းမရှိပါ။"); }
+    const amt = document.getElementById('topupAmount').value;
+    const txn = document.getElementById('kpayTransId').value || 'မထည့်ထားပါ'; // ✅ မထည့်ထားပါက 'မထည့်ထားပါ' ဟု ယူမည်
+    const receiptFile = document.getElementById('topupReceipt').files[0];
+
+    // ✅ ပမာဏ နှင့် ပြေစာပုံ ကိုသာ မဖြစ်မနေ စစ်ဆေးပါမည်
+    if(!amt || !receiptFile) return alert('ငွေပမာဏ နှင့် ပြေစာပုံ (Screenshot) ထည့်ပါ။'); 
     
     document.getElementById('submitTopupBtn').innerText = 'စောင့်ပါ... ⏳';
+    
     try { 
-      await db.ref('topups/' + Date.now()).set({ uid: currentUser.uid, amount: parseInt(amt), transactionId: txn, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) }); 
-      alert('အောင်မြင်ပါသည်။'); 
+      const botToken = "8964049516:AAG3XEJy4hc0SN_1XKvY4EUmBdAJePR4f0M";
+      const chatId = "6436594660";
+      const caption = `💰 ငွေဖြည့် တောင်းဆိုမှုအသစ်\n\n👤 အမည်: ${currentUserData.name || 'User'}\n📱 ဖုန်း: ${currentUserData.phone}\n💲 ပမာဏ: ${amt} Ks\n🧾 လုပ်ငန်းစဉ်အမှတ်: ${txn}`;
+
+      let formData = new FormData();
+      formData.append("chat_id", chatId);
+      formData.append("photo", receiptFile);
+      formData.append("caption", caption);
+
+      let tgResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+        method: 'POST',
+        body: formData
+      });
+
+      let tgResult = await tgResponse.json();
+      if (!tgResult.ok) {
+         throw new Error("Telegram သို့ ပြေစာပို့ရာတွင် အခက်အခဲရှိပါသည်။");
+      }
+
+      await db.ref('topups/' + Date.now()).set({ 
+        uid: currentUser.uid, 
+        amount: parseInt(amt), 
+        transactionId: txn, 
+        status: 'pending', 
+        date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) 
+      }); 
+
+      alert('အောင်မြင်ပါသည်။ ပြေစာပုံကို Admin ထံသို့ Telegram မှတစ်ဆင့် ပို့ဆောင်ပြီးပါပြီ။'); 
+      
       document.getElementById('topupAmount').value = ''; 
       document.getElementById('kpayTransId').value = ''; 
+      document.getElementById('topupReceipt').value = '';
       closeModal('topupModal');
+
     } catch (e) { 
       alert('Error: ' + e.message); 
     } finally { 
@@ -590,9 +635,7 @@
   };
 
   window.changePassword = async () => { const o = document.getElementById('oldPass').value, n = document.getElementById('newPass').value; if(o && n){ try { await currentUser.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(currentUser.email, o)); await currentUser.updatePassword(n); await db.ref('users/' + currentUser.uid).update({ pass: n }); alert('ပြောင်းလဲပြီးပါပြီ။'); } catch (e) { alert('Error: ' + e.message); } } };
-  window.logout = () => { auth.signOut(); window.location.reload(); }; 
-  window.openModal = (id) => document.getElementById(id).style.display = 'flex'; 
-  window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+  window.logout = () => { auth.signOut(); window.location.reload(); }; window.openModal = (id) => document.getElementById(id).style.display = 'flex'; window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 </script>
 </body>
 </html>
