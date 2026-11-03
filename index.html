@@ -13,7 +13,6 @@
     .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     
-    /* 📶 Offline Screen Style */
     #offlineScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.95); z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; backdrop-filter: blur(5px); }
     
     header { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100; }
@@ -54,7 +53,6 @@
 </head>
 <body>
 
-<!-- 📶 No Internet Screen -->
 <div id="offlineScreen">
   <h1 style="font-size: 60px; margin: 0 0 15px 0;">📡</h1>
   <h2 style="color: #ef4444; margin: 0 0 10px 0;">အင်တာနက် ချိတ်ဆက်မှု မရှိပါ</h2>
@@ -94,10 +92,12 @@
     <div id="nameGroup" class="input-group" style="display: none;"><label>အမည်</label><input type="text" id="authName" placeholder="Your Name"></div>
     <div class="input-group"><label>ဖုန်းနံပါတ်</label><input type="number" id="authPhone" placeholder="09xxxxxxxxx"></div>
     <div class="input-group"><label>စကားဝှက်</label><input type="password" id="authPass" placeholder="••••••••"></div>
+    
     <div id="agentCodeGroup" class="input-group" style="display: none; background: rgba(0, 229, 255, 0.1); padding: 10px; border-radius: 8px; border: 1px dashed var(--primary);">
       <label style="color: var(--primary);">Agent Code (ရှိပါက ထည့်ပါ)</label>
       <input type="text" id="authAgentCode" placeholder="ဥပမာ - AGT-1234" style="border-color: var(--primary);">
     </div>
+
     <button class="btn" onclick="handleAuth()" id="authBtn">အကောင့်ဝင်မည်</button>
   </div>
 
@@ -120,26 +120,28 @@
        <p style="color: #aaa; font-size: 14px;">သင့်အား Admin မှ Reseller အဖြစ် ဖွင့်ပေးထားပါသည်။</p>
        <h3 style="color: var(--gold); margin-top: 10px; font-size: 20px;">Invite Code: <span id="myAgentCode">...</span></h3>
     </div>
+    
     <div class="auth-tabs">
       <div class="auth-tab active" id="tabAgentUsers" onclick="switchAgentTab('users')">👥 Customer များ</div>
       <div class="auth-tab" id="tabAgentPrices" onclick="switchAgentTab('prices')">✏️ ဈေးနှုန်း ပြင်ရန်</div>
     </div>
+    
     <div id="agentUsersSection">
        <table style="width:100%; border-collapse: collapse; font-size:13px; text-align:left;">
          <thead><tr><th style="padding:8px; border-bottom:1px solid #333; color:var(--primary);">Name/Phone</th><th style="padding:8px; border-bottom:1px solid #333; color:var(--primary);">Wallet</th></tr></thead>
          <tbody id="agentUsersList"></tbody>
        </table>
     </div>
+    
     <div id="agentPricesSection" style="display:none;">
        <div id="agentPricesList" style="max-height: 250px; overflow-y: auto;"></div>
     </div>
   </div>
 </div>
 
-<!-- Instruction Modal -->
+<!-- Modals -->
 <div id="instructionModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('instructionModal')">×</span><h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2><div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;"><p style="color: #ccc;">- ၂၄ နာရီအတွင်း Diamond ဝင်ပါမည်။</p></div></div></div>
 
-<!-- History Modal -->
 <div id="notiModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('notiModal')">×</span>
@@ -155,7 +157,6 @@
   </div>
 </div>
 
-<!-- Buy Modal -->
 <div id="buyModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('buyModal')">×</span>
@@ -166,6 +167,7 @@
       <div style="flex: 2;"><label style="font-size: 13px; color: #ccc;">Player ID</label><input type="number" id="gamePlayerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()"></div>
       <div style="flex: 1.5;"><label style="font-size: 13px; color: #ccc;">Zone ID</label><input type="number" id="gameServerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()"></div>
     </div>
+    
     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
       <input type="checkbox" id="verifyCb" onchange="handleCheckChange()" style="width: 20px; height: 20px; accent-color: var(--primary);">
       <label for="verifyCb" style="font-size: 14px; color: #ccc;">ID များ မှန်ကန်ကြောင်း အတည်ပြုပါသည်</label>
@@ -182,7 +184,6 @@
   </div>
 </div>
 
-<!-- ✅ Top-up Modal (လုပ်ငန်းစဉ်အမှတ် Optional ဖြစ်သွားပါပြီ) -->
 <div id="topupModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
@@ -194,9 +195,10 @@
       <input type="number" id="topupAmount" placeholder="ဥပမာ - 1000">
     </div>
     <div class="input-group">
-      <label>လုပ်ငန်းစဉ်အမှတ် <span style="color:#aaa; font-size: 11px;">(မထည့်လည်းရပါသည်)</span></label>
-      <input type="text" id="kpayTransId" placeholder="နောက်ဆုံးဂဏန်း ၆ လုံး (Optional)">
+      <label>လုပ်ငန်းစဉ်အမှတ် (Transaction ID)</label>
+      <input type="text" id="kpayTransId" placeholder="နောက်ဆုံးဂဏန်း ၆ လုံး">
     </div>
+    
     <div class="input-group">
       <label style="color: var(--primary);">ပြေစာ (Screenshot) ရွေးပါ</label>
       <input type="file" id="topupReceipt" accept="image/*" style="padding: 10px; border: 1px dashed var(--primary); background: rgba(0, 229, 255, 0.1);">
@@ -206,7 +208,6 @@
   </div>
 </div>
 
-<!-- Profile Modal -->
 <div id="profileModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('profileModal')">×</span>
@@ -242,20 +243,14 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <script>
-  // 📶 Offline/Online Detection System
   function checkInternetConnection() {
     const offlineScreen = document.getElementById('offlineScreen');
-    if (navigator.onLine) {
-      offlineScreen.style.display = 'none';
-    } else {
-      offlineScreen.style.display = 'flex';
-    }
+    if (navigator.onLine) { offlineScreen.style.display = 'none'; } else { offlineScreen.style.display = 'flex'; }
   }
   window.addEventListener('online', checkInternetConnection);
   window.addEventListener('offline', checkInternetConnection);
   checkInternetConnection();
 
-  // 🛡️ ANTI-HACK
   document.addEventListener('contextmenu', e => e.preventDefault());
   document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false; };
 
@@ -271,7 +266,6 @@
   
   let agentCustomPrices = {}; 
   let globalProfitPct = 0; 
-  
   let isResellerMode = localStorage.getItem('fzw_reseller_mode') === 'true';
   let savedIds = JSON.parse(localStorage.getItem('fzw_saved_ids')) || [];
 
@@ -412,6 +406,7 @@
 
   window.toggleResellerMode = () => { isResellerMode = document.getElementById('resellerToggle').checked; localStorage.setItem('fzw_reseller_mode', isResellerMode); loadProducts(); };
 
+  // ✅ Agent က ကိုယ်တိုင်ရောင်းဈေး ပြင်ရန်
   function loadAgentPrices() {
      const list = document.getElementById('agentPricesList'); list.innerHTML = '';
      db.ref('products').once('value', snap => {
@@ -419,10 +414,14 @@
            const p = c.val();
            let base = p.price || 0;
            let systemSellPrice = Math.ceil((base + (base * globalProfitPct / 100)) / 100) * 100;
+           // ✅ Reseller အတွက် ရောင်းဈေးထဲမှ (100) အလိုအလျောက် လျှော့ပေးမည်
+           let resellerCost = systemSellPrice - 100;
+           if (resellerCost < base) resellerCost = base;
+           
            let myPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
            
            list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.4); padding:10px; border-radius:5px; margin-bottom:8px; border:1px solid #333;">
-             <div style="color:var(--gold); font-weight:bold;">${p.diamonds} <span style="font-size:11px; color:#888; font-weight:normal;">(အရင်း: ${base})</span></div>
+             <div style="color:var(--gold); font-weight:bold;">${p.diamonds} <span style="font-size:11px; color:#888; font-weight:normal;">(သင်ဝယ်ရမည့်ဈေး: ${resellerCost})</span></div>
              <div style="display:flex; gap:5px;">
                <input type="number" id="cp_${c.key}" value="${myPrice}" style="width:80px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;">
                <button onclick="saveCustomPrice('${p.diamonds}', 'cp_${c.key}')" style="background:var(--success); color:white; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button>
@@ -459,12 +458,14 @@
      const tList = document.getElementById('topupListUI'), oList = document.getElementById('orderListUI'), mList = document.getElementById('msgListUI'); tList.innerHTML = ''; oList.innerHTML = ''; mList.innerHTML = '';
      [...myMsgs = myAnnouncements].sort((a,b)=>b.id-a.id).forEach(m => mList.innerHTML += `<div class="history-item" style="border-left: 4px solid var(--primary);"><div style="font-weight:bold; color:var(--primary);">${m.title}</div><div style="font-size: 13px; color: #ddd; margin-top: 5px;">${m.body}</div></div>`);
      [...myTops = myTopups].sort((a,b)=>b.id-a.id).forEach(i => tList.innerHTML += `<div class="history-item ${i.status}"><div style="font-weight:bold; color:var(--gold);">💰 ${i.amount} Ks</div><div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${i.status}">${i.status==='pending'?'⏳ စောင့်ဆိုင်းပါ':(i.status==='approved'?'✅ အောင်မြင်':'❌ ပယ်ချ')}</div></div>`);
+     
      [...myOrds = myOrders].sort((a,b)=>b.id-a.id).forEach(i => oList.innerHTML += `<div class="history-item ${i.status}"><div style="font-weight:bold; color:var(--primary);">💎 ${i.amount} <span style="color:#aaa; font-size:11px;">(${i.retailPrice || i.price} Ks)</span></div><div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${i.status}">${i.status==='pending'?'⏳ စောင့်ဆိုင်းပါ':(i.status==='approved'?'✅ အောင်မြင်':'❌ ပယ်ချ')}</div></div>`);
      
      let badge = document.getElementById('notiBadge'), unread = (myTopups.length + myOrders.length + myAnnouncements.length + (isShopOpen?0:1)) - (parseInt(localStorage.getItem('fzw_noti_count')) || 0);
      if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; } else badge.style.display = 'none';
   }
 
+  // ✅ ဈေးနှုန်းတွက်ချက်၍ ပြသမည့် Main Function
   function loadProducts() {
     db.ref('products').on('value', (snap) => {
       const c = document.getElementById('dynamicShopCategories'); c.innerHTML = '';
@@ -478,16 +479,21 @@
             let html = `<h3 style="color: ${color}; margin-bottom: 10px; margin-top: 15px;">${cName}</h3><div class="products">`;
             grouped[catId].forEach(p => {
                let isPass = p.diamonds.toLowerCase().includes('pass') || p.diamonds.toLowerCase().includes('weekly'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
+               
                let basePrice = p.price || 0;
                let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
+               // ✅ Reseller အတွက် 100 အမြဲလျော့ပေးမည်
+               let resellerCost = systemSellPrice - 100;
+               if (resellerCost < basePrice) resellerCost = basePrice;
+               
                let displayPrice = systemSellPrice; 
 
                if (currentUserData && currentUserData.resellerUid) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
                else if (isResellerMode) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
 
-               let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${basePrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
+               let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${systemSellPrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
 
-               html += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${basePrice}, ${displayPrice})">
+               html += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${resellerCost}, ${displayPrice})">
                           <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${isPass?'⭐':'💎'} ${p.diamonds}</h3>
                           <p style="color: ${isResellerMode ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
                           ${editBtn}
@@ -501,16 +507,21 @@
          hasItems = true; leftHtml += `<div class="products">`;
          grouped[catId].forEach(p => {
             let isPass = p.diamonds.toLowerCase().includes('pass'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
+            
             let basePrice = p.price || 0;
             let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
+            // ✅ Reseller အတွက် 100 အမြဲလျော့ပေးမည်
+            let resellerCost = systemSellPrice - 100;
+            if (resellerCost < basePrice) resellerCost = basePrice;
+
             let displayPrice = systemSellPrice; 
             
             if (currentUserData && currentUserData.resellerUid) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
             else if (isResellerMode) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
                
-            let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${basePrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
+            let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${systemSellPrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
 
-            leftHtml += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${basePrice}, ${displayPrice})">
+            leftHtml += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${resellerCost}, ${displayPrice})">
                            <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${isPass?'⭐':'💎'} ${p.diamonds}</h3>
                            <p style="color: ${isResellerMode ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
                            ${editBtn}
@@ -549,12 +560,15 @@
     } catch (e) { alert("❌ အကောင့် ရှာမတွေ့ပါ။"); resetCheck(); }
   };
 
+  // ✅ Order Confirm Logic 
   window.confirmPurchase = async () => {
     const pid = document.getElementById('gamePlayerId').value, sid = document.getElementById('gameServerId').value, pName = document.getElementById('displayPlayerName').innerText;
     const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
-    const secureBasePrice = parseInt(selectedPackage.origPrice); 
-    const secureDisplayPrice = parseInt(selectedPackage.displayPrice); 
     
+    const secureBasePrice = parseInt(selectedPackage.origPrice); // ✅ ဤနေရာတွင် Reseller ၏ ၁၀၀ လျှော့ထားသော ရင်းနှီးငွေဖြစ်သည် (Reseller Cost)
+    const secureDisplayPrice = parseInt(selectedPackage.displayPrice); // ရောင်းဈေး
+    
+    // (A) Customer
     if(currentUserData && currentUserData.resellerUid) {
         if(currentWallet < secureDisplayPrice) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။ ကိုယ်စားလှယ်ထံ ငွေဖြည့်ပါ။");
         const resSnap = await db.ref('users/' + currentUserData.resellerUid + '/wallet').once('value');
@@ -563,79 +577,109 @@
 
         if(confirm(`[ ${selectedPackage.itemName} ] ကို ဝယ်ယူမည်မှာ သေချာပါသလား?\n\nကျသင့်ငွေ: ${secureDisplayPrice} Ks`)) {
             if(!savedIds.find(i => i.pid === pid && i.sid === sid)) { savedIds.unshift({ pid: pid, sid: sid, name: pName }); if(savedIds.length > 5) savedIds.pop(); localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds)); renderSavedIds(); }
+            
             await db.ref('users/' + currentUserData.resellerUid).update({ wallet: resWallet - secureBasePrice });
             await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - secureDisplayPrice });
-            await db.ref('orders/' + Date.now().toString()).set({ uid: currentUser.uid, agentUid: currentUserData.resellerUid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: secureDisplayPrice, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) });
+            
+            await db.ref('orders/' + Date.now().toString()).set({
+              uid: currentUser.uid, agentUid: currentUserData.resellerUid,
+              playerId: `${pid}(${sid})`, amount: selectedPackage.itemName,
+              price: secureBasePrice, retailPrice: secureDisplayPrice,
+              status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
+            });
             alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
         }
-    } else {
+    } 
+    // (B) User (သို့) Agent ကိုယ်တိုင် ဝယ်ယူပါက
+    else {
+        // Agent ကိုယ်တိုင်ဝယ်ပါက ၁၀၀ လျှော့ပြီးသား (secureBasePrice) ဖြင့် ဖြတ်မည်၊ ရိုးရိုး User ဝယ်ပါက ရောင်းဈေးအပြည့် ဖြတ်မည်။
         let actualDeduction = (currentUserData && currentUserData.isReseller) ? secureBasePrice : secureDisplayPrice;
         if(currentWallet < actualDeduction) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။");
+        
         if(confirm(`[ ${selectedPackage.itemName} ] ဝယ်မည်မှာ သေချာပါသလား?\n\nကျသင့်ငွေ: ${actualDeduction} Ks`)) {
             if(!savedIds.find(i => i.pid === pid && i.sid === sid)) { savedIds.unshift({ pid: pid, sid: sid, name: pName }); if(savedIds.length > 5) savedIds.pop(); localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds)); renderSavedIds(); }
+            
             await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - actualDeduction });
-            await db.ref('orders/' + Date.now().toString()).set({ uid: currentUser.uid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: actualDeduction, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) });
+            await db.ref('orders/' + Date.now().toString()).set({
+              uid: currentUser.uid, playerId: `${pid}(${sid})`,
+              amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: actualDeduction,
+              status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
+            });
             alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
         }
     }
   };
 
-  // ✅ [UPDATE] ငွေဖြည့်စနစ် (လုပ်ငန်းစဉ်အမှတ် မထည့်လည်းရပါသည်)
+  // ✅ [ERROR FREE] Database သို့ အရင်တင်ပြီးမှ Telegram သို့ပို့မည်
   window.submitTopup = async () => {
     if (!navigator.onLine) { return alert("အင်တာနက် လိုင်းမရှိပါ။"); }
     const amt = document.getElementById('topupAmount').value;
-    const txn = document.getElementById('kpayTransId').value || 'မထည့်ထားပါ'; // ✅ မထည့်ထားပါက 'မထည့်ထားပါ' ဟု ယူမည်
+    const txn = document.getElementById('kpayTransId').value;
     const receiptFile = document.getElementById('topupReceipt').files[0];
 
-    // ✅ ပမာဏ နှင့် ပြေစာပုံ ကိုသာ မဖြစ်မနေ စစ်ဆေးပါမည်
-    if(!amt || !receiptFile) return alert('ငွေပမာဏ နှင့် ပြေစာပုံ (Screenshot) ထည့်ပါ။'); 
+    if(!amt || !txn || !receiptFile) return alert('ငွေပမာဏ၊ လုပ်ငန်းစဉ်အမှတ် နှင့် ပြေစာပုံ (Screenshot) အားလုံး ထည့်ပါ။'); 
     
     document.getElementById('submitTopupBtn').innerText = 'စောင့်ပါ... ⏳';
     
     try { 
-      const botToken = "8964049516:AAG3XEJy4hc0SN_1XKvY4EUmBdAJePR4f0M";
-      const chatId = "6436594660";
-      const caption = `💰 ငွေဖြည့် တောင်းဆိုမှုအသစ်\n\n👤 အမည်: ${currentUserData.name || 'User'}\n📱 ဖုန်း: ${currentUserData.phone}\n💲 ပမာဏ: ${amt} Ks\n🧾 လုပ်ငန်းစဉ်အမှတ်: ${txn}`;
+      const topupId = Date.now().toString(); // String ID
+      
+      const baseCaption = `💰 ငွေဖြည့် တောင်းဆိုမှုအသစ်\n\n👤 အမည်: ${currentUserData.name || 'User'}\n📱 ဖုန်း: ${currentUserData.phone}\n💲 ပမာဏ: ${amt} Ks\n🧾 လုပ်ငန်းစဉ်အမှတ်: ${txn}`;
+      const fullCaption = baseCaption + `\n\nအခြေအနေ: ⏳ စောင့်ရန်`;
 
-      let formData = new FormData();
-      formData.append("chat_id", chatId);
-      formData.append("photo", receiptFile);
-      formData.append("caption", caption);
-
-      let tgResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
-        method: 'POST',
-        body: formData
-      });
-
-      let tgResult = await tgResponse.json();
-      if (!tgResult.ok) {
-         throw new Error("Telegram သို့ ပြေစာပို့ရာတွင် အခက်အခဲရှိပါသည်။");
-      }
-
-      await db.ref('topups/' + Date.now()).set({ 
+      // 1. Firebase သို့ အရင်ဆုံး ပို့မည် 
+      await db.ref('topups/' + topupId).set({ 
         uid: currentUser.uid, 
         amount: parseInt(amt), 
         transactionId: txn, 
         status: 'pending', 
-        date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) 
+        date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }),
+        tgMessageId: null,
+        tgCaption: baseCaption 
       }); 
 
-      alert('အောင်မြင်ပါသည်။ ပြေစာပုံကို Admin ထံသို့ Telegram မှတစ်ဆင့် ပို့ဆောင်ပြီးပါပြီ။'); 
+      alert('အောင်မြင်ပါသည်။ (Admin မှ စစ်ဆေးပြီးပါက ငွေဝင်လာပါမည်)'); 
       
       document.getElementById('topupAmount').value = ''; 
       document.getElementById('kpayTransId').value = ''; 
       document.getElementById('topupReceipt').value = '';
       closeModal('topupModal');
+      document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; 
+
+      // 2. Telegram သို့ နောက်မှ လိုက်ပို့မည်
+      try {
+        const botToken = "8964049516:AAG3XEJy4hc0SN_1XKvY4EUmBdAJePR4f0M";
+        const chatId = "6436594660";
+
+        let formData = new FormData();
+        formData.append("chat_id", chatId);
+        formData.append("photo", receiptFile);
+        formData.append("caption", fullCaption);
+
+        let tgResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+          method: 'POST',
+          body: formData
+        });
+
+        let tgResult = await tgResponse.json();
+
+        if (tgResult.ok) {
+           await db.ref('topups/' + topupId).update({ tgMessageId: tgResult.result.message_id });
+        }
+      } catch (tgError) {
+         console.log("Telegram ပို့ရာတွင် Error တက်သွားပါသည်။ သို့သော် Admin ထံသို့ ရောက်ရှိပြီးဖြစ်ပါသည်။", tgError);
+      }
 
     } catch (e) { 
       alert('Error: ' + e.message); 
-    } finally { 
       document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; 
     }
   };
 
   window.changePassword = async () => { const o = document.getElementById('oldPass').value, n = document.getElementById('newPass').value; if(o && n){ try { await currentUser.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(currentUser.email, o)); await currentUser.updatePassword(n); await db.ref('users/' + currentUser.uid).update({ pass: n }); alert('ပြောင်းလဲပြီးပါပြီ။'); } catch (e) { alert('Error: ' + e.message); } } };
-  window.logout = () => { auth.signOut(); window.location.reload(); }; window.openModal = (id) => document.getElementById(id).style.display = 'flex'; window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+  window.logout = () => { auth.signOut(); window.location.reload(); }; 
+  window.openModal = (id) => document.getElementById(id).style.display = 'flex'; 
+  window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 </script>
 </body>
 </html>
