@@ -44,6 +44,8 @@
     .modal-content { background: #1e293b; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
     .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
     
+    .floating-tg { position: fixed; bottom: 20px; right: 20px; background: #0088cc; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; z-index: 900; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    
     #bannedScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
     .history-item { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
     .status-pending { color: #fbbf24; } .status-approved { color: #22c55e; } .status-rejected { color: #ef4444; }
@@ -116,6 +118,10 @@
     <span class="close-btn" onclick="closeModal('vipModal')">×</span>
     <h2 style="color: var(--gold); margin-bottom: 15px;">👑 VIP အစီအစဉ်များ</h2>
     <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border: 1px dashed var(--gold); margin-bottom: 15px;">
+       <p style="color: #22c55e; font-size: 14px; text-align: left; margin-bottom: 15px; border-left: 3px solid #22c55e; padding-left: 10px;">
+          <strong>🎁 VIP အကျိုးခံစားခွင့်:</strong><br>
+          ဝယ်ယူသမျှ Diamond နှင့် Pass အားလုံးအတွက် ရောင်းဈေးထဲမှ <strong>(၁၀၀ ကျပ်)</strong> အမြဲတမ်း အလိုအလျောက် လျှော့ပေးသွားပါမည်။
+       </p>
        <p style="color: white; font-size: 16px; margin-bottom: 10px;">⭐ 1 လစာ - <span style="color: var(--gold); font-weight: bold;">5000 Ks</span></p>
        <p style="color: white; font-size: 16px;">⭐⭐ 2 လစာ - <span style="color: var(--gold); font-weight: bold;">10000 Ks</span></p>
     </div>
@@ -125,14 +131,14 @@
   </div>
 </div>
 
-<!-- ✅ Support Chat Modal (Messenger လို အပြန်အလှန် ပို့နိုင်သောစနစ်) -->
+<!-- Support Chat Modal -->
 <div id="supportModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('supportModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">💬 Message (Live Chat)</h2>
     
     <div id="mySupportHistory" style="height: 300px; overflow-y: auto; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; display: flex; flex-direction: column;">
-       <!-- Messages will appear here like a chat app -->
+       <!-- Messages will appear here -->
     </div>
     
     <div style="display: flex; gap: 5px;">
@@ -169,6 +175,8 @@
     </div>
   </div>
 </div>
+
+<div id="instructionModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('instructionModal')">×</span><h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2><div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;"><p style="color: #ccc;">- ၂၄ နာရီအတွင်း Diamond ဝင်ပါမည်။</p></div></div></div>
 
 <div id="notiModal" class="modal">
   <div class="modal-content">
@@ -251,6 +259,9 @@
   </div>
 </div>
 
+<!-- ✅ အပြင်ဘက်မှာ အလွယ်တကူနှိပ်လို့ရမယ့် Telegram ခလုတ် -->
+<a href="https://t.me/FileZWarrior_amk" class="floating-tg" target="_blank">✈️</a>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -308,32 +319,39 @@
     } catch (e) { alert("Error: " + e.message); document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; }
   };
 
-  // ✅ In-App Message ပို့မည့် Function (Chat ပုံစံ)
+  // ✅ In-App Message (Chat ပို့ရန်)
   window.sendSupportMessage = async () => {
      const msg = document.getElementById('supportMsgInput').value;
      if(!msg) return;
-     
      document.getElementById('supportMsgInput').value = 'ပို့နေပါသည်...';
      await db.ref('supportChats/' + Date.now()).set({
         uid: currentUser.uid,
         name: currentUserData.name || 'User',
         phone: currentUserData.phone || '',
-        sender: 'user', // User ကပို့ကြောင်း မှတ်သားမည်
+        sender: 'user', 
         message: msg,
         date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
      });
      document.getElementById('supportMsgInput').value = '';
   };
 
+  // ✅ Chat History ကို ဖတ်မည့် Function (Error မတက်စေရန် Filter အတိအကျလုပ်ထားပါသည်)
   function listenSupportMessages() {
      if(!currentUser) return;
-     db.ref('supportChats').orderByChild('uid').equalTo(currentUser.uid).on('value', snap => {
+     db.ref('supportChats').on('value', snap => {
        const box = document.getElementById('mySupportHistory');
        if(!box) return;
        box.innerHTML = '';
        let msgs = [];
+       
        if(snap.exists()){
-          snap.forEach(c => msgs.push({id: c.key, ...c.val()}));
+          snap.forEach(c => {
+             let d = c.val();
+             if(d.uid === currentUser.uid) { msgs.push({id: c.key, ...d}); }
+          });
+          
+          msgs.sort((a,b) => parseInt(a.id) - parseInt(b.id)); // Chat အစီအစဉ်အတိုင်း
+          
           msgs.forEach(m => {
              if(m.sender === 'user') {
                box.innerHTML += `<div style="text-align: right; margin-bottom:10px;">
@@ -348,7 +366,8 @@
              }
           });
           setTimeout(() => { box.scrollTop = box.scrollHeight; }, 100);
-       } else {
+       } 
+       if(msgs.length === 0) {
           box.innerHTML = '<div style="flex:1; display:flex; justify-content:center; align-items:center;"><p style="color:#888; font-size:13px; text-align:center;">Admin ထံ စတင်စာပို့နိုင်ပါပြီ။</p></div>';
        }
      });
@@ -363,16 +382,24 @@
           currentUserData = snap.val();
           if (currentUserData.isBanned === true) { document.getElementById('bannedScreen').style.display = 'flex'; document.getElementById('bannedWalletBalance').innerText = currentUserData.wallet || 0; return; } else document.getElementById('bannedScreen').style.display = 'none';
           
+          // ✅ VIP သက်တမ်း စစ်ဆေးခြင်း
+          let vipDaysLeft = 0;
           if(currentUserData.isVip && currentUserData.vipExpiry) {
              if(Date.now() > currentUserData.vipExpiry) {
                 await db.ref('users/' + user.uid).update({ isVip: false, vipExpiry: null });
                 currentUserData.isVip = false;
+             } else {
+                vipDaysLeft = Math.ceil((currentUserData.vipExpiry - Date.now()) / (1000 * 60 * 60 * 24));
              }
           }
 
           document.getElementById('walletBalance').innerText = currentUserData.wallet || 0; 
-          if(currentUserData.isVip) { document.getElementById('profileName').innerHTML = `${currentUserData.name || 'User'} <span style="color:var(--gold); font-weight:bold;">[👑 VIP]</span>`; } 
-          else { document.getElementById('profileName').innerText = currentUserData.name || 'User'; }
+          
+          if(currentUserData.isVip) { 
+             document.getElementById('profileName').innerHTML = `${currentUserData.name || 'User'} <br><span style="color:var(--gold); font-size: 13px; font-weight:bold;">[👑 VIP - ${vipDaysLeft} ရက်ကျန်ပါသည်]</span>`; 
+          } else { 
+             document.getElementById('profileName').innerText = currentUserData.name || 'User'; 
+          }
           document.getElementById('profilePhone').innerText = currentUserData.phone;
           
           if(currentUserData.isReseller) {
@@ -399,7 +426,18 @@
   });
 
   window.switchAgentTab = (tab) => { document.getElementById('tabAgentUsers').classList.toggle('active', tab === 'users'); document.getElementById('tabAgentPrices').classList.toggle('active', tab === 'prices'); document.getElementById('agentUsersSection').style.display = tab === 'users' ? 'block' : 'none'; document.getElementById('agentPricesSection').style.display = tab === 'prices' ? 'block' : 'none'; };
-  function listenAgentUsers() { db.ref('users').orderByChild('resellerUid').equalTo(currentUser.uid).on('value', snap => { const list = document.getElementById('agentUsersList'); list.innerHTML = ''; if(!snap.exists()) return list.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:10px; color:#aaa;">Customer မရှိသေးပါ</td></tr>'; snap.forEach(c => { const u = c.val(); list.innerHTML += `<tr><td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td><td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;"><input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></td></tr>`; }); }); }
+
+  function listenAgentUsers() {
+    db.ref('users').orderByChild('resellerUid').equalTo(currentUser.uid).on('value', snap => {
+       const list = document.getElementById('agentUsersList'); list.innerHTML = '';
+       if(!snap.exists()) return list.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:10px; color:#aaa;">Customer မရှိသေးပါ</td></tr>';
+       snap.forEach(c => {
+         const u = c.val();
+         list.innerHTML += `<tr><td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td><td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;"><input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></td></tr>`;
+       });
+    });
+  }
+
   window.updateSubUserWallet = async (subUid) => { const val = document.getElementById('sub_w_' + subUid).value; await db.ref('users/' + subUid).update({ wallet: parseInt(val) }); alert('Customer ငွေစာရင်း ပြင်ဆင်ပြီးပါပြီ။'); };
   window.toggleResellerMode = () => { isResellerMode = document.getElementById('resellerToggle').checked; localStorage.setItem('fzw_reseller_mode', isResellerMode); loadProducts(); };
 
@@ -449,7 +487,7 @@
                let isPass = p.diamonds.toLowerCase().includes('pass') || p.diamonds.toLowerCase().includes('weekly'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
                let basePrice = p.price || 0; let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
                let discountPrice = systemSellPrice - 100; if (discountPrice < basePrice) discountPrice = basePrice;
-               let displayPrice = systemSellPrice; let deductPrice = systemSellPrice;
+              let displayPrice = systemSellPrice; let deductPrice = systemSellPrice;
                if (currentUserData && currentUserData.resellerUid) { displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice; deductPrice = discountPrice; } 
                else if (currentUserData && (currentUserData.isReseller || currentUserData.isVip)) { displayPrice = discountPrice; deductPrice = discountPrice; }
                let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${systemSellPrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
@@ -532,6 +570,7 @@
     }
   };
 
+  // ✅ Telegram သို့ ပြေစာပို့မည့် Function
   window.submitTopup = async () => {
     if (!navigator.onLine) { return alert("အင်တာနက် လိုင်းမရှိပါ။"); }
     const amt = document.getElementById('topupAmount').value;
