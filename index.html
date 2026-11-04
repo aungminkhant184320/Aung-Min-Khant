@@ -8,7 +8,7 @@
     :root { --primary: #00e5ff; --gold: #fbbf24; --bg: #020617; --card-bg: rgba(30, 41, 59, 0.6); --glass-border: rgba(255, 255, 255, 0.1); --text: #f8fafc; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; overscroll-behavior-y: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-    input, button { user-select: auto; -webkit-user-select: auto; }
+    input, button, textarea { user-select: auto; -webkit-user-select: auto; }
     #initialLoader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
     .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -31,7 +31,6 @@
     .input-group { margin-bottom: 15px; text-align: left; }
     .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box; }
     .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; display: block; }
-    .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
     
     .products { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; margin-bottom: 20px;}
     .product-card { background: var(--card-bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; position: relative; }
@@ -44,7 +43,6 @@
     .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
     .modal-content { background: #1e293b; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
     .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
-    .floating-tg { position: fixed; bottom: 20px; right: 20px; background: #0088cc; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; z-index: 900; }
     
     #bannedScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
     .history-item { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
@@ -75,8 +73,9 @@
       <span>💰 <span id="walletBalance">0</span> Ks</span>
     </div>
     <div class="nav-icons" id="navIcons" style="display:none;">
+      <button class="icon-btn" onclick="openModal('vipModal')" style="font-size: 22px;">👑</button>
       <button class="icon-btn" id="agentPanelBtn" style="display:none; color:var(--gold);" onclick="openModal('agentModal')">💼</button>
-      <button class="icon-btn" onclick="openModal('instructionModal')">ℹ️</button>
+      <button class="icon-btn" onclick="openModal('supportModal')">💬</button>
       <button class="icon-btn" onclick="openNotiModal()">🔔<span id="notiBadge" class="badge"></span></button>
       <button class="icon-btn" onclick="openModal('profileModal')">👤</button>
     </div>
@@ -111,6 +110,38 @@
   </div>
 </div>
 
+<!-- VIP Modal -->
+<div id="vipModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('vipModal')">×</span>
+    <h2 style="color: var(--gold); margin-bottom: 15px;">👑 VIP အစီအစဉ်များ</h2>
+    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border: 1px dashed var(--gold); margin-bottom: 15px;">
+       <p style="color: white; font-size: 16px; margin-bottom: 10px;">⭐ 1 လစာ - <span style="color: var(--gold); font-weight: bold;">5000 Ks</span></p>
+       <p style="color: white; font-size: 16px;">⭐⭐ 2 လစာ - <span style="color: var(--gold); font-weight: bold;">10000 Ks</span></p>
+    </div>
+    <p style="color: #ccc; font-size: 13px; margin-bottom: 15px;">VIP ဝင်ရန် အောက်ပါနည်းလမ်းများမှ တစ်ခုခုဖြင့် Admin သို့ ဆက်သွယ်ပါ။</p>
+    <a href="https://t.me/FileZWarrior_amk?text=vip ဝင်ချင်လို့ပါ မင်းခန့်" target="_blank" class="btn" style="background: #0088cc; color: white; text-align: center; text-decoration: none; margin-bottom: 10px; display: block;">✈️ Telegram မှ ဆက်သွယ်ရန်</a>
+    <button class="btn" style="background: #334155; color: white;" onclick="closeModal('vipModal'); openModal('supportModal');">💬 ဆော့ဖ်ဝဲထဲမှ စာပို့ရန်</button>
+  </div>
+</div>
+
+<!-- ✅ Support Chat Modal (Messenger လို အပြန်အလှန် ပို့နိုင်သောစနစ်) -->
+<div id="supportModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('supportModal')">×</span>
+    <h2 style="color: var(--primary); margin-bottom: 15px;">💬 Message (Live Chat)</h2>
+    
+    <div id="mySupportHistory" style="height: 300px; overflow-y: auto; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; display: flex; flex-direction: column;">
+       <!-- Messages will appear here like a chat app -->
+    </div>
+    
+    <div style="display: flex; gap: 5px;">
+      <input type="text" id="supportMsgInput" style="flex: 1; padding: 12px; border-radius: 20px; background: #111; color: white; border: 1px solid #333; outline: none;" placeholder="စာရိုက်ပါ...">
+      <button onclick="sendSupportMessage()" style="background: var(--primary); color: black; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; display: flex; justify-content: center; align-items: center;">➤</button>
+    </div>
+  </div>
+</div>
+
 <!-- Agent Panel -->
 <div id="agentModal" class="modal">
   <div class="modal-content" style="max-width: 600px;">
@@ -138,9 +169,6 @@
     </div>
   </div>
 </div>
-
-<!-- Modals -->
-<div id="instructionModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('instructionModal')">×</span><h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2><div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;"><p style="color: #ccc;">- ၂၄ နာရီအတွင်း Diamond ဝင်ပါမည်။</p></div></div></div>
 
 <div id="notiModal" class="modal">
   <div class="modal-content">
@@ -189,19 +217,8 @@
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">ငွေဖြည့်ရန်</h2>
     <div id="paymentMethodsList" style="margin-bottom: 15px; max-height: 180px; overflow-y: auto;"></div>
-    
-    <div class="input-group">
-      <label>ငွေပမာဏ (MMK)</label>
-      <input type="number" id="topupAmount" placeholder="ဥပမာ - 1000">
-    </div>
-    
-    <!-- လုပ်ငန်းစဉ်အမှတ် (Transaction ID) အကွက်ကို ဖျက်လိုက်ပါပြီ -->
-    
-    <div class="input-group">
-      <label style="color: var(--primary);">ပြေစာ (Screenshot) ရွေးပါ</label>
-      <input type="file" id="topupReceipt" accept="image/*" style="padding: 10px; border: 1px dashed var(--primary); background: rgba(0, 229, 255, 0.1);">
-    </div>
-
+    <div class="input-group"><label>ငွေပမာဏ (MMK)</label><input type="number" id="topupAmount"></div>
+    <div class="input-group"><label style="color: var(--primary);">ပြေစာ (Screenshot) ရွေးပါ</label><input type="file" id="topupReceipt" accept="image/*" style="padding: 10px; border: 1px dashed var(--primary); background: rgba(0, 229, 255, 0.1);"></div>
     <button class="btn" id="submitTopupBtn" onclick="submitTopup()">ငွေဖြည့်မည်</button>
   </div>
 </div>
@@ -234,8 +251,6 @@
   </div>
 </div>
 
-<a href="https://t.me/FileZWarrior_amk" class="floating-tg" target="_blank">✈️</a>
-
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -245,12 +260,9 @@
     const offlineScreen = document.getElementById('offlineScreen');
     if (navigator.onLine) { offlineScreen.style.display = 'none'; } else { offlineScreen.style.display = 'flex'; }
   }
-  window.addEventListener('online', checkInternetConnection);
-  window.addEventListener('offline', checkInternetConnection);
-  checkInternetConnection();
+  window.addEventListener('online', checkInternetConnection); window.addEventListener('offline', checkInternetConnection); checkInternetConnection();
 
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false; };
+  document.addEventListener('contextmenu', e => e.preventDefault()); document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false; };
 
   const firebaseConfig = { apiKey: "AIzaSyBv26fC0ogxNXoz8tYJgAJkaJSA38uCJP8", authDomain: "gggf-ce3ed.firebaseapp.com", databaseURL: "https://gggf-ce3ed-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "gggf-ce3ed", storageBucket: "gggf-ce3ed.firebasestorage.app", messagingSenderId: "313639910881", appId: "1:313639910881:web:708b5237ae4f5a078aa6a0" };
   firebase.initializeApp(firebaseConfig); const auth = firebase.auth(); const db = firebase.database();
@@ -270,58 +282,77 @@
   window.copyPhone = (phone) => { navigator.clipboard.writeText(phone).then(() => alert(phone + " ဖုန်းနံပါတ်ကို Copy ကူးယူပြီးပါပြီ။")); };
 
   db.ref('appSettings/isShopOpen').on('value', (snap) => { isShopOpen = snap.exists() ? snap.val() : true; document.getElementById('shopClosedBanner').style.display = isShopOpen ? 'none' : 'block'; });
-  
-  db.ref('appSettings/globalProfitPct').on('value', (snap) => {
-    globalProfitPct = snap.exists() ? parseFloat(snap.val()) : 0;
-    loadProducts(); 
-  });
+  db.ref('appSettings/globalProfitPct').on('value', (snap) => { globalProfitPct = snap.exists() ? parseFloat(snap.val()) : 0; loadProducts(); });
 
   db.ref('payments').on('value', (snap) => {
     const c = document.getElementById('paymentMethodsList'); c.innerHTML = '';
     if(snap.exists()) { snap.forEach(child => { const p = child.val(); c.innerHTML += `<div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:8px; text-align:center; margin-bottom:10px; border:1px dashed var(--gold);"><h4 style="color:#fff; margin:0 0 5px 0;">${p.type}</h4><div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:5px;"><h3 style="color:var(--gold); margin:0;">${p.phone}</h3><button onclick="copyPhone('${p.phone}')" style="background:var(--primary); border:none; padding:4px 8px; border-radius:4px; font-weight:bold; color:black; cursor:pointer;">Copy</button></div><p style="margin:0; font-size:13px; color:#aaa;">${p.name}</p></div>`; }); } 
   });
 
-  window.switchAuth = (mode) => { 
-    currentAuthMode = mode; 
-    document.getElementById('tabLogin').classList.toggle('active', mode === 'login'); 
-    document.getElementById('tabSignup').classList.toggle('active', mode === 'signup'); 
-    document.getElementById('nameGroup').style.display = mode === 'signup' ? 'block' : 'none'; 
-    document.getElementById('agentCodeGroup').style.display = mode === 'signup' ? 'block' : 'none';
-    document.getElementById('authBtn').innerText = mode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; 
-  };
+  window.switchAuth = (mode) => { currentAuthMode = mode; document.getElementById('tabLogin').classList.toggle('active', mode === 'login'); document.getElementById('tabSignup').classList.toggle('active', mode === 'signup'); document.getElementById('nameGroup').style.display = mode === 'signup' ? 'block' : 'none'; document.getElementById('agentCodeGroup').style.display = mode === 'signup' ? 'block' : 'none'; document.getElementById('authBtn').innerText = mode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; };
 
   window.handleAuth = async () => {
-    const phone = document.getElementById('authPhone').value, pass = document.getElementById('authPass').value, name = document.getElementById('authName').value;
-    const aCode = document.getElementById('authAgentCode').value.trim().toUpperCase();
-    
-    if(!phone || !pass) return alert("ဖုန်းနှင့် စကားဝှက် ထည့်ပါ။"); 
-    if(currentAuthMode === 'signup' && !name) return alert("အမည် ထည့်ပါ။"); 
-    
+    const phone = document.getElementById('authPhone').value, pass = document.getElementById('authPass').value, name = document.getElementById('authName').value, aCode = document.getElementById('authAgentCode').value.trim().toUpperCase();
+    if(!phone || !pass) return alert("ဖုန်းနှင့် စကားဝှက် ထည့်ပါ။"); if(currentAuthMode === 'signup' && !name) return alert("အမည် ထည့်ပါ။"); 
     document.getElementById('authBtn').innerText = 'စောင့်ပါ...';
     try {
-      if(currentAuthMode === 'login') {
-        await auth.signInWithEmailAndPassword(`${phone}@diamond.com`, pass);
-      } else {
+      if(currentAuthMode === 'login') { await auth.signInWithEmailAndPassword(`${phone}@diamond.com`, pass); } 
+      else {
         let rUid = null;
-        if(aCode) {
-           const codeSnap = await db.ref('agentCodes/'+aCode).get();
-           if(!codeSnap.exists()) {
-              document.getElementById('authBtn').innerText = 'အကောင့်ဖွင့်မည်';
-              return alert("❌ Agent Code မှားယွင်းနေပါသည်။ (မရှိပါက အလွတ်ထားပါ)");
-           }
-           rUid = codeSnap.val();
-        }
-
+        if(aCode) { const codeSnap = await db.ref('agentCodes/'+aCode).get(); if(!codeSnap.exists()) { document.getElementById('authBtn').innerText = 'အကောင့်ဖွင့်မည်'; return alert("❌ Agent Code မှားယွင်းနေပါသည်။ (မရှိပါက အလွတ်ထားပါ)"); } rUid = codeSnap.val(); }
         const userCred = await auth.createUserWithEmailAndPassword(`${phone}@diamond.com`, pass);
-        let uData = { phone: phone, name: name, pass: pass, wallet: 0, isBanned: false, isReseller: false, accountCreatedAt: Date.now() };
+        let uData = { phone: phone, name: name, pass: pass, wallet: 0, isBanned: false, isReseller: false, isVip: false, accountCreatedAt: Date.now() };
         if(rUid) { uData.referredBy = aCode; uData.resellerUid = rUid; }
         await db.ref('users/' + userCred.user.uid).set(uData);
       }
-    } catch (e) { 
-      alert("Error: " + e.message); 
-      document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; 
-    }
+    } catch (e) { alert("Error: " + e.message); document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; }
   };
+
+  // ✅ In-App Message ပို့မည့် Function (Chat ပုံစံ)
+  window.sendSupportMessage = async () => {
+     const msg = document.getElementById('supportMsgInput').value;
+     if(!msg) return;
+     
+     document.getElementById('supportMsgInput').value = 'ပို့နေပါသည်...';
+     await db.ref('supportChats/' + Date.now()).set({
+        uid: currentUser.uid,
+        name: currentUserData.name || 'User',
+        phone: currentUserData.phone || '',
+        sender: 'user', // User ကပို့ကြောင်း မှတ်သားမည်
+        message: msg,
+        date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
+     });
+     document.getElementById('supportMsgInput').value = '';
+  };
+
+  function listenSupportMessages() {
+     if(!currentUser) return;
+     db.ref('supportChats').orderByChild('uid').equalTo(currentUser.uid).on('value', snap => {
+       const box = document.getElementById('mySupportHistory');
+       if(!box) return;
+       box.innerHTML = '';
+       let msgs = [];
+       if(snap.exists()){
+          snap.forEach(c => msgs.push({id: c.key, ...c.val()}));
+          msgs.forEach(m => {
+             if(m.sender === 'user') {
+               box.innerHTML += `<div style="text-align: right; margin-bottom:10px;">
+                 <div style="display:inline-block; background:var(--primary); color:black; padding:8px 12px; border-radius:15px 15px 0 15px; font-size:14px; text-align:left; max-width:80%; word-wrap:break-word;">${m.message}</div>
+                 <div style="font-size:10px; color:#888; margin-top:3px;">သင် • ${m.date}</div>
+               </div>`;
+             } else {
+               box.innerHTML += `<div style="text-align: left; margin-bottom:10px;">
+                 <div style="display:inline-block; background:#22c55e; color:black; padding:8px 12px; border-radius:15px 15px 15px 0; font-size:14px; max-width:80%; word-wrap:break-word;">${m.message}</div>
+                 <div style="font-size:10px; color:#888; margin-top:3px;">Admin • ${m.date}</div>
+               </div>`;
+             }
+          });
+          setTimeout(() => { box.scrollTop = box.scrollHeight; }, 100);
+       } else {
+          box.innerHTML = '<div style="flex:1; display:flex; justify-content:center; align-items:center;"><p style="color:#888; font-size:13px; text-align:center;">Admin ထံ စတင်စာပို့နိုင်ပါပြီ။</p></div>';
+       }
+     });
+  }
 
   auth.onAuthStateChanged((user) => {
     if (user) {
@@ -331,118 +362,62 @@
         if (snap.exists()) {
           currentUserData = snap.val();
           if (currentUserData.isBanned === true) { document.getElementById('bannedScreen').style.display = 'flex'; document.getElementById('bannedWalletBalance').innerText = currentUserData.wallet || 0; return; } else document.getElementById('bannedScreen').style.display = 'none';
+          
+          if(currentUserData.isVip && currentUserData.vipExpiry) {
+             if(Date.now() > currentUserData.vipExpiry) {
+                await db.ref('users/' + user.uid).update({ isVip: false, vipExpiry: null });
+                currentUserData.isVip = false;
+             }
+          }
+
           document.getElementById('walletBalance').innerText = currentUserData.wallet || 0; 
-          document.getElementById('profileName').innerText = currentUserData.name || 'User'; 
+          if(currentUserData.isVip) { document.getElementById('profileName').innerHTML = `${currentUserData.name || 'User'} <span style="color:var(--gold); font-weight:bold;">[👑 VIP]</span>`; } 
+          else { document.getElementById('profileName').innerText = currentUserData.name || 'User'; }
           document.getElementById('profilePhone').innerText = currentUserData.phone;
           
           if(currentUserData.isReseller) {
-              document.getElementById('agentPanelBtn').style.display = 'block';
-              document.getElementById('myAgentCode').innerText = currentUserData.agentCode || 'N/A';
-              document.getElementById('resellerSetupBox').style.display = 'block';
-              document.getElementById('resellerToggle').checked = isResellerMode;
-              if(currentUserData.customPrices) agentCustomPrices = currentUserData.customPrices;
-              loadAgentPrices();
-              listenAgentUsers();
+              document.getElementById('agentPanelBtn').style.display = 'block'; document.getElementById('myAgentCode').innerText = currentUserData.agentCode || 'N/A'; document.getElementById('resellerSetupBox').style.display = 'block'; document.getElementById('resellerToggle').checked = isResellerMode;
+              if(currentUserData.customPrices) agentCustomPrices = currentUserData.customPrices; loadAgentPrices(); listenAgentUsers();
           } else { 
-              document.getElementById('agentPanelBtn').style.display = 'none'; 
-              document.getElementById('resellerSetupBox').style.display = 'none';
-              isResellerMode = false;
-              localStorage.setItem('fzw_reseller_mode', false);
+              document.getElementById('agentPanelBtn').style.display = 'none'; document.getElementById('resellerSetupBox').style.display = 'none'; isResellerMode = false; localStorage.setItem('fzw_reseller_mode', false);
           }
           
           if(currentUserData.resellerUid) {
-              document.getElementById('btnMainTopup').style.display = 'none';
-              document.getElementById('btnAgentTopupInfo').style.display = 'block';
-              db.ref('users/' + currentUserData.resellerUid + '/customPrices').on('value', pSnap => {
-                  if(pSnap.exists()) agentCustomPrices = pSnap.val();
-                  loadProducts();
-              });
+              document.getElementById('btnMainTopup').style.display = 'none'; document.getElementById('btnAgentTopupInfo').style.display = 'block';
+              db.ref('users/' + currentUserData.resellerUid + '/customPrices').on('value', pSnap => { if(pSnap.exists()) agentCustomPrices = pSnap.val(); loadProducts(); });
           } else {
-              document.getElementById('btnMainTopup').style.display = 'block';
-              document.getElementById('btnAgentTopupInfo').style.display = 'none';
-              loadProducts();
+              document.getElementById('btnMainTopup').style.display = 'block'; document.getElementById('btnAgentTopupInfo').style.display = 'none'; loadProducts();
           }
         }
       });
-      
       db.ref('categories').on('value', (s) => { if(s.exists()){ allShopCategories = {}; s.forEach(c => { allShopCategories[c.key] = c.val().name; }); } loadProducts(); });
       listenHistory();
+      listenSupportMessages(); 
     } else {
       currentUser = null; currentUserData = null; document.getElementById('authSection').style.display = 'block'; document.getElementById('shopSection').style.display = 'none'; document.getElementById('walletDisplay').style.display = 'none'; document.getElementById('navIcons').style.display = 'none'; document.getElementById('bannedScreen').style.display = 'none';
     }
   });
 
-  window.switchAgentTab = (tab) => {
-    document.getElementById('tabAgentUsers').classList.toggle('active', tab === 'users');
-    document.getElementById('tabAgentPrices').classList.toggle('active', tab === 'prices');
-    document.getElementById('agentUsersSection').style.display = tab === 'users' ? 'block' : 'none';
-    document.getElementById('agentPricesSection').style.display = tab === 'prices' ? 'block' : 'none';
-  };
-
-  function listenAgentUsers() {
-    db.ref('users').orderByChild('resellerUid').equalTo(currentUser.uid).on('value', snap => {
-       const list = document.getElementById('agentUsersList'); list.innerHTML = '';
-       if(!snap.exists()) return list.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:10px; color:#aaa;">Customer မရှိသေးပါ</td></tr>';
-       snap.forEach(c => {
-         const u = c.val();
-         list.innerHTML += `<tr>
-           <td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td>
-           <td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;">
-             <input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;">
-             <button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button>
-           </td>
-         </tr>`;
-       });
-    });
-  }
-
-  window.updateSubUserWallet = async (subUid) => {
-     const val = document.getElementById('sub_w_' + subUid).value;
-     await db.ref('users/' + subUid).update({ wallet: parseInt(val) });
-     alert('Customer ငွေစာရင်း ပြင်ဆင်ပြီးပါပြီ။');
-  };
-
+  window.switchAgentTab = (tab) => { document.getElementById('tabAgentUsers').classList.toggle('active', tab === 'users'); document.getElementById('tabAgentPrices').classList.toggle('active', tab === 'prices'); document.getElementById('agentUsersSection').style.display = tab === 'users' ? 'block' : 'none'; document.getElementById('agentPricesSection').style.display = tab === 'prices' ? 'block' : 'none'; };
+  function listenAgentUsers() { db.ref('users').orderByChild('resellerUid').equalTo(currentUser.uid).on('value', snap => { const list = document.getElementById('agentUsersList'); list.innerHTML = ''; if(!snap.exists()) return list.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:10px; color:#aaa;">Customer မရှိသေးပါ</td></tr>'; snap.forEach(c => { const u = c.val(); list.innerHTML += `<tr><td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td><td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;"><input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></td></tr>`; }); }); }
+  window.updateSubUserWallet = async (subUid) => { const val = document.getElementById('sub_w_' + subUid).value; await db.ref('users/' + subUid).update({ wallet: parseInt(val) }); alert('Customer ငွေစာရင်း ပြင်ဆင်ပြီးပါပြီ။'); };
   window.toggleResellerMode = () => { isResellerMode = document.getElementById('resellerToggle').checked; localStorage.setItem('fzw_reseller_mode', isResellerMode); loadProducts(); };
 
   function loadAgentPrices() {
      const list = document.getElementById('agentPricesList'); list.innerHTML = '';
      db.ref('products').once('value', snap => {
         snap.forEach(c => {
-           const p = c.val();
-           let base = p.price || 0;
-           let systemSellPrice = Math.ceil((base + (base * globalProfitPct / 100)) / 100) * 100;
-           let resellerCost = systemSellPrice - 100;
-           if (resellerCost < base) resellerCost = base;
-           
+           const p = c.val(); let base = p.price || 0; let systemSellPrice = Math.ceil((base + (base * globalProfitPct / 100)) / 100) * 100;
+           let resellerCost = systemSellPrice - 100; if (resellerCost < base) resellerCost = base;
            let myPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
-           
-           list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.4); padding:10px; border-radius:5px; margin-bottom:8px; border:1px solid #333;">
-             <div style="color:var(--gold); font-weight:bold;">${p.diamonds} <span style="font-size:11px; color:#888; font-weight:normal;">(သင်ဝယ်ရမည့်ဈေး: ${resellerCost})</span></div>
-             <div style="display:flex; gap:5px;">
-               <input type="number" id="cp_${c.key}" value="${myPrice}" style="width:80px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;">
-               <button onclick="saveCustomPrice('${p.diamonds}', 'cp_${c.key}')" style="background:var(--success); color:white; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button>
-             </div>
-           </div>`;
+           list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.4); padding:10px; border-radius:5px; margin-bottom:8px; border:1px solid #333;"><div style="color:var(--gold); font-weight:bold;">${p.diamonds} <span style="font-size:11px; color:#888; font-weight:normal;">(သင်ဝယ်ရမည့်ဈေး: ${resellerCost})</span></div><div style="display:flex; gap:5px;"><input type="number" id="cp_${c.key}" value="${myPrice}" style="width:80px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="saveCustomPrice('${p.diamonds}', 'cp_${c.key}')" style="background:var(--success); color:white; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></div></div>`;
         });
      });
   }
-
-  window.saveCustomPrice = async (itemName, inputId) => {
-      const val = document.getElementById(inputId).value;
-      agentCustomPrices[itemName] = parseInt(val);
-      await db.ref('users/' + currentUser.uid + '/customPrices').set(agentCustomPrices);
-      alert(itemName + ' အတွက် ရောင်းဈေး ပြင်ဆင်ပြီးပါပြီ။');
-      loadProducts();
-  };
+  window.saveCustomPrice = async (itemName, inputId) => { const val = document.getElementById(inputId).value; agentCustomPrices[itemName] = parseInt(val); await db.ref('users/' + currentUser.uid + '/customPrices').set(agentCustomPrices); alert(itemName + ' အတွက် ရောင်းဈေး ပြင်ဆင်ပြီးပါပြီ။'); loadProducts(); };
 
   window.openNotiModal = () => { openModal('notiModal'); localStorage.setItem('fzw_noti_count', myTopups.length + myOrders.length + myAnnouncements.length + (isShopOpen?0:1)); document.getElementById('notiBadge').style.display = 'none'; };
-  window.switchHistoryTab = (tab) => {
-    ['Msg', 'Topup', 'Order'].forEach(t => { 
-       document.getElementById(`tab${t}His`).style.background = tab === t.toLowerCase() ? 'var(--primary)' : '#222'; 
-       document.getElementById(`tab${t}His`).style.color = tab === t.toLowerCase() ? 'black' : 'white'; 
-       document.getElementById(`${t.toLowerCase()}HistoryContainer`).style.display = tab === t.toLowerCase() ? 'block' : 'none';
-    });
-  };
+  window.switchHistoryTab = (tab) => { ['Msg', 'Topup', 'Order'].forEach(t => { document.getElementById(`tab${t}His`).style.background = tab === t.toLowerCase() ? 'var(--primary)' : '#222'; document.getElementById(`tab${t}His`).style.color = tab === t.toLowerCase() ? 'black' : 'white'; document.getElementById(`${t.toLowerCase()}HistoryContainer`).style.display = tab === t.toLowerCase() ? 'block' : 'none'; }); };
 
   function listenHistory() {
     db.ref('topups').on('value', s => { myTopups = []; s.forEach(c => { if(c.val().uid === currentUser.uid) myTopups.push({ id: c.key, ...c.val() }); }); renderHistory(); });
@@ -454,9 +429,7 @@
      const tList = document.getElementById('topupListUI'), oList = document.getElementById('orderListUI'), mList = document.getElementById('msgListUI'); tList.innerHTML = ''; oList.innerHTML = ''; mList.innerHTML = '';
      [...myMsgs = myAnnouncements].sort((a,b)=>b.id-a.id).forEach(m => mList.innerHTML += `<div class="history-item" style="border-left: 4px solid var(--primary);"><div style="font-weight:bold; color:var(--primary);">${m.title}</div><div style="font-size: 13px; color: #ddd; margin-top: 5px;">${m.body}</div></div>`);
      [...myTops = myTopups].sort((a,b)=>b.id-a.id).forEach(i => tList.innerHTML += `<div class="history-item ${i.status}"><div style="font-weight:bold; color:var(--gold);">💰 ${i.amount} Ks</div><div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${i.status}">${i.status==='pending'?'⏳ စောင့်ဆိုင်းပါ':(i.status==='approved'?'✅ အောင်မြင်':'❌ ပယ်ချ')}</div></div>`);
-     
      [...myOrds = myOrders].sort((a,b)=>b.id-a.id).forEach(i => oList.innerHTML += `<div class="history-item ${i.status}"><div style="font-weight:bold; color:var(--primary);">💎 ${i.amount} <span style="color:#aaa; font-size:11px;">(${i.retailPrice || i.price} Ks)</span></div><div style="margin-top: 5px; font-size: 12px; font-weight: bold;" class="status-${i.status}">${i.status==='pending'?'⏳ စောင့်ဆိုင်းပါ':(i.status==='approved'?'✅ အောင်မြင်':'❌ ပယ်ချ')}</div></div>`);
-     
      let badge = document.getElementById('notiBadge'), unread = (myTopups.length + myOrders.length + myAnnouncements.length + (isShopOpen?0:1)) - (parseInt(localStorage.getItem('fzw_noti_count')) || 0);
      if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; } else badge.style.display = 'none';
   }
@@ -474,22 +447,16 @@
             let html = `<h3 style="color: ${color}; margin-bottom: 10px; margin-top: 15px;">${cName}</h3><div class="products">`;
             grouped[catId].forEach(p => {
                let isPass = p.diamonds.toLowerCase().includes('pass') || p.diamonds.toLowerCase().includes('weekly'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
-               
-               let basePrice = p.price || 0;
-               let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
-               let resellerCost = systemSellPrice - 100;
-               if (resellerCost < basePrice) resellerCost = basePrice;
-               
-               let displayPrice = systemSellPrice; 
-
-               if (currentUserData && currentUserData.resellerUid) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
-               else if (isResellerMode) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
-
+               let basePrice = p.price || 0; let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
+               let discountPrice = systemSellPrice - 100; if (discountPrice < basePrice) discountPrice = basePrice;
+               let displayPrice = systemSellPrice; let deductPrice = systemSellPrice;
+               if (currentUserData && currentUserData.resellerUid) { displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice; deductPrice = discountPrice; } 
+               else if (currentUserData && (currentUserData.isReseller || currentUserData.isVip)) { displayPrice = discountPrice; deductPrice = discountPrice; }
                let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${systemSellPrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
 
-               html += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${resellerCost}, ${displayPrice})">
+               html += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${deductPrice}, ${displayPrice})">
                           <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${isPass?'⭐':'💎'} ${p.diamonds}</h3>
-                          <p style="color: ${isResellerMode ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
+                          <p style="color: ${(currentUserData && (currentUserData.isReseller || currentUserData.isVip)) ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
                           ${editBtn}
                         </div>`;
             }); c.innerHTML += html + `</div>`; delete grouped[catId];
@@ -501,22 +468,15 @@
          hasItems = true; leftHtml += `<div class="products">`;
          grouped[catId].forEach(p => {
             let isPass = p.diamonds.toLowerCase().includes('pass'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
-            
-            let basePrice = p.price || 0;
-            let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
-            let resellerCost = systemSellPrice - 100;
-            if (resellerCost < basePrice) resellerCost = basePrice;
-
-            let displayPrice = systemSellPrice; 
-            
-            if (currentUserData && currentUserData.resellerUid) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
-            else if (isResellerMode) displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
-               
+            let basePrice = p.price || 0; let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
+            let discountPrice = systemSellPrice - 100; if (discountPrice < basePrice) discountPrice = basePrice;
+            let displayPrice = systemSellPrice; let deductPrice = systemSellPrice;
+            if (currentUserData && currentUserData.resellerUid) { displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice; deductPrice = discountPrice; } 
+            else if (currentUserData && (currentUserData.isReseller || currentUserData.isVip)) { displayPrice = discountPrice; deductPrice = discountPrice; }
             let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${systemSellPrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
-
-            leftHtml += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${resellerCost}, ${displayPrice})">
+            leftHtml += `<div class="${cardCls}" onclick="buyItem('${p.diamonds}', ${deductPrice}, ${displayPrice})">
                            <h3 style="color: ${isPass ? 'var(--gold)' : 'var(--primary)'}">${isPass?'⭐':'💎'} ${p.diamonds}</h3>
-                           <p style="color: ${isResellerMode ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
+                           <p style="color: ${(currentUserData && (currentUserData.isReseller || currentUserData.isVip)) ? '#22c55e' : 'var(--gold)'};">${displayPrice} MMK</p>
                            ${editBtn}
                          </div>`;
          }); leftHtml += `</div>`;
@@ -526,12 +486,7 @@
     });
   }
 
-  function renderSavedIds() {
-    const c = document.getElementById('savedIdsContainer'); if (savedIds.length === 0) { c.style.display = 'none'; return; }
-    c.style.display = 'flex'; c.innerHTML = '<div style="width: 100%; font-size: 13px; color: var(--gold); margin-bottom: 5px;">မှတ်သားထားသော အကောင့်များ:</div>';
-    savedIds.forEach((i) => { c.innerHTML += `<div style="background: rgba(0,229,255,0.1); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 15px; font-size: 13px; cursor: pointer; color: white; font-weight: bold;" onclick="fillSavedId('${i.pid}', '${i.sid}')">👤 ${i.name} (${i.pid})</div>`; });
-  }
-
+  function renderSavedIds() { const c = document.getElementById('savedIdsContainer'); if (savedIds.length === 0) { c.style.display = 'none'; return; } c.style.display = 'flex'; c.innerHTML = '<div style="width: 100%; font-size: 13px; color: var(--gold); margin-bottom: 5px;">မှတ်သားထားသော အကောင့်များ:</div>'; savedIds.forEach((i) => { c.innerHTML += `<div style="background: rgba(0,229,255,0.1); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 15px; font-size: 13px; cursor: pointer; color: white; font-weight: bold;" onclick="fillSavedId('${i.pid}', '${i.sid}')">👤 ${i.name} (${i.pid})</div>`; }); }
   window.fillSavedId = (pid, sid) => { document.getElementById('gamePlayerId').value = pid; document.getElementById('gameServerId').value = sid; resetCheck(); };
   window.buyItem = (itemName, origPrice, displayPrice) => { if(!isShopOpen) return alert("ဆိုင်ပိတ်ထားပါသည်။"); selectedPackage = { itemName, origPrice, displayPrice }; document.getElementById('gamePlayerId').value = ''; document.getElementById('gameServerId').value = ''; resetCheck(); renderSavedIds(); openModal('buyModal'); };
   window.resetCheck = () => { document.getElementById('verifyCb').checked = false; document.getElementById('playerNameResult').style.display = 'none'; document.getElementById('loadingText').style.display = 'none'; };
@@ -544,11 +499,7 @@
     try {
       const res = await fetch(`https://api.isan.eu.org/nickname/ml?id=${pid}&server=${sid}`), data = await res.json();
       if (data.success && data.name) {
-        document.getElementById('loadingText').style.display = 'none'; 
-        document.getElementById('displayPlayerName').innerText = data.name; 
-        document.getElementById('displayAmount').innerText = selectedPackage.itemName; 
-        document.getElementById('displayPrice').innerText = selectedPackage.displayPrice; 
-        document.getElementById('playerNameResult').style.display = 'block';
+        document.getElementById('loadingText').style.display = 'none'; document.getElementById('displayPlayerName').innerText = data.name; document.getElementById('displayAmount').innerText = selectedPackage.itemName; document.getElementById('displayPrice').innerText = selectedPackage.displayPrice; document.getElementById('playerNameResult').style.display = 'block';
       } else { alert("❌ အကောင့် ရှာမတွေ့ပါ။"); resetCheck(); }
     } catch (e) { alert("❌ အကောင့် ရှာမတွေ့ပါ။"); resetCheck(); }
   };
@@ -556,117 +507,59 @@
   window.confirmPurchase = async () => {
     const pid = document.getElementById('gamePlayerId').value, sid = document.getElementById('gameServerId').value, pName = document.getElementById('displayPlayerName').innerText;
     const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
-    
-    const secureBasePrice = parseInt(selectedPackage.origPrice); 
-    const secureDisplayPrice = parseInt(selectedPackage.displayPrice); 
+    const secureBasePrice = parseInt(selectedPackage.origPrice); const secureDisplayPrice = parseInt(selectedPackage.displayPrice); 
     
     if(currentUserData && currentUserData.resellerUid) {
         if(currentWallet < secureDisplayPrice) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။ ကိုယ်စားလှယ်ထံ ငွေဖြည့်ပါ။");
-        const resSnap = await db.ref('users/' + currentUserData.resellerUid + '/wallet').once('value');
-        const resWallet = resSnap.val() || 0;
+        const resSnap = await db.ref('users/' + currentUserData.resellerUid + '/wallet').once('value'); const resWallet = resSnap.val() || 0;
         if(resWallet < secureBasePrice) return alert("❌ ဝယ်ယူ၍ မရပါ။ (သင့်ကိုယ်စားလှယ်၏ အကောင့်တွင် ငွေမလုံလောက်ပါ)");
-
         if(confirm(`[ ${selectedPackage.itemName} ] ကို ဝယ်ယူမည်မှာ သေချာပါသလား?\n\nကျသင့်ငွေ: ${secureDisplayPrice} Ks`)) {
             if(!savedIds.find(i => i.pid === pid && i.sid === sid)) { savedIds.unshift({ pid: pid, sid: sid, name: pName }); if(savedIds.length > 5) savedIds.pop(); localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds)); renderSavedIds(); }
-            
             await db.ref('users/' + currentUserData.resellerUid).update({ wallet: resWallet - secureBasePrice });
             await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - secureDisplayPrice });
-            
-            await db.ref('orders/' + Date.now().toString()).set({
-              uid: currentUser.uid, agentUid: currentUserData.resellerUid,
-              playerId: `${pid}(${sid})`, amount: selectedPackage.itemName,
-              price: secureBasePrice, retailPrice: secureDisplayPrice,
-              status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
-            });
+            await db.ref('orders/' + Date.now().toString()).set({ uid: currentUser.uid, agentUid: currentUserData.resellerUid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: secureDisplayPrice, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) });
             alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
         }
-    } 
-    else {
-        let actualDeduction = (currentUserData && currentUserData.isReseller) ? secureBasePrice : secureDisplayPrice;
+    } else {
+        let actualDeduction = (currentUserData && (currentUserData.isReseller || currentUserData.isVip)) ? secureBasePrice : secureDisplayPrice;
         if(currentWallet < actualDeduction) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။");
-        
         if(confirm(`[ ${selectedPackage.itemName} ] ဝယ်မည်မှာ သေချာပါသလား?\n\nကျသင့်ငွေ: ${actualDeduction} Ks`)) {
             if(!savedIds.find(i => i.pid === pid && i.sid === sid)) { savedIds.unshift({ pid: pid, sid: sid, name: pName }); if(savedIds.length > 5) savedIds.pop(); localStorage.setItem('fzw_saved_ids', JSON.stringify(savedIds)); renderSavedIds(); }
-            
             await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - actualDeduction });
-            await db.ref('orders/' + Date.now().toString()).set({
-              uid: currentUser.uid, playerId: `${pid}(${sid})`,
-              amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: actualDeduction,
-              status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' })
-            });
+            await db.ref('orders/' + Date.now().toString()).set({ uid: currentUser.uid, playerId: `${pid}(${sid})`, amount: selectedPackage.itemName, price: secureBasePrice, retailPrice: actualDeduction, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) });
             alert('ဝယ်ယူမှု အောင်မြင်ပါသည်။'); closeModal('buyModal');
         }
     }
   };
 
-  // ✅ [ERROR FREE] Database သို့ အရင်တင်ပြီးမှ Telegram သို့ပို့မည် (လုပ်ငန်းစဉ်အမှတ် ဖျက်ထားပါသည်)
   window.submitTopup = async () => {
     if (!navigator.onLine) { return alert("အင်တာနက် လိုင်းမရှိပါ။"); }
     const amt = document.getElementById('topupAmount').value;
     const receiptFile = document.getElementById('topupReceipt').files[0];
-
     if(!amt || !receiptFile) return alert('ငွေပမာဏ နှင့် ပြေစာပုံ (Screenshot) အားလုံး ထည့်ပါ။'); 
     
     document.getElementById('submitTopupBtn').innerText = 'စောင့်ပါ... ⏳';
-    
     try { 
       const topupId = Date.now().toString(); 
-      
       const baseCaption = `💰 ငွေဖြည့် တောင်းဆိုမှုအသစ်\n\n👤 အမည်: ${currentUserData.name || 'User'}\n📱 ဖုန်း: ${currentUserData.phone || ''}\n💲 ပမာဏ: ${amt} Ks`;
       const fullCaption = baseCaption + `\n\nအခြေအနေ: ⏳ စောင့်ရန်`;
 
-      // 1. Firebase သို့ အရင်ဆုံး ပို့မည် 
-      await db.ref('topups/' + topupId).set({ 
-        uid: currentUser.uid || '', 
-        amount: parseInt(amt) || 0, 
-        transactionId: "ပုံဖြင့်ပေးပို့ထားပါသည်", // Admin တွင် ပြသရန်
-        status: 'pending', 
-        date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }),
-        tgMessageId: "", 
-        tgCaption: baseCaption 
-      }); 
+      await db.ref('topups/' + topupId).set({ uid: currentUser.uid || '', amount: parseInt(amt) || 0, transactionId: "ပုံဖြင့်ပေးပို့ထားပါသည်", status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }), tgMessageId: "", tgCaption: baseCaption }); 
 
       alert('အောင်မြင်ပါသည်။ (Admin မှ စစ်ဆေးပြီးပါက ငွေဝင်လာပါမည်)'); 
-      
-      document.getElementById('topupAmount').value = ''; 
-      document.getElementById('topupReceipt').value = '';
-      closeModal('topupModal');
-      document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; 
+      document.getElementById('topupAmount').value = ''; document.getElementById('topupReceipt').value = ''; closeModal('topupModal'); document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; 
 
-      // 2. Telegram သို့ နောက်မှ လိုက်ပို့မည်
       try {
-        const botToken = "8964049516:AAG3XEJy4hc0SN_1XKvY4EUmBdAJePR4f0M";
-        const chatId = "6436594660";
-
-        let formData = new FormData();
-        formData.append("chat_id", chatId);
-        formData.append("photo", receiptFile);
-        formData.append("caption", fullCaption);
-
-        let tgResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
-          method: 'POST',
-          body: formData
-        });
-
+        const botToken = "8964049516:AAG3XEJy4hc0SN_1XKvY4EUmBdAJePR4f0M"; const chatId = "6436594660";
+        let formData = new FormData(); formData.append("chat_id", chatId); formData.append("photo", receiptFile); formData.append("caption", fullCaption);
+        let tgResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, { method: 'POST', body: formData });
         let tgResult = await tgResponse.json();
-
-        if (tgResult.ok) {
-           await db.ref('topups/' + topupId).update({ tgMessageId: tgResult.result.message_id });
-        }
-      } catch (tgError) {
-         console.log("Telegram ပို့ရာတွင် Error တက်သွားပါသည်။", tgError);
-      }
-
-    } catch (e) { 
-      alert('Error: ' + e.message); 
-      document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; 
-    }
+        if (tgResult.ok) { await db.ref('topups/' + topupId).update({ tgMessageId: tgResult.result.message_id }); }
+      } catch (tgError) {}
+    } catch (e) { alert('Error: ' + e.message); document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; }
   };
 
   window.changePassword = async () => { const o = document.getElementById('oldPass').value, n = document.getElementById('newPass').value; if(o && n){ try { await currentUser.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(currentUser.email, o)); await currentUser.updatePassword(n); await db.ref('users/' + currentUser.uid).update({ pass: n }); alert('ပြောင်းလဲပြီးပါပြီ။'); } catch (e) { alert('Error: ' + e.message); } } };
-  window.logout = () => { auth.signOut(); window.location.reload(); }; 
-  window.openModal = (id) => document.getElementById(id).style.display = 'flex'; 
-  window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+  window.logout = () => { auth.signOut(); window.location.reload(); }; window.openModal = (id) => document.getElementById(id).style.display = 'flex'; window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 </script>
 </body>
-</html>
