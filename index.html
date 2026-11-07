@@ -30,7 +30,8 @@
     .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
     .input-group { margin-bottom: 15px; text-align: left; }
     .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box; }
-    .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; display: block; }
+    .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; display: block; transition: 0.3s; }
+    .btn:disabled { background: #555; color: #888; cursor: not-allowed; }
     
     .products { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; margin-bottom: 20px;}
     .product-card { background: var(--card-bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; position: relative; }
@@ -43,6 +44,8 @@
     .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
     .modal-content { background: #1e293b; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--glass-border); position: relative; max-height: 90vh; overflow-y: auto; }
     .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
+    
+    .floating-tg { position: fixed; bottom: 20px; right: 20px; background: #0088cc; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; z-index: 900; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     
     #bannedScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
     .history-item { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
@@ -61,7 +64,7 @@
 
 <div id="bannedScreen">
   <div style="background: #1e293b; padding: 30px; border-radius: 15px; border: 2px solid #ef4444; max-width: 90%;">
-    <h1 style="color: #ef4444; margin-top: 0;">⚠️ အကောင့်ပိတ်ခံထားရပါသည် tg ဆက်သွယ်နိုင်သည် </h1>
+    <h1 style="color: #ef4444; margin-top: 0;">⚠️ အကောင့်ပိတ်ခံထားရပါသည်</h1>
     <h3 style="color: #00e5ff; margin: 20px 0;">လက်ကျန်ငွေ: <span id="bannedWalletBalance">0</span> MMK</h3>
   </div>
 </div>
@@ -84,6 +87,13 @@
 
 <div class="container">
   <div id="authSection" class="auth-section" style="display: none;">
+    
+    <!-- ✅ VPN Warning / Connection Error -->
+    <div id="vpnWarningBox" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; font-weight: bold; text-align: left; display: none; align-items: flex-start; gap: 10px;">
+      <span style="font-size: 20px;">⚠️</span>
+      <span>ချိတ်ဆက်မှု မရပါ! <br>မြန်မာနိုင်ငံမှ အသုံးပြုသူများ အကောင့်ဖွင့်ရန်/ဝင်ရန် <span style="background: #ef4444; color: white; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 5px;">VPN အသုံးပြုပေးပါ</span></span>
+    </div>
+
     <div class="auth-tabs">
       <div class="auth-tab active" id="tabLogin" onclick="switchAuth('login')">အကောင့်ဝင်ရန်</div>
       <div class="auth-tab" id="tabSignup" onclick="switchAuth('signup')">အကောင့်သစ်ဖွင့်ရန်</div>
@@ -97,7 +107,8 @@
       <input type="text" id="authAgentCode" placeholder="ဥပမာ - AGT-1234" style="border-color: var(--primary);">
     </div>
 
-    <button class="btn" onclick="handleAuth()" id="authBtn">အကောင့်ဝင်မည်</button>
+    <!-- ✅ ဤခလုတ်ကို Firebase မချိတ်ဆက်နိုင်ပါက ပိတ်ထားမည် (Disabled) -->
+    <button class="btn" onclick="handleAuth()" id="authBtn" disabled>ချိတ်ဆက်နေသည်... ⏳</button>
   </div>
 
   <div id="shopSection" style="display:none;">
@@ -110,7 +121,7 @@
   </div>
 </div>
 
-<!-- ✅ VIP Modal -->
+<!-- VIP Modal -->
 <div id="vipModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('vipModal')">×</span>
@@ -141,11 +152,7 @@
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('supportModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">💬 Message (Live Chat)</h2>
-    
-    <div id="mySupportHistory" style="height: 300px; overflow-y: auto; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; display: flex; flex-direction: column;">
-       <!-- Messages will appear here like a chat app -->
-    </div>
-    
+    <div id="mySupportHistory" style="height: 300px; overflow-y: auto; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; display: flex; flex-direction: column;"></div>
     <div style="display: flex; gap: 5px;">
       <input type="text" id="supportMsgInput" style="flex: 1; padding: 12px; border-radius: 20px; background: #111; color: white; border: 1px solid #333; outline: none;" placeholder="စာရိုက်ပါ...">
       <button onclick="sendSupportMessage()" style="background: var(--primary); color: black; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; display: flex; justify-content: center; align-items: center;">➤</button>
@@ -205,6 +212,7 @@
       <div style="flex: 2;"><label style="font-size: 13px; color: #ccc;">Player ID</label><input type="number" id="gamePlayerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()"></div>
       <div style="flex: 1.5;"><label style="font-size: 13px; color: #ccc;">Zone ID</label><input type="number" id="gameServerId" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" oninput="resetCheck()"></div>
     </div>
+    
     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
       <input type="checkbox" id="verifyCb" onchange="handleCheckChange()" style="width: 20px; height: 20px; accent-color: var(--primary);">
       <label for="verifyCb" style="font-size: 14px; color: #ccc;">ID များ မှန်ကန်ကြောင်း အတည်ပြုပါသည်</label>
@@ -226,8 +234,17 @@
     <span class="close-btn" onclick="closeModal('topupModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">ငွေဖြည့်ရန်</h2>
     <div id="paymentMethodsList" style="margin-bottom: 15px; max-height: 180px; overflow-y: auto;"></div>
-    <div class="input-group"><label>ငွေပမာဏ (MMK)</label><input type="number" id="topupAmount" placeholder="ဥပမာ - 1000"></div>
-    <div class="input-group"><label style="color: var(--primary);">ပြေစာ (Screenshot) ရွေးပါ</label><input type="file" id="topupReceipt" accept="image/*" style="padding: 10px; border: 1px dashed var(--primary); background: rgba(0, 229, 255, 0.1);"></div>
+    
+    <div class="input-group">
+      <label>ငွေပမာဏ (MMK)</label>
+      <input type="number" id="topupAmount" placeholder="ဥပမာ - 1000">
+    </div>
+    
+    <div class="input-group">
+      <label style="color: var(--primary);">ပြေစာ (Screenshot) ရွေးပါ</label>
+      <input type="file" id="topupReceipt" accept="image/*" style="padding: 10px; border: 1px dashed var(--primary); background: rgba(0, 229, 255, 0.1);">
+    </div>
+
     <button class="btn" id="submitTopupBtn" onclick="submitTopup()">ငွေဖြည့်မည်</button>
   </div>
 </div>
@@ -255,10 +272,12 @@
     <input type="password" id="oldPass" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box;" placeholder="စကားဝှက်ဟောင်း">
     <input type="password" id="newPass" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box; margin-bottom: 15px;" placeholder="စကားဝှက်အသစ်">
     <button class="btn" style="padding: 8px;" onclick="changePassword()">ပြောင်းမည်</button>
-     <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
+    <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
     <button class="btn" style="background: #ef4444; margin-top: 20px; padding: 10px;" onclick="logout()">အကောင့်ထွက်ရန် (Logout)</button>
   </div>
 </div>
+
+<a href="https://t.me/FileZWarrior_amk" class="floating-tg" target="_blank">✈️</a>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -298,9 +317,48 @@
     if(snap.exists()) { snap.forEach(child => { const p = child.val(); c.innerHTML += `<div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:8px; text-align:center; margin-bottom:10px; border:1px dashed var(--gold);"><h4 style="color:#fff; margin:0 0 5px 0;">${p.type}</h4><div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:5px;"><h3 style="color:var(--gold); margin:0;">${p.phone}</h3><button onclick="copyPhone('${p.phone}')" style="background:var(--primary); border:none; padding:4px 8px; border-radius:4px; font-weight:bold; color:black; cursor:pointer;">Copy</button></div><p style="margin:0; font-size:13px; color:#aaa;">${p.name}</p></div>`; }); } 
   });
 
-  window.switchAuth = (mode) => { currentAuthMode = mode; document.getElementById('tabLogin').classList.toggle('active', mode === 'login'); document.getElementById('tabSignup').classList.toggle('active', mode === 'signup'); document.getElementById('nameGroup').style.display = mode === 'signup' ? 'block' : 'none'; document.getElementById('agentCodeGroup').style.display = mode === 'signup' ? 'block' : 'none'; document.getElementById('authBtn').innerText = mode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; };
+  // ✅ Firebase Connection စစ်ဆေးပြီး ခလုတ်ကို ဖွင့်ပေးမည့်စနစ်
+  let isFirebaseConnected = false;
+  db.ref(".info/connected").on("value", function(snap) {
+    const btn = document.getElementById('authBtn');
+    const vpnBox = document.getElementById('vpnWarningBox');
+    
+    if (snap.val() === true) {
+      isFirebaseConnected = true;
+      btn.innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်';
+      btn.disabled = false;
+      btn.style.background = 'var(--primary)';
+      vpnBox.style.display = 'none';
+    } else {
+      isFirebaseConnected = false;
+      btn.innerText = 'ချိတ်ဆက်မှု မရပါ ❌';
+      btn.disabled = true;
+      btn.style.background = '#555';
+      
+      // Connection မရှိပါက 3 စက္ကန့်အကြာတွင် VPN သတိပေးစာ ပြမည်
+      setTimeout(() => {
+        if(!isFirebaseConnected && document.getElementById('authSection').style.display !== 'none') {
+           vpnBox.style.display = 'flex';
+        }
+      }, 3000);
+    }
+  });
+
+  window.switchAuth = (mode) => { 
+    currentAuthMode = mode; 
+    document.getElementById('tabLogin').classList.toggle('active', mode === 'login'); 
+    document.getElementById('tabSignup').classList.toggle('active', mode === 'signup'); 
+    document.getElementById('nameGroup').style.display = mode === 'signup' ? 'block' : 'none'; 
+    document.getElementById('agentCodeGroup').style.display = mode === 'signup' ? 'block' : 'none';
+    if(isFirebaseConnected) document.getElementById('authBtn').innerText = mode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; 
+  };
 
   window.handleAuth = async () => {
+    if(!isFirebaseConnected) {
+       document.getElementById('vpnWarningBox').style.display = 'flex';
+       return alert("❌ ဆာဗာသို့ ချိတ်ဆက်၍ မရပါ။ VPN ဖွင့်ပြီးမှ ပြန်ကြိုးစားပါ။");
+    }
+
     const phone = document.getElementById('authPhone').value, pass = document.getElementById('authPass').value, name = document.getElementById('authName').value;
     const aCode = document.getElementById('authAgentCode').value.trim().toUpperCase();
     
@@ -328,12 +386,17 @@
         await db.ref('users/' + userCred.user.uid).set(uData);
       }
     } catch (e) { 
-      alert("Error: " + e.message); 
+      if(e.code === 'auth/network-request-failed' || e.message.includes('network')) {
+         document.getElementById('vpnWarningBox').style.display = 'flex';
+         alert("❌ VPN ဖွင့်ထားခြင်း မရှိပါ (သို့) အင်တာနက်လိုင်း မကောင်းပါ။");
+      } else {
+         alert("Error: " + e.message); 
+      }
       document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; 
     }
   };
 
-  // ✅ In-App Message (Chat ပို့ရန်)
+  // ✅ In-App Message ပို့မည့် Function (Chat ပုံစံ)
   window.sendSupportMessage = async () => {
      const msg = document.getElementById('supportMsgInput').value;
      if(!msg) return;
@@ -349,7 +412,6 @@
      document.getElementById('supportMsgInput').value = '';
   };
 
-  // ✅ Chat History ကို ဖတ်မည့် Function
   function listenSupportMessages() {
      if(!currentUser) return;
      db.ref('supportChats').on('value', snap => {
@@ -364,7 +426,7 @@
              if(d.uid === currentUser.uid) { msgs.push({id: c.key, ...d}); }
           });
           
-          msgs.sort((a,b) => parseInt(a.id) - parseInt(b.id)); // Chat အစီအစဉ်အတိုင်း
+          msgs.sort((a,b) => parseInt(a.id) - parseInt(b.id)); 
           
           msgs.forEach(m => {
              if(m.sender === 'user') {
@@ -396,7 +458,6 @@
           currentUserData = snap.val();
           if (currentUserData.isBanned === true) { document.getElementById('bannedScreen').style.display = 'flex'; document.getElementById('bannedWalletBalance').innerText = currentUserData.wallet || 0; return; } else document.getElementById('bannedScreen').style.display = 'none';
           
-          // ✅ VIP သက်တမ်း စစ်ဆေးခြင်း
           let vipDaysLeft = 0;
           let vLvl = 1;
           if(currentUserData.isVip && currentUserData.vipExpiry) {
@@ -434,8 +495,7 @@
         }
       });
       db.ref('categories').on('value', (s) => { if(s.exists()){ allShopCategories = {}; s.forEach(c => { allShopCategories[c.key] = c.val().name; }); } loadProducts(); });
-      listenHistory();
-      listenSupportMessages(); 
+      listenHistory(); listenSupportMessages(); 
     } else {
       currentUser = null; currentUserData = null; document.getElementById('authSection').style.display = 'block'; document.getElementById('shopSection').style.display = 'none'; document.getElementById('walletDisplay').style.display = 'none'; document.getElementById('navIcons').style.display = 'none'; document.getElementById('bannedScreen').style.display = 'none';
     }
@@ -453,7 +513,7 @@
        });
     });
   }
-
+  
   window.updateSubUserWallet = async (subUid) => { const val = document.getElementById('sub_w_' + subUid).value; await db.ref('users/' + subUid).update({ wallet: parseInt(val) }); alert('Customer ငွေစာရင်း ပြင်ဆင်ပြီးပါပြီ။'); };
   window.toggleResellerMode = () => { isResellerMode = document.getElementById('resellerToggle').checked; localStorage.setItem('fzw_reseller_mode', isResellerMode); loadProducts(); };
 
@@ -461,16 +521,10 @@
      const list = document.getElementById('agentPricesList'); list.innerHTML = '';
      db.ref('products').once('value', snap => {
         snap.forEach(c => {
-           const p = c.val(); let base = p.price || 0; 
-           let systemSellPrice = Math.ceil((base + (base * globalProfitPct / 100)) / 100) * 100;
-           
-           // Agent များကို VIP 1 အနေဖြင့် ၁၀၀ လျှော့မည်
-           let agentCost = systemSellPrice - 100;
-           if (agentCost < base) agentCost = base;
-           
+           const p = c.val(); let base = p.price || 0; let systemSellPrice = Math.ceil((base + (base * globalProfitPct / 100)) / 100) * 100;
+           let resellerCost = systemSellPrice - 100; if (resellerCost < base) resellerCost = base;
            let myPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
-           
-           list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.4); padding:10px; border-radius:5px; margin-bottom:8px; border:1px solid #333;"><div style="color:var(--gold); font-weight:bold;">${p.diamonds} <span style="font-size:11px; color:#888; font-weight:normal;">(သင်ဝယ်ရမည့်ဈေး: ${agentCost})</span></div><div style="display:flex; gap:5px;"><input type="number" id="cp_${c.key}" value="${myPrice}" style="width:80px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="saveCustomPrice('${p.diamonds}', 'cp_${c.key}')" style="background:var(--success); color:white; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></div></div>`;
+           list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.4); padding:10px; border-radius:5px; margin-bottom:8px; border:1px solid #333;"><div style="color:var(--gold); font-weight:bold;">${p.diamonds} <span style="font-size:11px; color:#888; font-weight:normal;">(သင်ဝယ်ရမည့်ဈေး: ${resellerCost})</span></div><div style="display:flex; gap:5px;"><input type="number" id="cp_${c.key}" value="${myPrice}" style="width:80px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="saveCustomPrice('${p.diamonds}', 'cp_${c.key}')" style="background:var(--success); color:white; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></div></div>`;
         });
      });
   }
@@ -494,7 +548,6 @@
      if(unread > 0) { badge.innerText = unread; badge.style.display = 'block'; } else badge.style.display = 'none';
   }
 
-  // ✅ VIP Levels နှင့် Reseller လျှော့ငွေ တွက်ချက်ခြင်း Main Logic
   function loadProducts() {
     db.ref('products').on('value', (snap) => {
       const c = document.getElementById('dynamicShopCategories'); c.innerHTML = '';
@@ -509,10 +562,10 @@
             grouped[catId].forEach(p => {
                let isPass = p.diamonds.toLowerCase().includes('pass') || p.diamonds.toLowerCase().includes('weekly'), cardCls = isPass ? 'product-card weekly-card' : 'product-card';
                
-          let basePrice = p.price || 0; 
+               let basePrice = p.price || 0; 
                let systemSellPrice = Math.ceil((basePrice + (basePrice * globalProfitPct / 100)) / 100) * 100;
                
-               // ✅ လျှော့မည့်ငွေ တွက်ချက်ခြင်း
+               // ✅ VIP နှင့် Agent လျှော့ငွေ တွက်ချက်ခြင်း
                let myDiscount = 0;
                if(currentUserData) {
                   if (currentUserData.isReseller) myDiscount = Math.max(myDiscount, 100);
@@ -531,7 +584,7 @@
 
                if (currentUserData && currentUserData.resellerUid) { 
                    displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice; 
-                   deductPrice = Math.max(basePrice, systemSellPrice - 100); // Customer ဝယ်လျှင် Agent ထံမှ ၁၀၀ လျှော့၍ ဖြတ်မည်
+                   deductPrice = Math.max(basePrice, systemSellPrice - 100);
                } else if (currentUserData && (currentUserData.isReseller || currentUserData.isVip)) { 
                    displayPrice = vipOrAgentCost; 
                    deductPrice = vipOrAgentCost; 
@@ -539,7 +592,7 @@
 
                if (isResellerMode) {
                    displayPrice = agentCustomPrices[p.diamonds] || systemSellPrice;
-                   deductPrice = vipOrAgentCost; // ကိုယ်တိုင်ရောင်းဈေးပြင်ထားပေမယ့် ကိုယ်ဝယ်ရင် အရင်းနဲ့ပဲဖြတ်မယ်
+                   deductPrice = vipOrAgentCost;
                }
 
                let editBtn = isResellerMode ? `<button class="edit-price-btn" onclick="event.stopPropagation(); setCustomPrice('${p.diamonds}', ${systemSellPrice})">✏️ ဈေးပြောင်းမည်</button>` : '';
@@ -626,7 +679,6 @@
   window.confirmPurchase = async () => {
     const pid = document.getElementById('gamePlayerId').value, sid = document.getElementById('gameServerId').value, pName = document.getElementById('displayPlayerName').innerText;
     const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
-    
     const secureBasePrice = parseInt(selectedPackage.origPrice); 
     const secureDisplayPrice = parseInt(selectedPackage.displayPrice); 
     
