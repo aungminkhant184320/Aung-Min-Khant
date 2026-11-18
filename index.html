@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Diamond Top-up Shop</title>
+  <title>Diamond & Top-up Shop</title>
   <style>
     :root { --primary: #00e5ff; --gold: #fbbf24; --bg: #020617; --card-bg: rgba(30, 41, 59, 0.6); --glass-border: rgba(255, 255, 255, 0.1); --text: #f8fafc; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; overscroll-behavior-y: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-    input, button, textarea { user-select: auto; -webkit-user-select: auto; }
+    input, button, textarea, select { user-select: auto; -webkit-user-select: auto; }
     #initialLoader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
     .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -106,12 +106,54 @@
   </div>
 
   <div id="shopSection" style="display:none;">
-    <button class="btn" id="btnMainTopup" style="margin-bottom: 15px; background: var(--gold); color: black;" onclick="openModal('topupModal')">💰 ငွေဖြည့်ရန်</button>
+    
+    <!-- ✅ ငွေဖြည့်ရန် နှင့် ဖုန်းဘေဖြည့်ရန် ခလုတ်များ -->
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+       <button class="btn" id="btnMainTopup" style="flex:1; background: var(--gold); color: black;" onclick="openModal('topupModal')">💰 ငွေဖြည့်ရန်</button>
+       <button class="btn" style="flex:1; background: #3b82f6; color: white; border: 1px solid #2563eb;" onclick="openModal('phoneBillModal')">📱 ဖုန်းဘေ</button>
+    </div>
+
     <div id="btnAgentTopupInfo" style="display:none; background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
       <span style="color: #22c55e; font-weight: bold;">💰 ငွေဖြည့်ရန်အတွက် သင့်အားဖိတ်ခေါ်သော ကိုယ်စားလှယ် (Agent) သို့ ဆက်သွယ်ပါ။</span>
     </div>
     <div id="shopClosedBanner" style="display:none; color:red; text-align:center;">❌ ဆိုင်ခေတ္တပိတ်ထားပါတယ်။</div>
     <div id="dynamicShopCategories"><div style="text-align: center; color: #aaa;">Loading Products...</div></div>
+  </div>
+</div>
+
+<!-- ✅ ဖုန်းဘေဖြည့်ရန် Modal (Phone Bill Top-up) -->
+<div id="phoneBillModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('phoneBillModal')">×</span>
+    <h2 style="color: #3b82f6; margin-bottom: 15px;">📱 ဖုန်းဘေဖြည့်ရန်</h2>
+    
+    <div class="input-group">
+        <label style="color: #ccc; font-size: 13px;">အော်ပရေတာ ရွေးပါ</label>
+        <select id="billOperator" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-bottom: 15px; margin-top: 5px; outline: none;">
+           <option value="ATOM">ATOM</option>
+           <option value="MPT">MPT</option>
+           <option value="Ooredoo">Ooredoo</option>
+           <option value="Mytel">Mytel</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label style="color: #ccc; font-size: 13px;">ဖုန်းနံပါတ် ထည့်ပါ</label>
+        <input type="number" id="billPhone" placeholder="09xxxxxxxxx" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-bottom: 15px; margin-top: 5px;">
+    </div>
+
+    <div class="input-group">
+        <label style="color: #ccc; font-size: 13px;">ငွေပမာဏ (ကျပ်)</label>
+        <select id="billAmount" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-bottom: 25px; margin-top: 5px; outline: none;">
+           <option value="1000">1,000 Ks</option>
+           <option value="2000">2,000 Ks</option>
+           <option value="3000">3,000 Ks</option>
+           <option value="5000">5,000 Ks</option>
+           <option value="10000">10,000 Ks</option>
+        </select>
+    </div>
+
+    <button class="btn" style="background: #3b82f6; color: white;" onclick="confirmPhoneBill()">ဝယ်ယူမည်</button>
   </div>
 </div>
 
@@ -208,7 +250,7 @@
     <p id="loadingText" style="display:none; color:var(--primary); font-size:14px; font-weight:bold;">စစ်ဆေးနေပါသည်... ⏳</p>
     <div id="playerNameResult" style="display: none; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border: 1px dashed #22c55e;">
        <p style="color: #aaa; font-size: 14px;">အကောင့် အမည်:</p>
-       <h3 id="displayPlayerName" style="color: #22c55e; margin: 5px 0;">-</h3>
+         <h3 id="displayPlayerName" style="color: #22c55e; margin: 5px 0;">-</h3>
        <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
        <p style="color: var(--gold); font-size: 14px;">ဝယ်ယူမည့်အရာ: <span id="displayAmount">0</span></p>
        <p style="color: var(--gold); font-size: 14px;">ကျသင့်ငွေ: <span id="displayPrice">0</span> MMK</p>
@@ -248,7 +290,7 @@
       <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
       <h4 style="color: #22c55e;">💼 ကိုယ်စားလှယ် (Reseller) စနစ်</h4>
       <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px; color: #ccc;">
-         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: white;"><input type="checkbox" id="resellerToggle" onchange="toggleResellerMode()" style="width: 18px; height: 18px; accent-color: var(--primary);">ကိုယ်စားလှယ်စနစ် ဖွင့်မည် (On/Off)</label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: white;"><input type="checkbox" id="resellerToggle" onchange="toggleResellerMode()" style="width: 18px; height: 18px; accent-color: var(--primary);">ကိုယ်စားလှယ်စနစ် ဖွင့်မည် (On/Off)</label>
       </div>
     </div>
 
@@ -402,6 +444,64 @@
     }
   });
 
+  // ✅ ဖုန်းဘေဝယ်ယူခြင်း လုပ်ငန်းစဉ်
+  window.confirmPhoneBill = async () => {
+     if(!isShopOpen) return alert("ဆိုင်ပိတ်ထားပါသည်။");
+     const operator = document.getElementById('billOperator').value;
+     const phone = document.getElementById('billPhone').value;
+     const amount = parseInt(document.getElementById('billAmount').value);
+     
+     if(!phone || phone.length < 9) return alert("ဖုန်းနံပါတ် မှန်ကန်စွာ ထည့်ပါ။");
+
+     const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
+     
+     if(currentUserData && currentUserData.resellerUid) {
+         // Agent အောက်မှ User
+         const resSnap = await db.ref('users/' + currentUserData.resellerUid + '/wallet').once('value'); 
+         const resWallet = resSnap.val() || 0;
+         
+         if(currentWallet < amount) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။ ကိုယ်စားလှယ်ထံ ငွေဖြည့်ပါ။");
+         if(resWallet < amount) return alert("❌ ဝယ်ယူ၍ မရပါ။ (သင့်ကိုယ်စားလှယ်၏ အကောင့်တွင် ငွေမလုံလောက်ပါ)");
+         
+         if(confirm(`📱 ${operator} (${phone}) သို့ ${amount} Ks ဖုန်းဘေဖြည့်မည်မှာ သေချာပါသလား?`)) {
+             await db.ref('users/' + currentUserData.resellerUid).update({ wallet: resWallet - amount });
+             await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - amount });
+             
+             await db.ref('orders/' + Date.now().toString()).set({ 
+                 uid: currentUser.uid, 
+                 agentUid: currentUserData.resellerUid, 
+                 playerId: `${operator} - ${phone}`, 
+                 amount: `${amount} Bill`, 
+                 price: amount, 
+                 retailPrice: amount, 
+                 status: 'pending', 
+                 date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) 
+             });
+             alert('အောင်မြင်ပါသည်။ Admin မှ ဖုန်းဘေ ဖြည့်သွင်းပေးပါမည်။'); 
+             closeModal('phoneBillModal'); document.getElementById('billPhone').value = '';
+         }
+     } else {
+         // ရိုးရိုး User
+         if(currentWallet < amount) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။");
+         
+         if(confirm(`📱 ${operator} (${phone}) သို့ ${amount} Ks ဖုန်းဘေဖြည့်မည်မှာ သေချာပါသလား?`)) {
+             await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - amount });
+             
+             await db.ref('orders/' + Date.now().toString()).set({ 
+                 uid: currentUser.uid, 
+                 playerId: `${operator} - ${phone}`, 
+                 amount: `${amount} Bill`, 
+                 price: amount, 
+                 retailPrice: amount, 
+                 status: 'pending', 
+                 date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) 
+             });
+             alert('အောင်မြင်ပါသည်။ Admin မှ ဖုန်းဘေ ဖြည့်သွင်းပေးပါမည်။'); 
+             closeModal('phoneBillModal'); document.getElementById('billPhone').value = '';
+         }
+     }
+  };
+
   window.switchAgentTab = (tab) => { document.getElementById('tabAgentUsers').classList.toggle('active', tab === 'users'); document.getElementById('tabAgentPrices').classList.toggle('active', tab === 'prices'); document.getElementById('agentUsersSection').style.display = tab === 'users' ? 'block' : 'none'; document.getElementById('agentPricesSection').style.display = tab === 'prices' ? 'block' : 'none'; };
 
   function listenAgentUsers() {
@@ -410,7 +510,7 @@
        if(!snap.exists()) return list.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:10px; color:#aaa;">Customer မရှိသေးပါ</td></tr>';
        snap.forEach(c => {
          const u = c.val();
-         list.innerHTML += `<tr><td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td><td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;"><input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></td></tr>`;
+          list.innerHTML += `<tr><td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td><td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;"><input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></td></tr>`;
        });
     });
   }
@@ -574,7 +674,6 @@
     }
   };
 
-  // ✅ Telegram သို့ ပုံပို့သည့် နေရာ (Error ကင်းစေရန် String Format ပြောင်းထားပါသည်)
   window.submitTopup = async () => {
     if (!navigator.onLine) { return alert("အင်တာနက် လိုင်းမရှိပါ။"); }
     const amt = document.getElementById('topupAmount').value;
@@ -594,7 +693,7 @@
 
       try {
         const botToken = "8964049516:AAG3XEJy4hc0SN_1XKvY4EUmBdAJePR4f0M"; 
-        const chatId = "-1004455445554"; // ✅ အစ်ကို ပြင်ပေးထားသော Chat ID အသစ် (String Format ဖြင့် ရေးထားသည်)
+        const chatId = "-1004455445554"; 
         
         let formData = new FormData(); 
         formData.append("chat_id", chatId); 
@@ -607,9 +706,11 @@
         if (tgResult.ok) { 
            await db.ref('topups/' + topupId).update({ tgMessageId: tgResult.result.message_id.toString() }); 
         } else {
-           console.log("Telegram Error:", tgResult.description);
+           console.error("Telegram Error:", tgResult.description);
         }
-      } catch (tgError) {}
+      } catch (tgError) {
+          console.error("Fetch Error:", tgError);
+      }
     } catch (e) { alert('Error: ' + e.message); document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; }
   };
 
