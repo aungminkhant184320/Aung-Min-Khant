@@ -15,6 +15,10 @@
     
     #offlineScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.95); z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; backdrop-filter: blur(5px); }
     
+    /* Update Screen */
+    #updateScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.98); z-index: 99999999; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 20px; }
+    #updateScreen h1 { font-size: 50px; margin-bottom: 10px; }
+    
     header { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100; }
     .logo { font-size: 24px; font-weight: bold; color: var(--primary); letter-spacing: 2px; }
     .wallet-box { display: flex; align-items: center; gap: 10px; background: var(--card-bg); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--gold); cursor: pointer;}
@@ -30,7 +34,7 @@
     .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
     .input-group { margin-bottom: 15px; text-align: left; }
     .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: white; margin-top: 5px; box-sizing: border-box; }
-    .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; display: block; transition: 0.3s; }
+    .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 15px; cursor: pointer; display: block; transition: 0.3s; }
     .btn:disabled { background: #555; color: #888; cursor: not-allowed; }
     
     .products { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; margin-bottom: 20px;}
@@ -54,10 +58,18 @@
 </head>
 <body>
 
+<!-- Update / Security Alert Screen -->
+<div id="updateScreen">
+   <h1>🚀</h1>
+   <h2 style="color:var(--primary); margin-bottom:15px;">Update လိုအပ်နေပါသည်</h2>
+   <p style="color:#ccc; font-size:14px; margin-bottom:25px; line-height:1.6;">App ဗားရှင်းအသစ် ထွက်နေပါပြီ။<br>အောက်ပါခလုတ်ကိုနှိပ်ပြီး Telegram တွင် Update ယူပါ။</p>
+   <button class="btn" style="background:var(--gold); color:black; max-width:250px;" onclick="window.location.href='https://t.me/FileZWarrior_amk'">Telegram သို့သွားရန်</button>
+</div>
+
 <div id="offlineScreen">
   <h1 style="font-size: 60px; margin: 0 0 15px 0;">📡</h1>
   <h2 style="color: #ef4444; margin: 0 0 10px 0;">အင်တာနက် ချိတ်ဆက်မှု မရှိပါ</h2>
-  <p style="color: #ccc; font-size: 14px; max-width: 80%; line-height: 1.6;">ကျေးဇူးပြု၍ သင့်ဖုန်း၏ Mobile Data (သို့) WiFi ကို ပြန်လည်ဖွင့်ပြီး စစ်ဆေးပေးပါ။ <br><br> <i>လိုင်းပြန်ရမှသာ ဆက်လက်အသုံးပြုနိုင်ပါမည်။</i></p>
+  <p style="color: #ccc; font-size: 14px; max-width: 80%; line-height: 1.6;">ကျေးဇူးပြု၍ သင့်ဖုန်း၏ Mobile Data (သို့) WiFi ကို ပြန်လည်ဖွင့်ပြီး စစ်ဆေးပေးပါ။</p>
 </div>
 
 <div id="initialLoader"><div class="spinner"></div><h3 style="color: var(--primary);">ခဏစောင့်ပါ...</h3></div>
@@ -87,10 +99,6 @@
 
 <div class="container">
   <div id="authSection" class="auth-section" style="display: none;">
-    <div id="vpnWarningBox" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; font-weight: bold; text-align: left; display: none; align-items: flex-start; gap: 10px;">
-      <span style="font-size: 20px;">⚠️</span>
-      <span>ချိတ်ဆက်မှု မရပါ! <br>မြန်မာနိုင်ငံမှ အသုံးပြုသူများ အကောင့်ဖွင့်ရန်/ဝင်ရန် <span style="background: #ef4444; color: white; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 5px;">VPN အသုံးပြုပေးပါ</span></span>
-    </div>
     <div class="auth-tabs">
       <div class="auth-tab active" id="tabLogin" onclick="switchAuth('login')">အကောင့်ဝင်ရန်</div>
       <div class="auth-tab" id="tabSignup" onclick="switchAuth('signup')">အကောင့်သစ်ဖွင့်ရန်</div>
@@ -102,15 +110,16 @@
       <label style="color: var(--primary);">Agent Code (ရှိပါက ထည့်ပါ)</label>
       <input type="text" id="authAgentCode" placeholder="ဥပမာ - AGT-1234" style="border-color: var(--primary);">
     </div>
-    <button class="btn" onclick="handleAuth()" id="authBtn" disabled>ချိတ်ဆက်နေသည်... ⏳</button>
+    <button class="btn" onclick="handleAuth()" id="authBtn">ချိတ်ဆက်နေသည်... ⏳</button>
   </div>
 
   <div id="shopSection" style="display:none;">
     
-    <!-- ✅ ငွေဖြည့်ရန် နှင့် ဖုန်းဘေဖြည့်ရန် ခလုတ်များ -->
-    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-       <button class="btn" id="btnMainTopup" style="flex:1; background: var(--gold); color: black;" onclick="openModal('topupModal')">💰 ငွေဖြည့်ရန်</button>
-       <button class="btn" style="flex:1; background: #3b82f6; color: white; border: 1px solid #2563eb;" onclick="openModal('phoneBillModal')">📱 ဖုန်းဘေ</button>
+    <!-- ငွေဖြည့်ရန်၊ ဖုန်းဘေ နှင့် ငွေလွှဲ ခလုတ်များ -->
+    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+       <button class="btn" id="btnMainTopup" style="flex:1; background: var(--gold); color: black; padding: 12px 5px; font-size: 14px;" onclick="openModal('topupModal')">💰 ငွေဖြည့်</button>
+       <button class="btn" style="flex:1; background: #3b82f6; color: white; padding: 12px 5px; font-size: 14px;" onclick="openModal('phoneBillModal')">📱 ဖုန်းဘေ</button>
+       <button class="btn" style="flex:1; background: #10b981; color: black; padding: 12px 5px; font-size: 14px;" onclick="openTransferModal()">💸 ငွေလွှဲ</button>
     </div>
 
     <div id="btnAgentTopupInfo" style="display:none; background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
@@ -121,7 +130,51 @@
   </div>
 </div>
 
-<!-- ✅ ဖုန်းဘေဖြည့်ရန် Modal (Phone Bill Top-up) -->
+<!-- ✅ User အချင်းချင်း ငွေလွှဲရန် Modal -->
+<div id="transferModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('transferModal')">×</span>
+    <h2 style="color: #10b981; margin-bottom: 15px;">💸 User အချင်းချင်း ငွေလွှဲရန်</h2>
+    
+    <div class="input-group">
+      <label style="color: #ccc; font-size: 13px;">လက်ခံမည့်သူ၏ ဖုန်းနံပါတ်</label>
+      <div style="display: flex; gap: 8px; margin-top: 5px;">
+        <input type="number" id="transferPhone" placeholder="09xxxxxxxxx" style="margin-top: 0; flex: 2;" oninput="resetTransferCheck()">
+        <button onclick="checkTransferUser()" style="flex: 1; background: var(--primary); color: black; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">🔍 စစ်မည်</button>
+      </div>
+    </div>
+
+    <p id="transferLoading" style="display:none; color: var(--primary); font-size: 13px; margin-bottom: 10px;">အကောင့် ရှာဖွေနေပါသည်... ⏳</p>
+
+    <div id="transferTargetBox" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px dashed #10b981; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+      <p style="color: #aaa; font-size: 12px;">လက်ခံမည့်သူ အမည်:</p>
+      <h3 id="transferTargetName" style="color: #10b981; margin-top: 3px;">-</h3>
+    </div>
+
+    <div id="transferFormFields" style="display: none;">
+      <div class="input-group">
+        <label style="color: #ccc; font-size: 13px;">လွှဲမည့် ငွေပမာဏ (MMK)</label>
+        <input type="number" id="transferAmount" placeholder="ဥပမာ - 1000" oninput="updateTransferSummary()">
+      </div>
+
+      <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; line-height: 1.7;">
+        <div style="display:flex; justify-content:space-between;"><span>လွှဲမည့်ငွေ:</span> <span id="sumTransferAmt" style="color:white; font-weight:bold;">0 Ks</span></div>
+        <div style="display:flex; justify-content:space-between;"><span>ဝန်ဆောင်ခ (အခွန်):</span> <span style="color:#ef4444; font-weight:bold;">100 Ks</span></div>
+        <hr style="border:0; border-top:1px solid #333; margin:6px 0;">
+        <div style="display:flex; justify-content:space-between; font-size:14px;"><span>စုစုပေါင်း ဖြတ်မည့်ငွေ:</span> <span id="sumTotalDeduct" style="color:var(--gold); font-weight:bold;">100 Ks</span></div>
+      </div>
+
+      <div class="input-group">
+        <label style="color: var(--gold); font-size: 13px;">🔐 သင့်အကောင့် စကားဝှက် (Password) ထည့်ပါ</label>
+        <input type="password" id="transferPass" placeholder="••••••••">
+      </div>
+
+      <button class="btn" id="confirmTransferBtn" style="background: #10b981; color: black;" onclick="confirmTransfer()">💸 ယခုငွေလွှဲမည်</button>
+    </div>
+  </div>
+</div>
+
+<!-- ဖုန်းဘေဖြည့်ရန် Modal -->
 <div id="phoneBillModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('phoneBillModal')">×</span>
@@ -216,14 +269,12 @@
   </div>
 </div>
 
-<div id="instructionModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('instructionModal')">×</span><h2 style="color: var(--primary); margin-bottom: 15px;">📖 အသုံးပြုနည်း</h2><div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-size: 14px; line-height: 1.6;"><p style="color: #ccc;">- ၂၄ နာရီအတွင်း Diamond ဝင်ပါမည်။</p></div></div></div>
-
 <div id="notiModal" class="modal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeModal('notiModal')">×</span>
     <h2 style="color: var(--primary); margin-bottom: 15px;">🔔 မှတ်တမ်း</h2>
     <div style="display: flex; gap: 5px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
-      <button onclick="switchHistoryTab('msg')" id="tabMsgHis" style="flex:1; padding:8px; background:var(--primary); color:black; border:none; font-weight:bold; border-radius:5px;">ဝင်စာ</button>
+       <button onclick="switchHistoryTab('msg')" id="tabMsgHis" style="flex:1; padding:8px; background:var(--primary); color:black; border:none; font-weight:bold; border-radius:5px;">ဝင်စာ</button>
       <button onclick="switchHistoryTab('topup')" id="tabTopupHis" style="flex:1; padding:8px; background:#222; color:white; border:none; font-weight:bold; border-radius:5px;">ငွေဖြည့်</button>
       <button onclick="switchHistoryTab('order')" id="tabOrderHis" style="flex:1; padding:8px; background:#222; color:white; border:none; font-weight:bold; border-radius:5px;">ဝယ်ယူမှု</button>
     </div>
@@ -250,7 +301,7 @@
     <p id="loadingText" style="display:none; color:var(--primary); font-size:14px; font-weight:bold;">စစ်ဆေးနေပါသည်... ⏳</p>
     <div id="playerNameResult" style="display: none; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border: 1px dashed #22c55e;">
        <p style="color: #aaa; font-size: 14px;">အကောင့် အမည်:</p>
-         <h3 id="displayPlayerName" style="color: #22c55e; margin: 5px 0;">-</h3>
+       <h3 id="displayPlayerName" style="color: #22c55e; margin: 5px 0;">-</h3>
        <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
        <p style="color: var(--gold); font-size: 14px;">ဝယ်ယူမည့်အရာ: <span id="displayAmount">0</span></p>
        <p style="color: var(--gold); font-size: 14px;">ကျသင့်ငွေ: <span id="displayPrice">0</span> MMK</p>
@@ -319,6 +370,13 @@
   firebase.initializeApp(firebaseConfig); const auth = firebase.auth(); const db = firebase.database();
   setTimeout(() => { const l = document.getElementById('initialLoader'); if (l) l.style.display = 'none'; }, 2000);
   
+  const MY_APP_VERSION = 1;
+  db.ref('appSettings/latestVersion').on('value', snap => {
+      if(snap.exists() && snap.val() > MY_APP_VERSION) {
+          document.getElementById('updateScreen').style.display = 'flex';
+      }
+  });
+
   let currentUser = null, currentUserData = null;
   let currentAuthMode = 'login', selectedPackage = null, isShopOpen = true; 
   let myTopups = [], myOrders = [], myAnnouncements = [];
@@ -328,6 +386,134 @@
   let globalProfitPct = 0; 
   let isResellerMode = localStorage.getItem('fzw_reseller_mode') === 'true';
   let savedIds = JSON.parse(localStorage.getItem('fzw_saved_ids')) || [];
+
+  // ✅ ငွေလွှဲရန် Variable များ
+  let transferTargetUid = null;
+  let transferTargetData = null;
+  const TRANSFER_FEE = 100;
+
+  window.openTransferModal = () => {
+    document.getElementById('transferPhone').value = '';
+    resetTransferCheck();
+    openModal('transferModal');
+  };
+
+  window.resetTransferCheck = () => {
+    transferTargetUid = null;
+    transferTargetData = null;
+    document.getElementById('transferTargetBox').style.display = 'none';
+    document.getElementById('transferFormFields').style.display = 'none';
+    document.getElementById('transferLoading').style.display = 'none';
+    document.getElementById('transferAmount').value = '';
+    document.getElementById('transferPass').value = '';
+    updateTransferSummary();
+  };
+
+  window.updateTransferSummary = () => {
+    const amt = parseInt(document.getElementById('transferAmount').value) || 0;
+    document.getElementById('sumTransferAmt').innerText = amt.toLocaleString() + ' Ks';
+    document.getElementById('sumTotalDeduct').innerText = (amt + TRANSFER_FEE).toLocaleString() + ' Ks';
+  };
+
+  window.checkTransferUser = async () => {
+    const phone = document.getElementById('transferPhone').value.trim();
+    if(!phone) return alert("ဖုန်းနံပါတ် ထည့်ပါ။");
+    if(currentUserData && phone === String(currentUserData.phone)) {
+      return alert("❌ မိမိအကောင့်သို့ ပြန်လွှဲ၍ မရပါ။");
+    }
+
+    document.getElementById('transferLoading').style.display = 'block';
+    document.getElementById('transferTargetBox').style.display = 'none';
+    document.getElementById('transferFormFields').style.display = 'none';
+
+    try {
+      const snap = await db.ref('users').orderByChild('phone').equalTo(phone).once('value');
+      document.getElementById('transferLoading').style.display = 'none';
+
+      if(snap.exists()) {
+        snap.forEach(child => {
+          transferTargetUid = child.key;
+          transferTargetData = child.val();
+        });
+        document.getElementById('transferTargetName').innerText = transferTargetData.name || 'User';
+        document.getElementById('transferTargetBox').style.display = 'block';
+        document.getElementById('transferFormFields').style.display = 'block';
+      } else {
+        alert("❌ ဤဖုန်းနံပါတ်ဖြင့် ဖွင့်ထားသော အကောင့် မရှိပါ။");
+      }
+    } catch (e) {
+      document.getElementById('transferLoading').style.display = 'none';
+      alert("Error: " + e.message);
+    }
+  };
+
+  window.confirmTransfer = async () => {
+    if(!transferTargetUid || !transferTargetData) return alert("လက်ခံမည့်သူကို အရင်စစ်ဆေးပါ။");
+    const amt = parseInt(document.getElementById('transferAmount').value);
+    const inputPass = document.getElementById('transferPass').value;
+
+    if(!amt || amt <= 0) return alert("လွှဲမည့် ငွေပမာဏ မှန်ကန်စွာ ထည့်ပါ။");
+    if(!inputPass) return alert("သင့်အကောင့် စကားဝှက် (Password) ထည့်ပါ။");
+
+    // Password စစ်ဆေးခြင်း
+    if(inputPass !== String(currentUserData.pass)) {
+      return alert("❌ စကားဝှက် (Password) မှားယွင်းနေပါသည်။");
+    }
+
+    const totalDeduct = amt + TRANSFER_FEE;
+    const myWallet = parseInt(currentUserData.wallet || 0);
+
+    if(myWallet < totalDeduct) {
+      return alert(`❌ လက်ကျန်ငွေ မလုံလောက်ပါ။\n(လွှဲငွေ ${amt} + ဝန်ဆောင်ခ ${TRANSFER_FEE} = ${totalDeduct} Ks လိုအပ်ပါသည်)`);
+    }
+
+    if(!confirm(`👤 ${transferTargetData.name} (${transferTargetData.phone}) ထံသို့\n\n💸 လွှဲငွေ: ${amt} Ks\n🧾 ဝန်ဆောင်ခ: ${TRANSFER_FEE} Ks\n💰 စုစုပေါင်း: ${totalDeduct} Ks\n\nလွှဲမည်မှာ သေချာပါသလား?`)) return;
+
+    const btn = document.getElementById('confirmTransferBtn');
+    btn.disabled = true;
+    btn.innerText = 'လွှဲနေပါသည်... ⏳';
+
+    try {
+      // လက်ခံသူ၏ လက်ရှိ Wallet ကို နောက်ဆုံးအခြေအနေ ပြန်ယူမည်
+      const targetSnap = await db.ref('users/' + transferTargetUid + '/wallet').once('value');
+      const targetWallet = parseInt(targetSnap.val() || 0);
+
+      // ငွေဖြတ် / ငွေပေါင်း
+      await db.ref('users/' + currentUser.uid).update({ wallet: myWallet - totalDeduct });
+      await db.ref('users/' + transferTargetUid).update({ wallet: targetWallet + amt });
+
+      const nowStr = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
+
+      // မှတ်တမ်းသိမ်းမည်
+      await db.ref('transfers/' + Date.now()).set({
+        fromUid: currentUser.uid,
+        fromPhone: currentUserData.phone || '',
+        fromName: currentUserData.name || 'User',
+        toUid: transferTargetUid,
+        toPhone: transferTargetData.phone || '',
+        toName: transferTargetData.name || 'User',
+        amount: amt,
+        fee: TRANSFER_FEE,
+        date: nowStr
+      });
+
+      // လက်ခံသူထံ ဝင်စာ (Notification) ပို့မည်
+      await db.ref('announcements/' + Date.now()).set({
+        target: transferTargetUid,
+        title: '💸 ငွေလွှဲ လက်ခံရရှိပါသည်',
+        body: `${currentUserData.name || 'User'} (${currentUserData.phone}) ထံမှ ${amt.toLocaleString()} Ks လက်ခံရရှိပါသည်။`,
+        date: nowStr
+      });
+
+      alert(`✅ ${transferTargetData.name} ထံသို့ ${amt.toLocaleString()} Ks အောင်မြင်စွာ လွှဲပြီးပါပြီ။`);
+      closeModal('transferModal');
+    } catch (e) {
+      alert("Error: " + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = '💸 ယခုငွေလွှဲမည်';
+    }
+  };
 
   window.copyPhone = (phone) => { navigator.clipboard.writeText(phone).then(() => alert(phone + " ဖုန်းနံပါတ်ကို Copy ကူးယူပြီးပါပြီ။")); };
 
@@ -342,19 +528,17 @@
   let isFirebaseConnected = false;
   db.ref(".info/connected").on("value", function(snap) {
     const btn = document.getElementById('authBtn');
-    const vpnBox = document.getElementById('vpnWarningBox');
     if (snap.val() === true) {
-      isFirebaseConnected = true; btn.innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; btn.disabled = false; btn.style.background = 'var(--primary)'; vpnBox.style.display = 'none';
+      isFirebaseConnected = true; btn.innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; btn.disabled = false; btn.style.background = 'var(--primary)';
     } else {
       isFirebaseConnected = false; btn.innerText = 'ချိတ်ဆက်မှု မရပါ ❌'; btn.disabled = true; btn.style.background = '#555';
-      setTimeout(() => { if(!isFirebaseConnected && document.getElementById('authSection').style.display !== 'none') { vpnBox.style.display = 'flex'; } }, 3000);
     }
   });
 
   window.switchAuth = (mode) => { currentAuthMode = mode; document.getElementById('tabLogin').classList.toggle('active', mode === 'login'); document.getElementById('tabSignup').classList.toggle('active', mode === 'signup'); document.getElementById('nameGroup').style.display = mode === 'signup' ? 'block' : 'none'; document.getElementById('agentCodeGroup').style.display = mode === 'signup' ? 'block' : 'none'; if(isFirebaseConnected) document.getElementById('authBtn').innerText = mode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; };
 
   window.handleAuth = async () => {
-    if(!isFirebaseConnected) { document.getElementById('vpnWarningBox').style.display = 'flex'; return alert("❌ ဆာဗာသို့ ချိတ်ဆက်၍ မရပါ။ VPN ဖွင့်ပြီးမှ ပြန်ကြိုးစားပါ။"); }
+    if(!isFirebaseConnected) { return alert("❌ ဆာဗာသို့ ချိတ်ဆက်၍ မရပါ။ အင်တာနက်လိုင်း စစ်ဆေးပါ။"); }
     const phone = document.getElementById('authPhone').value, pass = document.getElementById('authPass').value, name = document.getElementById('authName').value;
     const aCode = document.getElementById('authAgentCode').value.trim().toUpperCase();
     if(!phone || !pass) return alert("ဖုန်းနှင့် စကားဝှက် ထည့်ပါ။"); 
@@ -371,7 +555,7 @@
         await db.ref('users/' + userCred.user.uid).set(uData);
       }
     } catch (e) { 
-      if(e.code === 'auth/network-request-failed' || e.message.includes('network')) { document.getElementById('vpnWarningBox').style.display = 'flex'; alert("❌ VPN ဖွင့်ထားခြင်း မရှိပါ (သို့) အင်တာနက်လိုင်း မကောင်းပါ။"); } else { alert("Error: " + e.message); }
+      alert("Error: " + e.message);
       document.getElementById('authBtn').innerText = currentAuthMode === 'signup' ? 'အကောင့်ဖွင့်မည်' : 'အကောင့်ဝင်မည်'; 
     }
   };
@@ -407,7 +591,7 @@
     if (user) {
       currentUser = user; document.getElementById('authSection').style.display = 'none'; document.getElementById('shopSection').style.display = 'block'; document.getElementById('walletDisplay').style.display = 'flex'; document.getElementById('navIcons').style.display = 'flex';
       
-      db.ref('users/' + user.uid).on('value', async (snap) => {
+ db.ref('users/' + user.uid).on('value', async (snap) => {
         if (snap.exists()) {
           currentUserData = snap.val();
           if (currentUserData.isBanned === true) { document.getElementById('bannedScreen').style.display = 'flex'; document.getElementById('bannedWalletBalance').innerText = currentUserData.wallet || 0; return; } else document.getElementById('bannedScreen').style.display = 'none';
@@ -444,19 +628,16 @@
     }
   });
 
-  // ✅ ဖုန်းဘေဝယ်ယူခြင်း လုပ်ငန်းစဉ်
   window.confirmPhoneBill = async () => {
      if(!isShopOpen) return alert("ဆိုင်ပိတ်ထားပါသည်။");
      const operator = document.getElementById('billOperator').value;
      const phone = document.getElementById('billPhone').value;
      const amount = parseInt(document.getElementById('billAmount').value);
-     
      if(!phone || phone.length < 9) return alert("ဖုန်းနံပါတ် မှန်ကန်စွာ ထည့်ပါ။");
 
      const currentWallet = parseInt(document.getElementById('walletBalance').innerText.replace(/,/g, ''));
      
      if(currentUserData && currentUserData.resellerUid) {
-         // Agent အောက်မှ User
          const resSnap = await db.ref('users/' + currentUserData.resellerUid + '/wallet').once('value'); 
          const resWallet = resSnap.val() || 0;
          
@@ -466,38 +647,15 @@
          if(confirm(`📱 ${operator} (${phone}) သို့ ${amount} Ks ဖုန်းဘေဖြည့်မည်မှာ သေချာပါသလား?`)) {
              await db.ref('users/' + currentUserData.resellerUid).update({ wallet: resWallet - amount });
              await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - amount });
-             
-             await db.ref('orders/' + Date.now().toString()).set({ 
-                 uid: currentUser.uid, 
-                 agentUid: currentUserData.resellerUid, 
-                 playerId: `${operator} - ${phone}`, 
-                 amount: `${amount} Bill`, 
-                 price: amount, 
-                 retailPrice: amount, 
-                 status: 'pending', 
-                 date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) 
-             });
-             alert('အောင်မြင်ပါသည်။ Admin မှ ဖုန်းဘေ ဖြည့်သွင်းပေးပါမည်။'); 
-             closeModal('phoneBillModal'); document.getElementById('billPhone').value = '';
+             await db.ref('orders/' + Date.now().toString()).set({ uid: currentUser.uid, agentUid: currentUserData.resellerUid, playerId: `${operator} - ${phone}`, amount: `${amount} Bill`, price: amount, retailPrice: amount, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) });
+             alert('အောင်မြင်ပါသည်။ Admin မှ ဖုန်းဘေ ဖြည့်သွင်းပေးပါမည်။'); closeModal('phoneBillModal'); document.getElementById('billPhone').value = '';
          }
      } else {
-         // ရိုးရိုး User
          if(currentWallet < amount) return alert("သင့်အကောင့်တွင် ငွေမလောက်ပါ။");
-         
          if(confirm(`📱 ${operator} (${phone}) သို့ ${amount} Ks ဖုန်းဘေဖြည့်မည်မှာ သေချာပါသလား?`)) {
              await db.ref('users/' + currentUser.uid).update({ wallet: currentWallet - amount });
-             
-             await db.ref('orders/' + Date.now().toString()).set({ 
-                 uid: currentUser.uid, 
-                 playerId: `${operator} - ${phone}`, 
-                 amount: `${amount} Bill`, 
-                 price: amount, 
-                 retailPrice: amount, 
-                 status: 'pending', 
-                 date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) 
-             });
-             alert('အောင်မြင်ပါသည်။ Admin မှ ဖုန်းဘေ ဖြည့်သွင်းပေးပါမည်။'); 
-             closeModal('phoneBillModal'); document.getElementById('billPhone').value = '';
+             await db.ref('orders/' + Date.now().toString()).set({ uid: currentUser.uid, playerId: `${operator} - ${phone}`, amount: `${amount} Bill`, price: amount, retailPrice: amount, status: 'pending', date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) });
+             alert('အောင်မြင်ပါသည်။ Admin မှ ဖုန်းဘေ ဖြည့်သွင်းပေးပါမည်။'); closeModal('phoneBillModal'); document.getElementById('billPhone').value = '';
          }
      }
   };
@@ -510,7 +668,7 @@
        if(!snap.exists()) return list.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:10px; color:#aaa;">Customer မရှိသေးပါ</td></tr>';
        snap.forEach(c => {
          const u = c.val();
-          list.innerHTML += `<tr><td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td><td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;"><input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></td></tr>`;
+         list.innerHTML += `<tr><td style="padding:8px; border-bottom:1px solid #333;">👤 ${u.name}<br><span style="color:#aaa; font-size:11px;">${u.phone}</span></td><td style="padding:8px; border-bottom:1px solid #333; display:flex; gap:5px; align-items:center;"><input type="number" id="sub_w_${c.key}" value="${u.wallet}" style="width:70px; padding:5px; background:#111; color:white; border:1px solid #444; border-radius:4px;"><button onclick="updateSubUserWallet('${c.key}')" style="background:var(--primary); color:black; border:none; padding:5px 10px; border-radius:4px; font-weight:bold; cursor:pointer;">Save</button></td></tr>`;
        });
     });
   }
@@ -705,12 +863,8 @@
         
         if (tgResult.ok) { 
            await db.ref('topups/' + topupId).update({ tgMessageId: tgResult.result.message_id.toString() }); 
-        } else {
-           console.error("Telegram Error:", tgResult.description);
         }
-      } catch (tgError) {
-          console.error("Fetch Error:", tgError);
-      }
+      } catch (tgError) {}
     } catch (e) { alert('Error: ' + e.message); document.getElementById('submitTopupBtn').innerText = 'ငွေဖြည့်မည်'; }
   };
 
